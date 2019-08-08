@@ -1,0 +1,6 @@
+model_checkpoint_path: "/home/kimbring2/MineRL/model/model-60600.cptk"
+all_model_checkpoint_paths: "/home/kimbring2/MineRL/model/model-60200.cptk"
+all_model_checkpoint_paths: "/home/kimbring2/MineRL/model/model-60300.cptk"
+all_model_checkpoint_paths: "/home/kimbring2/MineRL/model/model-60400.cptk"
+all_model_checkpoint_paths: "/home/kimbring2/MineRL/model/model-60500.cptk"
+all_model_checkpoint_paths: "/home/kimbring2/MineRL/model/model-60600.cptk"
