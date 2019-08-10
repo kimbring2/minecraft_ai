@@ -12,6 +12,11 @@ Third, you should check code operate properly by running IPython Notebook.
 
 # Result
 
+<video controls="controls">
+  <source type="video/mp4" src="https://github.com/kimbring2/MineRL/blob/master/monitor/openaigym.video.2.15294.video000001.mp4"></source>
+  <p>Your browser does not support the video element.</p>
+</video>
+
 After finishing a training, agent can go to a one of tree in environment and attack it for collecting wood. But, it stops it's move at then. Thus, agent can collect only 1 reward.
 
 I need to solve this problem.
