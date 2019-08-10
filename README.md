@@ -13,9 +13,9 @@ Third, you should check code operate properly by running IPython Notebook.
 # Result
 ![Treechop-v0 agent video](https://github.com/kimbring2/MineRL/blob/master/monitor/ezgif.com-video-to-gif.gif)
 
-After finishing a training, agent can go to a one of tree in environment and attack it for collecting wood. But, it stops it's move at then. Thus, agent can collect only 1 reward.
+After finishing a training, agent can go to a two tree in environment and attack it for collecting wood. But, it stops after then. Thus, agent can collect only 2 reward.
 
-I need to solve this problem.
+I need to solve this problem for collection more wood in one environment.
 
 ![Treechop-v0 traning loss graph](https://github.com/kimbring2/MineRL/blob/master/image/14-47-20.png)
 
