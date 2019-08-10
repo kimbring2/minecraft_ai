@@ -14,4 +14,4 @@ Second, you need to modify a path for model and summary of tensorflow in MineRL_
 
 Third, you should check code operate properly by running IPython Notebook.
 
-![alt text](https://drive.google.com/open?id=12gtVqCAuvLlaKRGk3AMnxwvHxHh79GaP)
+![Image description](https://drive.google.com/open?id=12gtVqCAuvLlaKRGk3AMnxwvHxHh79GaP)
