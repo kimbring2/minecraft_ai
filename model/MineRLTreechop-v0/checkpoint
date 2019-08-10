@@ -1,0 +1,6 @@
+model_checkpoint_path: "/home/kimbring2/MineRL/model/MineRLTreechop-v0/model-313500.cptk"
+all_model_checkpoint_paths: "/home/kimbring2/MineRL/model/MineRLTreechop-v0/model-313500.cptk"
+all_model_checkpoint_paths: "/home/kimbring2/MineRL/model/MineRLTreechop-v0/model-313600.cptk"
+all_model_checkpoint_paths: "/home/kimbring2/MineRL/model/MineRLTreechop-v0/model-313700.cptk"
+all_model_checkpoint_paths: "/home/kimbring2/MineRL/model/MineRLTreechop-v0/model-313800.cptk"
+all_model_checkpoint_paths: "/home/kimbring2/MineRL/model/MineRLTreechop-v0/model-313900.cptk"
