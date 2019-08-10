@@ -11,7 +11,7 @@ Second, you need to modify a path for model and summary of tensorflow in MineRL_
 Third, you should check code operate properly by running IPython Notebook.
 
 # Result
-![Treechop-v0 agent video](https://github.com/kimbring2/MineRL/blob/master/monitor/openaigym.video.2.15294.video000001.mp4)
+![Treechop-v0 agent video](https://github.com/kimbring2/MineRL/blob/master/monitor/ezgif.com-video-to-gif.gif)
 
 After finishing a training, agent can go to a one of tree in environment and attack it for collecting wood. But, it stops it's move at then. Thus, agent can collect only 1 reward.
 
