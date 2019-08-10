@@ -17,3 +17,5 @@ After finishing a training, agent can go to a one of tree in environment and att
 I need to solve this problem.
 
 ![Treechop-v0 traning loss graph](https://github.com/kimbring2/MineRL/blob/master/image/14-47-20.png)
+
+Loss graph shows that there is no ploblem in traning process. However, it looks like it need more epoch.
