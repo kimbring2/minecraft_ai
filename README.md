@@ -13,3 +13,5 @@ First, you need to install dependent package by using a requirement.txt file.
 Second, you need to modify a path for model and summary of tensorflow in MineRL_IL.ipynb file.
 
 Third, you should check code operate properly by running IPython Notebook.
+
+![alt text](https://drive.google.com/open?id=12gtVqCAuvLlaKRGk3AMnxwvHxHh79GaP)
