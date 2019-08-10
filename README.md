@@ -14,4 +14,4 @@ Second, you need to modify a path for model and summary of tensorflow in MineRL_
 
 Third, you should check code operate properly by running IPython Notebook.
 
-![Image description](https://drive.google.com/open?id=12gtVqCAuvLlaKRGk3AMnxwvHxHh79GaP)
+![Treechop-v0 traning loss graph](https://github.com/kimbring2/MineRL/blob/master/image/14-47-20.png)
