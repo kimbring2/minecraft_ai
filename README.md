@@ -7,11 +7,13 @@ Second, you need to modify a path for model and summary of tensorflow in MineRL_
 Third, you should check code operate properly by running IPython Notebook.
 
 # Network Structure
+The network structure for Imitation Learning seems to be very simple CNN extracts features on the game screen, processes them through flatten and FC, and finally outputs the probability for each action.
 ![Structure image](https://github.com/kimbring2/MineRL/blob/master/image/21-52-37.png)
 
 # Result
-![Treechop-v0 agent video](https://github.com/kimbring2/MineRL/blob/master/monitor/ezgif.com-video-to-gif.gif)
 After finishing a training, agent can go to a two tree in environment and attack it for collecting wood. But, it stops after then. Thus, agent can collect only 2 reward.
+![Treechop-v0 agent video](https://github.com/kimbring2/MineRL/blob/master/monitor/ezgif.com-video-to-gif.gif)
+
 I need to solve this problem for collection more wood in one environment.
 ![Treechop-v0 traning loss graph](https://github.com/kimbring2/MineRL/blob/master/image/14-47-20.png)
 Loss graph shows that there is no ploblem in traning process. However, it looks like it need more epoch.
