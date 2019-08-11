@@ -1,19 +1,20 @@
-# MineRL Imitation Learning
-
+# MineRL Imitation&Reinforcement Learning
 This github code is for solving a MineRLTreechop-v0, MineRLNavigate-v0 environment of MineRL. I use a Convolution Neural Network for traning a agent. 
 
 # How to use it
-
 First, you need to install dependent package by using a requirement.txt file. 
-
 Second, you need to modify a path for model and summary of tensorflow in MineRL_IL.ipynb file.
-
 Third, you should check code operate properly by running IPython Notebook.
 
-# Result
-![Treechop-v0 agent video](https://github.com/kimbring2/MineRL/blob/master/monitor/ezgif.com-video-to-gif.gif)
+# Network Structure - Imitation Learning
+The network structure for Imitation Learning seems to be very simple CNN extracts features on the game screen, processes them through flatten and FC, and finally outputs the probability for each action.
 
+![Structure image](https://github.com/kimbring2/MineRL/blob/master/image/21-52-37.png)
+
+# Result - Imitation Learning
 After finishing a training, agent can go to a two tree in environment and attack it for collecting wood. But, it stops after then. Thus, agent can collect only 2 reward.
+
+![Treechop-v0 agent video](https://github.com/kimbring2/MineRL/blob/master/monitor/ezgif.com-video-to-gif.gif)
 
 I need to solve this problem for collection more wood in one environment.
 
