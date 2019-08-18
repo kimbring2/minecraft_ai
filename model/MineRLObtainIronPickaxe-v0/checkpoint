@@ -1,0 +1,2 @@
+model_checkpoint_path: "/home/kimbring2/MineRL_Git/model/MineRLObtainIronPickaxe-v0/model-0.cptk"
+all_model_checkpoint_paths: "/home/kimbring2/MineRL_Git/model/MineRLObtainIronPickaxe-v0/model-0.cptk"
