@@ -1,2 +1,6 @@
-model_checkpoint_path: "/home/kimbring2/MineRL_Git/model/MineRLObtainIronPickaxe-v0/model-0.cptk"
-all_model_checkpoint_paths: "/home/kimbring2/MineRL_Git/model/MineRLObtainIronPickaxe-v0/model-0.cptk"
+model_checkpoint_path: "/home/kimbring2/MineRL/model/MineRLObtainIronPickaxe-v0/model-4900.cptk"
+all_model_checkpoint_paths: "/home/kimbring2/MineRL/model/MineRLObtainIronPickaxe-v0/model-4500.cptk"
+all_model_checkpoint_paths: "/home/kimbring2/MineRL/model/MineRLObtainIronPickaxe-v0/model-4600.cptk"
+all_model_checkpoint_paths: "/home/kimbring2/MineRL/model/MineRLObtainIronPickaxe-v0/model-4700.cptk"
+all_model_checkpoint_paths: "/home/kimbring2/MineRL/model/MineRLObtainIronPickaxe-v0/model-4800.cptk"
+all_model_checkpoint_paths: "/home/kimbring2/MineRL/model/MineRLObtainIronPickaxe-v0/model-4900.cptk"
