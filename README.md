@@ -12,7 +12,7 @@ The data that people played directly on the game is provided, so I tried to solv
 ## Network Structure
 The network structure for Imitation Learning seems to be very simple CNN extracts features on the game screen, processes them through flatten and FC, and finally outputs the probability for each action.
 
-![Structure image](https://github.com/kimbring2/MineRL/blob/master/image/21-52-37.png)
+![Structure image](https://github.com/kimbring2/MineRL/blob/master/image/03-17-22.png)
 
 ## Result
 After finishing a training, agent can go to a two tree in environment and attack it for collecting wood. But, it stops after then. Thus, agent can collect only 2 reward.
