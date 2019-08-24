@@ -6,12 +6,15 @@ First, you need to install dependent package by using a requirement.txt file.
 Second, you need to modify a path for model and summary of tensorflow in MineRL_IL.ipynb file.
 Third, you should check code operate properly by running IPython Notebook.
 
-# Network Structure - Imitation Learning
+# Imitation Learning
+The data that people played directly on the game is provided, so I tried to solve the problem by using Imitation Learning first.
+
+## Network Structure
 The network structure for Imitation Learning seems to be very simple CNN extracts features on the game screen, processes them through flatten and FC, and finally outputs the probability for each action.
 
 ![Structure image](https://github.com/kimbring2/MineRL/blob/master/image/21-52-37.png)
 
-# Result - Imitation Learning
+## Result
 After finishing a training, agent can go to a two tree in environment and attack it for collecting wood. But, it stops after then. Thus, agent can collect only 2 reward.
 
 ![Treechop-v0 agent video](https://github.com/kimbring2/MineRL/blob/master/monitor/ezgif.com-video-to-gif.gif)
@@ -21,3 +24,7 @@ I need to solve this problem for collection more wood in one environment.
 ![Treechop-v0 traning loss graph](https://github.com/kimbring2/MineRL/blob/master/image/14-47-20.png)
 
 Loss graph shows that there is no ploblem in traning process. However, it looks like it need more epoch.
+
+# Reinforcment Learning
+Changing the number and combination of learning behaviors to follow or changing the number of networks did not improve performance any more. So we examined how to use reinforcement learning additionally.
+
