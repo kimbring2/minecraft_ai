@@ -15,15 +15,15 @@ The network structure for Imitation Learning seems to be very simple CNN extract
 ![Structure image](https://github.com/kimbring2/MineRL/blob/master/image/03-17-22.png)
 
 ## Result
-After finishing a training, agent can go to a two tree in environment and attack it for collecting wood. But, it stops after then. Thus, agent can collect only 2 reward.
+After completing the learning, the agent can go to the two trees in the environment and attack it to collect the woods. However, it stops. Therefore, the agent cannot collect more wood.
 
 ![Treechop-v0 agent video](https://github.com/kimbring2/MineRL/blob/master/monitor/ezgif.com-video-to-gif.gif)
 
-I need to solve this problem for collection more wood in one environment.
+To collect more wood in one environment, I need to solve this problem.
 
 ![Treechop-v0 traning loss graph](https://github.com/kimbring2/MineRL/blob/master/image/14-47-20.png)
 
-Loss graph shows that there is no ploblem in traning process. However, it looks like it need more epoch.
+Loss graph shows that there is no ploblem in traning process. However, it looks like it need more training step.
 
 # Reinforcment Learning
 Changing the number and combination of learning behaviors to follow or changing the number of networks did not improve performance any more. So we examined how to use reinforcement learning additionally.
