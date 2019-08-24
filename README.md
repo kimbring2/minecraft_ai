@@ -28,3 +28,8 @@ Loss graph shows that there is no ploblem in traning process. However, it looks 
 # Reinforcment Learning
 Changing the number and combination of learning behaviors to follow or changing the number of networks did not improve performance any more. So we examined how to use reinforcement learning additionally.
 
+## Network Structure
+The reinforcement learning network structure is the same as the supervised learning network structure, but the loss for learning uses the reward value that the agent earns.
+
+## Result
+For imitation learning, we first called the weights of the learned networks and used them in reinforcement learning. When experimenting with these procedures, we were unable to confirm an improvement in performance that should be unique.
