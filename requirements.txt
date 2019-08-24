@@ -79,6 +79,7 @@ notebook==6.0.0
 numpy==1.17.0
 opencv-python==4.1.0.25
 packaging==19.1
+pandas==0.25.0
 pandocfilters==1.4.2
 parso==0.5.1
 pexpect==4.7.0
@@ -98,6 +99,7 @@ Pyro4==4.76
 pyrsistent==0.15.4
 python-dateutil==2.8.0
 python-qt-binding==0.3.5
+pytz==2019.2
 pyzmq==18.0.2
 qt-dotgraph==0.3.11
 qt-gui==0.3.11
@@ -184,7 +186,7 @@ topic-tools==1.14.3
 tornado==6.0.3
 tqdm==4.32.2
 traitlets==4.3.2
-typing==3.7.4
+typing==3.6.6
 typing-extensions==3.6.6
 urdfdom-py==0.4.0
 urllib3==1.25.3
