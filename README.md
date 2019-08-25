@@ -40,7 +40,7 @@ At this point, we decided that changes in network type and structure could no lo
 ## Solution
 The first thing to consider was that in order to collect items like wood, you had to take attack action for a certain amount of time. If you train agents to take one action per frame without considering the duration of these specific actions, you can easily see that the number has increased significantly.
 
-'
+```
 if (action2_index == 0):
   action['camera'][0] = 0; action['camera'][1] = -1; action['forward'] = 0; action['jump'] = 0; 
   action['attack'] = 1
@@ -59,4 +59,4 @@ elif (action2_index == 4):
 elif (action2_index == 5):
   action['camera'][0] = 0; action['camera'][1] = 0; action['forward'] = 1; action['jump'] = 1; 
   action['attack'] = 0
-'
+```
