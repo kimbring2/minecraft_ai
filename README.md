@@ -132,9 +132,11 @@ elif (action2_index == 5):
 
 ## Imitation Learning Result
 After completing the learning, the agent can go to the two trees in the environment and attack it to collect the woods. However, it stops. Therefore, the agent cannot collect more wood.
+
 ![Treechop-v0 agent video](https://github.com/kimbring2/MineRL/blob/master/monitor/ezgif.com-video-to-gif.gif)
 
 Loss graph shows that there is no ploblem in traning process.
+
 ![Treechop-v0 traning loss graph](https://github.com/kimbring2/MineRL/blob/master/image/14-47-20.png)
 
 
