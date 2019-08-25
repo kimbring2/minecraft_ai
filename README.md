@@ -6,12 +6,7 @@ The code uploaded here is for MineRL Competition 2019. The purpose of the compet
 # Purpose
 Requesting in the competition is to resolve MineRLObtainDiamond-v0. In order to solve this, advance work such as moving to a specific place or collecting trees is necessary.
 
-![Structure image](https://github.com/kimbring2/MineRL/blob/master/image/03-17-22.png)
-
-# How to use it
-First, you need to install dependent package by using a requirement.txt file. 
-Second, you need to modify a path for model and summary of tensorflow in MineRL_IL.ipynb file.
-Third, you should check code operate properly by running IPython Notebook.
+![obtaining a diamond process](https://github.com/kimbring2/MineRL/blob/master/image/19-14-57.png)
 
 # Imitation Learning
 The data that people played directly on the game is provided, so I tried to solve the problem by using Imitation Learning first.
@@ -83,3 +78,8 @@ if (action2_index == 4):
     else:
       obs1, reward, done, info = env.step(action)
 ```
+
+# How to use a code
+First, you need to install dependent package by using a requirement.txt file. 
+Second, you need to modify a path for model and summary of tensorflow in MineRL_IL.ipynb file.
+Third, you should check code operate properly by running IPython Notebook.
