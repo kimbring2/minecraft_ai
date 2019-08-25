@@ -34,5 +34,29 @@ The reinforcement learning network structure is the same as the supervised learn
 ## Result
 For imitation learning, we first called the weights of the learned networks and used them in reinforcement learning. When experimenting with these procedures, we were unable to confirm an improvement in performance that should be unique.
 
-# What is real problem of two approach
+# What is problem of two approach
 At this point, we decided that changes in network type and structure could no longer improve performance. So, other approaches were devised, but in the case of the TreeChop task, the necessary actions were considered first.
+
+## Solution
+The first thing to consider was that in order to collect items like wood, you had to take attack action for a certain amount of time. If you train agents to take one action per frame without considering the duration of these specific actions, you can easily see that the number has increased significantly.
+
+''' python
+if (action2_index == 0):
+  action['camera'][0] = 0; action['camera'][1] = -1; action['forward'] = 0; action['jump'] = 0; 
+  action['attack'] = 1
+elif (action2_index == 1):
+  action['camera'][0] = 0; action['camera'][1] = 1; action['forward'] = 0; action['jump'] = 0;
+  action['attack'] = 1
+elif (action2_index == 2):
+  action['camera'][0] = 1; action['camera'][1] = 0; action['forward'] = 0; action['jump'] = 0;  
+  action['attack'] = 1
+elif (action2_index == 3):
+  action['camera'][0] = -1; action['camera'][1] = 0; action['forward'] = 0; action['jump'] = 0; 
+  action['attack'] = 1
+elif (action2_index == 4):
+  action['camera'][0] = 0; action['camera'][1] = 0; action['forward'] = 0; action['jump'] = 0; 
+  action['attack'] = 1
+elif (action2_index == 5):
+  action['camera'][0] = 0; action['camera'][1] = 0; action['forward'] = 1; action['jump'] = 1; 
+  action['attack'] = 0
+'''
