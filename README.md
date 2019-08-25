@@ -17,35 +17,118 @@ The agent obtains information on items currently possessed, including screen inf
 
 ## Network Structure
 
+The network structure is largely composed of a CNN part that receives the current state value of the agent and an FC part that outputs the next action value.
 
+![Structure image](https://github.com/kimbring2/MineRL/blob/master/image/03-17-22.png)
+
+# Preprosseing
+The agent obtains information on items currently possessed, including screen information on the screen during game play. In addition, actions such as camera rotation, advancement, attack, item creation, item drop, and item equipment can be performed.
 
 ```
 pov = obs['pov'].astype(np.float32) / 255.0 - 0.5
-            inventory = obs['inventory']
+inventory = obs['inventory']
         
-            coal = inventory['coal']
-            cobblestone = inventory['cobblestone']
-            crafting_table = inventory['crafting_table']
-            dirt = inventory['dirt']
-            furnace = inventory['furnace']
-            iron_axe = inventory['iron_axe']
-            iron_ingot = inventory['iron_ingot']
-            iron_ore = inventory['iron_ore']
-            iron_pickaxe = inventory['iron_pickaxe']
-            log = inventory['log']
-            planks = inventory['planks']
-            stick = inventory['stick']
-            stone = inventory['stone']
-            stone_axe = inventory['stone_axe']
-            stone_pickaxe = inventory['stone_pickaxe']
-            torch = inventory['torch']
-            wooden_axe = inventory['wooden_axe']
-            wooden_pickaxe = inventory['wooden_pickaxe']
+coal = inventory['coal']
+cobblestone = inventory['cobblestone']
+crafting_table = inventory['crafting_table']
+dirt = inventory['dirt']
+furnace = inventory['furnace']
+iron_axe = inventory['iron_axe']
+iron_ingot = inventory['iron_ingot']
+iron_ore = inventory['iron_ore']
+iron_pickaxe = inventory['iron_pickaxe']
+log = inventory['log']
+planks = inventory['planks']
+stick = inventory['stick']
+stone = inventory['stone']
+stone_axe = inventory['stone_axe']
+stone_pickaxe = inventory['stone_pickaxe']
+torch = inventory['torch']
+wooden_axe = inventory['wooden_axe']
+wooden_pickaxe = inventory['wooden_pickaxe']
 ```
 
-The network structure for Imitation Learning seems to be very simple CNN extracts features on the game screen, processes them through flatten and FC, and finally outputs the probability for each action.
+Moreover, it is necessary to select the action of the agent by the value output from the network. In the first output, an action related to an item is selected, and in the second output, an attack, jump, and camera rotation action are selected.
 
-![Structure image](https://github.com/kimbring2/MineRL/blob/master/image/03-17-22.png)
+```
+if (action1_index == 0):
+  action['place'] = 1; action['craft'] = 0;
+  action['nearbyCraft'] = 0; action['nearbySmelt'] = 0
+elif (action1_index == 1):
+  action['place'] = 2; action['craft'] = 0;
+  action['nearbyCraft'] = 0; action['nearbySmelt'] = 0
+elif (action1_index == 2):
+  action['place'] = 3; action['craft'] = 0;
+  action['nearbyCraft'] = 0; action['nearbySmelt'] = 0
+elif (action1_index == 3):
+  action['place'] = 4; action['craft'] = 0;
+  action['nearbyCraft'] = 0; action['nearbySmelt'] = 0
+elif (action1_index == 4):
+  action['place'] = 5; action['craft'] = 0;
+  action['nearbyCraft'] = 0; action['nearbySmelt'] = 0
+elif (action1_index == 5):
+  action['place'] = 0; action['craft'] = 1; 
+  action['nearbyCraft'] = 0; action['nearbySmelt'] = 0
+elif (action1_index == 6):
+  action['place'] = 0; action['craft'] = 2;
+  action['nearbyCraft'] = 0; action['nearbySmelt'] = 0
+elif (action1_index == 7):
+  action['place'] = 0; action['craft'] = 3;
+  action['nearbyCraft'] = 0; action['nearbySmelt'] = 0
+elif (action1_index == 8):
+  action['place'] = 0; action['craft'] = 4;
+  action['nearbyCraft'] = 0; action['nearbySmelt'] = 0
+elif (action1_index == 9):
+  action['place'] = 0; action['craft'] = 0;
+  action['nearbyCraft'] = 1; action['nearbySmelt'] = 0
+elif (action1_index == 10):
+  action['place'] = 0; action['craft'] = 0;
+  action['nearbyCraft'] = 2; action['nearbySmelt'] = 0
+elif (action1_index == 11):
+  action['place'] = 0; action['craft'] = 0;
+  action['nearbyCraft'] = 3; action['nearbySmelt'] = 0
+elif (action1_index == 12):
+  action['place'] = 0; action['craft'] = 0;
+  action['nearbyCraft'] = 4; action['nearbySmelt'] = 0
+elif (action1_index == 13):
+  action['place'] = 0; action['craft'] = 0;
+  action['nearbyCraft'] = 5; action['nearbySmelt'] = 0
+elif (action1_index == 14):
+  action['place'] = 0; action['craft'] = 0;
+  action['nearbyCraft'] = 6; action['nearbySmelt'] = 0
+elif (action1_index == 15):
+  action['place'] = 0; action['craft'] = 0;
+  action['nearbyCraft'] = 7; action['nearbySmelt'] = 0
+elif (action1_index == 16):
+  action['place'] = 0; action['craft'] = 0;
+  action['nearbyCraft'] = 0; action['nearbySmelt'] = 1
+elif (action1_index == 17):
+  action['place'] = 0; action['craft'] = 0;
+  action['nearbyCraft'] = 0; action['nearbySmelt'] = 2
+elif (action1_index == 18):
+  action['place'] = 0; action['craft'] = 0;
+  action['nearbyCraft'] = 0; action['nearbySmelt'] = 0
+            
+          
+if (action2_index == 0):
+  action['camera'][0] = 0; action['camera'][1] = -0.5; action['forward'] = 0; action['jump'] = 0; 
+  action['attack'] = 0
+elif (action2_index == 1):
+  action['camera'][0] = 0; action['camera'][1] = 0.5; action['forward'] = 0; action['jump'] = 0;
+  action['attack'] = 0
+elif (action2_index == 2):
+  action['camera'][0] = 0.5; action['camera'][1] = 0; action['forward'] = 0; action['jump'] = 0;  
+  action['attack'] = 0
+elif (action2_index == 3):
+  action['camera'][0] = -0.5; action['camera'][1] = 0; action['forward'] = 0; action['jump'] = 0; 
+  action['attack'] = 0
+elif (action2_index == 4):
+  action['camera'][0] = 0; action['camera'][1] = 0; action['forward'] = 0; action['jump'] = 0; 
+  action['attack'] = 1
+elif (action2_index == 5):
+  action['camera'][0] = 0; action['camera'][1] = 0; action['forward'] = 1; action['jump'] = 1; 
+  action['attack'] = 0
+```
 
 ## Result
 After completing the learning, the agent can go to the two trees in the environment and attack it to collect the woods. However, it stops. Therefore, the agent cannot collect more wood.
