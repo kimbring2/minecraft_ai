@@ -8,12 +8,41 @@ I started participating at the beginning of this competition, but I wasn't able 
 # MineRL environment
 Requesting in the competition is to resolve MineRLObtainDiamond-v0. In order to solve this, advance work such as moving to a specific place or collecting trees is necessary.
 
-![obtaining a diamond process](https://github.com/kimbring2/MineRL/blob/master/image/19-14-57.png)
+![Obtaining a diamond process](https://github.com/kimbring2/MineRL/blob/master/image/19-14-57.png)
 
-# Imitation Learning
-The data that people played directly on the game is provided, so I tried to solve the problem by using Imitation Learning first.
+The agent obtains information on items currently possessed, including screen information on the screen during game play. In addition, actions such as camera rotation, advancement, attack, item creation, item drop, and item equipment can be performed.
+
+![Obs Space](https://github.com/kimbring2/MineRL/blob/master/image/22-02-25.png)
+![Act Space](https://github.com/kimbring2/MineRL/blob/master/image/22-02-49.png)
 
 ## Network Structure
+
+
+
+```
+pov = obs['pov'].astype(np.float32) / 255.0 - 0.5
+            inventory = obs['inventory']
+        
+            coal = inventory['coal']
+            cobblestone = inventory['cobblestone']
+            crafting_table = inventory['crafting_table']
+            dirt = inventory['dirt']
+            furnace = inventory['furnace']
+            iron_axe = inventory['iron_axe']
+            iron_ingot = inventory['iron_ingot']
+            iron_ore = inventory['iron_ore']
+            iron_pickaxe = inventory['iron_pickaxe']
+            log = inventory['log']
+            planks = inventory['planks']
+            stick = inventory['stick']
+            stone = inventory['stone']
+            stone_axe = inventory['stone_axe']
+            stone_pickaxe = inventory['stone_pickaxe']
+            torch = inventory['torch']
+            wooden_axe = inventory['wooden_axe']
+            wooden_pickaxe = inventory['wooden_pickaxe']
+```
+
 The network structure for Imitation Learning seems to be very simple CNN extracts features on the game screen, processes them through flatten and FC, and finally outputs the probability for each action.
 
 ![Structure image](https://github.com/kimbring2/MineRL/blob/master/image/03-17-22.png)
