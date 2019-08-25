@@ -130,25 +130,16 @@ elif (action2_index == 5):
   action['attack'] = 0
 ```
 
-## Result
+## Imitation Learning Result
 After completing the learning, the agent can go to the two trees in the environment and attack it to collect the woods. However, it stops. Therefore, the agent cannot collect more wood.
-
 ![Treechop-v0 agent video](https://github.com/kimbring2/MineRL/blob/master/monitor/ezgif.com-video-to-gif.gif)
 
-To collect more wood in one environment, I need to solve this problem.
-
+Loss graph shows that there is no ploblem in traning process.
 ![Treechop-v0 traning loss graph](https://github.com/kimbring2/MineRL/blob/master/image/14-47-20.png)
 
-Loss graph shows that there is no ploblem in traning process. However, it looks like it need more training step.
 
 # Reinforcment Learning
-Changing the number and combination of learning behaviors to follow or changing the number of networks did not improve performance any more. So we examined how to use reinforcement learning additionally.
-
-## Network Structure
-The reinforcement learning network structure is the same as the supervised learning network structure, but the loss for learning uses the reward value that the agent earns.
-
-## Result
-For imitation learning, we first called the weights of the learned networks and used them in reinforcement learning. When experimenting with these procedures, we were unable to confirm an improvement in performance that should be unique.
+Changing the number and combination of actions or the number of networks did not improve performance any more. Thus, we use Reinforcement Learning additionally. The Reinforcement Learning network structure is the same as the supervised learning network structure except the loss for learning uses the reward value that the agent earns. We first called the weights of the learned networks and used them in Reinforcement Learning. When experimenting with these procedures, we were unable to confirm an improvement in performance that should be unique.
 
 # What is problem of two approach
 At this point, we decided that changes in network type and structure could no longer improve performance. So, other approaches were devised in the case of the TreeChop task.
