@@ -1,5 +1,12 @@
-# MineRL Imitation&Reinforcement Learning
-This github code is for solving a MineRLTreechop-v0, MineRLNavigate-v0 environment of MineRL. I use a Convolution Neural Network for traning a agent. 
+# Introduction
+![Intoduction](https://github.com/kimbring2/MineRL/blob/master/image/18-28-41.png)
+
+The code uploaded here is for MineRL Competition 2019. The purpose of the competition is to find an effective reinforcement learning algorithm using human play datasets.
+
+# Purpose
+Requesting in the competition is to resolve MineRLObtainDiamond-v0. In order to solve this, advance work such as moving to a specific place or collecting trees is necessary.
+
+![Structure image](https://github.com/kimbring2/MineRL/blob/master/image/03-17-22.png)
 
 # How to use it
 First, you need to install dependent package by using a requirement.txt file. 
