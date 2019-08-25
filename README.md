@@ -63,3 +63,16 @@ elif (action2_index == 5):
   action['camera'][0] = 0; action['camera'][1] = 0; action['forward'] = 1; action['jump'] = 1; 
   action['attack'] = 0
 ```
+
+Here, in order to collect trees, we added a section that repeats actions based on the output of other networks, considering that the attack action must be continued several times.
+```
+if (action2_index == 4):
+  for q in range(0, action3_index[0]):
+    obs1, reward, done, info = env.step(action)
+    netr += reward
+
+    if (done == True):
+      break
+    else:
+      obs1, reward, done, info = env.step(action)
+```
