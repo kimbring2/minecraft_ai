@@ -35,10 +35,13 @@ The reinforcement learning network structure is the same as the supervised learn
 For imitation learning, we first called the weights of the learned networks and used them in reinforcement learning. When experimenting with these procedures, we were unable to confirm an improvement in performance that should be unique.
 
 # What is problem of two approach
-At this point, we decided that changes in network type and structure could no longer improve performance. So, other approaches were devised, but in the case of the TreeChop task, the necessary actions were considered first.
+At this point, we decided that changes in network type and structure could no longer improve performance. So, other approaches were devised in the case of the TreeChop task.
 
 ## Solution
 The first thing to consider was that in order to collect items like wood, you had to take attack action for a certain amount of time. If you train agents to take one action per frame without considering the duration of these specific actions, you can easily see that the number has increased significantly.
+
+## Action Example
+The agent selects one action using the final value output from the network.
 
 ```
 if (action2_index == 0):
