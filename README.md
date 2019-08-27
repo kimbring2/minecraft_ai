@@ -185,9 +185,11 @@ if (action2_index == 4):
 ```
 
 # Result
-<iframe width="560" height="315"
-src="https://www.youtube.com/watch?v=CAzVF_lgOK4&t=6s"
-frameborder="0"; encrypted-media" allowfullscreen></iframe>
+    <iframe width="560" height="315"
+src="https://www.youtube.com/watch?v=CAzVF_lgOK4&t=6s" 
+frameborder="0" 
+allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" 
+allowfullscreen></iframe>
 
 # How to use a code
 First, you need to install dependent package by using a requirement.txt file. 
