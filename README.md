@@ -12,7 +12,7 @@ Requesting in the competition is to resolve MineRLObtainDiamond-v0. In order to 
 
 The agent obtains information on items currently possessed, including screen information on the screen during game play. In addition, actions such as camera rotation, advancement, attack, item creation, item drop, and item equipment can be performed.
 
-<img src="image/22-02-25.png" width="450"> <img src="image/22-02-49.png" width="450">
+<img src="image/22-02-25.png" width="400"> <img src="image/22-02-49.png" width="400">
 
 ## Network Structure
 
