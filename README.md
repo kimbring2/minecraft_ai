@@ -1,4 +1,4 @@
-<img src="image/18-28-41.png" width="500">
+<img src="image/18-28-41.png" width="350">
 
 The code uploaded here is for MineRL Competition 2019. The purpose of the competition is to find an effective reinforcement learning algorithm using human play datasets. 
 
