@@ -136,8 +136,7 @@ After completing the learning, the agent can go to the two trees in the environm
 
 Loss graph shows that there is no ploblem in traning process.
 
-![Treechop-v0 traning loss graph](https://github.com/kimbring2/MineRL/blob/master/image/14-47-20.png)
-
+<img src="image/14-47-20.png" width="600">
 
 # Reinforcment Learning
 Changing the number and combination of actions or the number of networks did not improve performance any more. Thus, we use Reinforcement Learning additionally. The Reinforcement Learning network structure is the same as the supervised learning network structure except the loss for learning uses the reward value that the agent earns. We first called the weights of the learned networks and used them in Reinforcement Learning. When experimenting with these procedures, we were unable to confirm an improvement in performance that should be unique.
