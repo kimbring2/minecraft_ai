@@ -8,7 +8,7 @@ I started participating at the beginning of this competition, but I wasn't able 
 # MineRL environment
 Requesting in the competition is to resolve MineRLObtainDiamond-v0. In order to solve this, advance work such as moving to a specific place or collecting trees is necessary.
 
-![Obtaining a diamond process](https://github.com/kimbring2/MineRL/blob/master/image/19-14-57.png)
+<img src="image/19-14-57.png" width="800">
 
 The agent obtains information on items currently possessed, including screen information on the screen during game play. In addition, actions such as camera rotation, advancement, attack, item creation, item drop, and item equipment can be performed.
 
