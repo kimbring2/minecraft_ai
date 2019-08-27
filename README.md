@@ -12,9 +12,7 @@ Requesting in the competition is to resolve MineRLObtainDiamond-v0. In order to 
 
 The agent obtains information on items currently possessed, including screen information on the screen during game play. In addition, actions such as camera rotation, advancement, attack, item creation, item drop, and item equipment can be performed.
 
-| [![VideoBlocks](https://d1ow200m9i3wyh.cloudfront.net/img/assets/videoblocks/images/logo.png)](http://videoblocks.com)  | [![AudioBlocks](https://dtyn3c8zjrx01.cloudfront.net/img/assets/audioblocks/images/logo.png)](http://audioblocks.com) | [![GraphicStock](http://www.graphicstock.com/images/logo.jpg)](http://graphicstock.com) |
-|:---:|:---:|:---:|
-| http://videoblocks.com | http://audioblocks.com | http://graphicstock.com |
+| [![Obs Space](https://github.com/kimbring2/MineRL/blob/master/image/22-02-25.png)]| [![Act Space](https://github.com/kimbring2/MineRL/blob/master/image/22-02-49.png)]|
 
 ![Obs Space](https://github.com/kimbring2/MineRL/blob/master/image/22-02-25.png) | ![Act Space](https://github.com/kimbring2/MineRL/blob/master/image/22-02-49.png)
 
