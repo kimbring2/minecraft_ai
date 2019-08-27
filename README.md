@@ -185,7 +185,8 @@ if (action2_index == 4):
 ```
 
 # Result
-<iframe width="560" height="315" src="https://www.youtube.com/embed/CAzVF_lgOK4" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+[![Result1](http://i3.ytimg.com/vi/CAzVF_lgOK4/maxresdefault.jpg)](https://www.youtube.com/watch?v=CAzVF_lgOK4)
+[![Result2](http://i3.ytimg.com/vi/gV9UNLkQkFE/maxresdefault.jpg)](https://www.youtube.com/watch?v=gV9UNLkQkFE)
 
 # How to use a code
 First, you need to install dependent package by using a requirement.txt file. 
