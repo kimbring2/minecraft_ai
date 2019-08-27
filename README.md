@@ -184,6 +184,11 @@ if (action2_index == 4):
       obs1, reward, done, info = env.step(action)
 ```
 
+# Result
+<iframe width="560" height="315"
+src="https://www.youtube.com/watch?v=CAzVF_lgOK4&t=6s"
+frameborder="0"; encrypted-media" allowfullscreen></iframe>
+
 # How to use a code
 First, you need to install dependent package by using a requirement.txt file. 
 Second, you need to modify a path for model and summary of tensorflow in MineRL_IL.ipynb file.
