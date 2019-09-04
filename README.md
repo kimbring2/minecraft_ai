@@ -15,10 +15,12 @@ The agent obtains information on items currently possessed, including screen inf
 <img src="image/22-02-25.png" width="400"> <img src="image/22-02-49.png" width="400">
 
 ## Network Structure
-
 The network structure is largely composed of a CNN part that receives the current state value of the agent and an FC part that outputs the next action value.
+![CNN structure image](https://github.com/kimbring2/MineRL/blob/master/image/03-17-22.png)
 
-![Structure image](https://github.com/kimbring2/MineRL/blob/master/image/03-17-22.png)
+
+Minecraft does not allow you to see all game information at once. Therefore, it can be predicted that the behavior in the current frame is affected by the information in the previous frame. Therefore, we could use the RNN network additionally to account for these temporal depencies and see better performance in the Treechop task.
+![RNN+CNN structure image](https://github.com/kimbring2/MineRL/blob/master/image/19-08-04.png)
 
 # Preprosseing
 The agent obtains information on items currently possessed, including screen information on the screen during game play. In addition, actions such as camera rotation, advancement, attack, item creation, item drop, and item equipment can be performed. Moreover, it is necessary to select the action of the agent by the value output from the network. In the first output, an action related to an item is selected, and in the second output, an attack, jump, and camera rotation action are selected. The details of the contents mentioned pevious can be confirmed with the uploaded code.
@@ -37,4 +39,4 @@ Because of the nature of the game, I thought that it would not be possible to fi
 Performance video after adding RNN : https://youtu.be/5bMTUvPmCuQ
 
 ## Making item task
-We could isolate and learn only the data that created a particular item in the provided dataset, but the result was not as good as Treechop, so this part is about using Rule base Were determined.
+We were able to train the network by extracting only a part of a specific item in the provided data set. However, because the learning result was not as good as Treechop, we decided to use Rule base here.
