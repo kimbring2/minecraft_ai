@@ -36,57 +36,5 @@ Because of the nature of the game, I thought that it would not be possible to fi
 
 Performance video after adding RNN : https://youtu.be/5bMTUvPmCuQ
 
-# Reinforcment Learning
-Changing the number and combination of actions or the number of networks did not improve performance any more. Thus, we use Reinforcement Learning additionally. The Reinforcement Learning network structure is the same as the supervised learning network structure except the loss for learning uses the reward value that the agent earns. We first called the weights of the learned networks and used them in Reinforcement Learning. When experimenting with these procedures, we were unable to confirm an improvement in performance that should be unique.
+## Imitation Learning for making item task
 
-# What is problem of two approach
-At this point, we decided that changes in network type and structure could no longer improve performance. So, other approaches were devised in the case of the TreeChop task.
-
-## Solution
-The first thing to consider was that in order to collect items like wood, you had to take attack action for a certain amount of time. If you train agents to take one action per frame without considering the duration of these specific actions, you can easily see that the number has increased significantly.
-
-## Action Example
-The agent selects one action using the final value output from the network.
-
-```
-if (action2_index == 0):
-  action['camera'][0] = 0; action['camera'][1] = -1; action['forward'] = 0; action['jump'] = 0; 
-  action['attack'] = 1
-elif (action2_index == 1):
-  action['camera'][0] = 0; action['camera'][1] = 1; action['forward'] = 0; action['jump'] = 0;
-  action['attack'] = 1
-elif (action2_index == 2):
-  action['camera'][0] = 1; action['camera'][1] = 0; action['forward'] = 0; action['jump'] = 0;  
-  action['attack'] = 1
-elif (action2_index == 3):
-  action['camera'][0] = -1; action['camera'][1] = 0; action['forward'] = 0; action['jump'] = 0; 
-  action['attack'] = 1
-elif (action2_index == 4):
-  action['camera'][0] = 0; action['camera'][1] = 0; action['forward'] = 0; action['jump'] = 0; 
-  action['attack'] = 1
-elif (action2_index == 5):
-  action['camera'][0] = 0; action['camera'][1] = 0; action['forward'] = 1; action['jump'] = 1; 
-  action['attack'] = 0
-```
-
-Here, in order to collect trees, we added a section that repeats actions based on the output of other networks, considering that the attack action must be continued several times.
-```
-if (action2_index == 4):
-  for q in range(0, action3_index[0]):
-    obs1, reward, done, info = env.step(action)
-    netr += reward
-
-    if (done == True):
-      break
-    else:
-      obs1, reward, done, info = env.step(action)
-```
-
-# Result
-![Result1](http://i3.ytimg.com/vi/CAzVF_lgOK4/maxresdefault.jpg)](https://www.youtube.com/watch?v=CAzVF_lgOK4)
-![Result2](http://i3.ytimg.com/vi/gV9UNLkQkFE/maxresdefault.jpg)](https://www.youtube.com/watch?v=gV9UNLkQkFE)
-
-# How to use a code
-First, you need to install dependent package by using a requirement.txt file. 
-Second, you need to modify a path for model and summary of tensorflow in MineRL_IL.ipynb file.
-Third, you should check code operate properly by running IPython Notebook.
