@@ -40,3 +40,44 @@ Performance video after adding RNN : https://youtu.be/5bMTUvPmCuQ
 
 ## Making item task
 We were able to train the network by extracting only a part of a specific item in the provided data set. However, because the learning result was not as good as Treechop, we decided to use Rule base here.
+
+```
+if (place_flag == 0):
+  if (planks < 5):
+    action['place'] = 0; action['craft'] = 3; 
+    action['nearbyCraft'] = 0; action['nearbySmelt'] = 0
+    action['attack'] = 0; action['camera'][0] = 0; action['camera'][1] = 0;
+    action['forward'] = 0; action['jump'] = 0
+  elif (stick < 2):
+    action['place'] = 0; action['craft'] = 2; 
+    action['nearbyCraft'] = 0; action['nearbySmelt'] = 0
+    action['attack'] = 0; action['camera'][0] = 0; action['camera'][1] = 0;
+    action['forward'] = 0; action['jump'] = 0
+  elif (crafting_table == 0):
+    action['place'] = 0; action['craft'] = 4; 
+    action['nearbyCraft'] = 0; action['nearbySmelt'] = 0
+    action['attack'] = 0; action['camera'][0] = 0; action['camera'][1] = 0;
+    action['forward'] = 0; action['jump'] = 0
+            
+if ( (crafting_table >= 1) & (stick >= 2) & (planks >= 3) ):
+  if (place_flag == 0):
+    action['place'] = 0; action['craft'] = 0; 
+    action['nearbyCraft'] = 0; action['nearbySmelt'] = 0
+    action['attack'] = 0; action['camera'][0] = -10; action['camera'][1] = 0;
+    action['forward'] = 0; action['jump'] = 0;
+    action['equip'] = 0
+    place_flag = place_flag + 1
+  elif (place_flag == 1):
+    action['place'] = 4; action['craft'] = 0; 
+    action['nearbyCraft'] = 0; action['nearbySmelt'] = 0
+    action['attack'] = 0; action['camera'][0] = 0; action['camera'][1] = 0;
+    action['forward'] = 0; action['jump'] = 0;
+    action['equip'] = 0
+    place_flag = place_flag + 1
+  else:
+    action['place'] = 0; action['craft'] = 0; 
+    action['nearbyCraft'] = 2; action['nearbySmelt'] = 0
+    action['attack'] = 0; action['camera'][0] = 0; action['camera'][1] = 0;
+    action['forward'] = 0; action['jump'] = 0;
+    action['equip'] = 0
+```
