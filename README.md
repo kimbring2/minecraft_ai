@@ -31,10 +31,10 @@ After completing the learning, the agent can go to the two trees in the environm
 Loss graph shows that there is no ploblem in traning process. However, in the model that used only the test results CNN and FC many times, we finally concluded that there was a limit to learning.
 <img src="image/14-47-20.png" width="600">
 
-![Treechop-v0 CNN + RNN agent video](http://i3.ytimg.com/vi/5bMTUvPmCuQ/hqdefault.jpg)(https://youtu.be/5bMTUvPmCuQ)
-
 Because of the nature of the game, I thought that it would not be possible to fit all the information on one screen, so I introduced RNN and added it between CNN and FC for learning.
 <img src="image/13-22-49.png" width="600">
+
+Performance video after adding RNN : https://youtu.be/5bMTUvPmCuQ
 
 # Reinforcment Learning
 Changing the number and combination of actions or the number of networks did not improve performance any more. Thus, we use Reinforcement Learning additionally. The Reinforcement Learning network structure is the same as the supervised learning network structure except the loss for learning uses the reward value that the agent earns. We first called the weights of the learned networks and used them in Reinforcement Learning. When experimenting with these procedures, we were unable to confirm an improvement in performance that should be unique.
