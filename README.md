@@ -39,7 +39,7 @@ Because of the nature of the game, I thought that it would not be possible to fi
 Performance video after adding RNN : https://youtu.be/5bMTUvPmCuQ
 
 ## Making item task
-We were able to train the network by extracting only a part of a specific item in the provided data set. However, because the learning result was not as good as Treechop, we decided to use Rule base here.
+We were able to train the network by extracting only a part of a specific item in the provided data set. However, because the learning result was not as good as Treechop, we decided to use rule base method here.
 
 ```
 if (place_flag == 0):
