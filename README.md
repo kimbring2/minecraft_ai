@@ -36,5 +36,5 @@ Because of the nature of the game, I thought that it would not be possible to fi
 
 Performance video after adding RNN : https://youtu.be/5bMTUvPmCuQ
 
-## Imitation Learning for making item task
-
+## Making item task
+We could isolate and learn only the data that created a particular item in the provided dataset, but the result was not as good as Treechop, so this part is about using Rule base Were determined.
