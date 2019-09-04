@@ -20,7 +20,7 @@ The network structure is largely composed of a CNN part that receives the curren
 
 
 Minecraft does not allow you to see all game information at once. Therefore, it can be predicted that the behavior in the current frame is affected by the information in the previous frame. Therefore, we could use the RNN network additionally to account for these temporal depencies and see better performance in the Treechop task.
-![RNN+CNN structure image](https://github.com/kimbring2/MineRL/blob/master/image/19-08-04.png)
+![RNN+CNN structure image](https://github.com/kimbring2/MineRL/blob/master/image/19-16-46.png)
 
 # Preprosseing
 The agent obtains information on items currently possessed, including screen information on the screen during game play. In addition, actions such as camera rotation, advancement, attack, item creation, item drop, and item equipment can be performed. Moreover, it is necessary to select the action of the agent by the value output from the network. In the first output, an action related to an item is selected, and in the second output, an attack, jump, and camera rotation action are selected. The details of the contents mentioned pevious can be confirmed with the uploaded code.
