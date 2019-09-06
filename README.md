@@ -87,3 +87,9 @@ For making a wooden pickaxe, we need three planks, two sticks, and a crafting ta
 ![Making wooden pickaxe](https://github.com/kimbring2/MineRL/blob/master/image/make_wooden_pickaxe.png)
 
 In the case of a treechop task, you can get a decent performance with imitation learning, so if you use the deep learning method and the method does not work correctly like item production, use the rule base method like this Decided to do.
+
+## Pretrain model file
+In order to solve the MineRLObtainIronPickaxe-v0 environment more surely, solving a simple environment is the first. So in addition to code sharing, share the weight file learned from Imitation Learning together.
+
+MineRLNavigate-v0 : https://drive.google.com/drive/folders/17vVjFu0P1gd6rXRFSwfze5gvgutApemo?usp=sharing
+MineRLTreechop-v0 : https://drive.google.com/drive/folders/1pIBxe5G0x_NU85S3wxYUDDhhHNlSRArQ?usp=sharing
