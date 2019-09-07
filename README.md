@@ -19,7 +19,7 @@ Since it is efficient reinforcement learning using game play data of the target 
 
 <img src="image/22-02-25.png" width="400"> <img src="image/05-53-53.png" width="600">
 
-Fortunately, in addition to providing a data set from the organizer, it also provides a viewer in the form of a GUI, so that for the first time like Minecraft, participants can easily understand the goals of the game.
+Fortunately, in addition to providing a data set from the organizer, it also provides a viewer in the form of a GUI, so that for the first time like Minecraft, participants can easily understand the goals of the game. In particular, it is possible to check not only the screen but also the behavior of the agent and the change in the compensation value associated therewith in units of frames.
 
 ## Network Structure
 The network structure is largely composed of a CNN part that receives the current state value of the agent and an FC part that outputs the next action value.
