@@ -17,9 +17,9 @@ The agent obtains information on items currently possessed, including screen inf
 ## How to use human play dataset
 Since it is efficient reinforcement learning using game play data of the target person of the competition, a large capacity play data set is given. Rather than learning everything from the beginning in Reinforcement Learning, using this data to let the network learn in advance is a faster way to get diamonds. 
 
-![Visualizing data](https://github.com/kimbring2/MineRL/blob/master/image/05-53-53.png)
+![Visualizing data](https://github.com/kimbring2/MineRL/blob/master/image/05-53-53.png width="600")
 
-
+Fortunately, in addition to providing a data set from the organizer, it also provides a viewer in the form of a GUI, so that for the first time like Minecraft, participants can easily understand the goals of the game.
 
 ## Network Structure
 The network structure is largely composed of a CNN part that receives the current state value of the agent and an FC part that outputs the next action value.
@@ -46,54 +46,12 @@ Because of the nature of the game, I thought that it would not be possible to fi
 Performance video after adding RNN : https://youtu.be/5bMTUvPmCuQ
 
 ## Making item task
-We were able to train the network by extracting only a part of a making specific item in the provided data set. However, because the learning result was not as good as Treechop, we decided to use rule base method here.
-
-```
-if (place_flag == 0):
-  if (planks < 5):
-    action['place'] = 0; action['craft'] = 3; 
-    action['nearbyCraft'] = 0; action['nearbySmelt'] = 0
-    action['attack'] = 0; action['camera'][0] = 0; action['camera'][1] = 0;
-    action['forward'] = 0; action['jump'] = 0
-  elif (stick < 2):
-    action['place'] = 0; action['craft'] = 2; 
-    action['nearbyCraft'] = 0; action['nearbySmelt'] = 0
-    action['attack'] = 0; action['camera'][0] = 0; action['camera'][1] = 0;
-    action['forward'] = 0; action['jump'] = 0
-  elif (crafting_table == 0):
-    action['place'] = 0; action['craft'] = 4; 
-    action['nearbyCraft'] = 0; action['nearbySmelt'] = 0
-    action['attack'] = 0; action['camera'][0] = 0; action['camera'][1] = 0;
-    action['forward'] = 0; action['jump'] = 0
-            
-if ( (crafting_table >= 1) & (stick >= 2) & (planks >= 3) ):
-  if (place_flag == 0):
-    action['place'] = 0; action['craft'] = 0; 
-    action['nearbyCraft'] = 0; action['nearbySmelt'] = 0
-    action['attack'] = 0; action['camera'][0] = -10; action['camera'][1] = 0;
-    action['forward'] = 0; action['jump'] = 0;
-    action['equip'] = 0
-    place_flag = place_flag + 1
-  elif (place_flag == 1):
-    action['place'] = 4; action['craft'] = 0; 
-    action['nearbyCraft'] = 0; action['nearbySmelt'] = 0
-    action['attack'] = 0; action['camera'][0] = 0; action['camera'][1] = 0;
-    action['forward'] = 0; action['jump'] = 0;
-    action['equip'] = 0
-    place_flag = place_flag + 1
-  else:
-    action['place'] = 0; action['craft'] = 0; 
-    action['nearbyCraft'] = 2; action['nearbySmelt'] = 0
-    action['attack'] = 0; action['camera'][0] = 0; action['camera'][1] = 0;
-    action['forward'] = 0; action['jump'] = 0;
-    action['equip'] = 0
-```
-
-For making a wooden pickaxe, we need three planks, two sticks, and a crafting table. All three materials can basically be made in log, so the need to collect wood well through the tree chop task can proceed to the next task.
+We were able to train the network by extracting only a part of a making specific item in the provided data set. However, because the learning result was not as good as Treechop, we decided to use rule base method here. 
 
 ![Making wooden pickaxe](https://github.com/kimbring2/MineRL/blob/master/image/make_wooden_pickaxe.png)
 
-In the case of a treechop task, you can get a decent performance with imitation learning, so if you use the deep learning method and the method does not work correctly like item production, use the rule base method like this Decided to do.
+For making a wooden pickaxe, we need three planks, two sticks, and a crafting table. All three materials can basically be made in log, so the need to collect wood well through the tree chop task can proceed to the next task. In other words, only the treechop task is executed until 5 or more logs are collected, and then the action to create the required number of planks, sticks, and crafting_table is set directly using the if statement. The detail code can be found in the uploaded file.
+
 
 ## Pretrain model file
 In order to solve the MineRLObtainIronPickaxe-v0 environment more surely, solving a simple environment is the first. So in addition to code sharing, share the weight file learned from Imitation Learning together.
