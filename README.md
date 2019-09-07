@@ -14,6 +14,13 @@ The agent obtains information on items currently possessed, including screen inf
 
 <img src="image/22-02-25.png" width="400"> <img src="image/22-02-49.png" width="400">
 
+## How to use human play dataset
+Since it is efficient reinforcement learning using game play data of the target person of the competition, a large capacity play data set is given. Rather than learning everything from the beginning in Reinforcement Learning, using this data to let the network learn in advance is a faster way to get diamonds. 
+
+![Visualizing data](https://github.com/kimbring2/MineRL/blob/master/image/05-53-53.png)
+
+
+
 ## Network Structure
 The network structure is largely composed of a CNN part that receives the current state value of the agent and an FC part that outputs the next action value.
 ![CNN structure image](https://github.com/kimbring2/MineRL/blob/master/image/03-17-22.png)
@@ -22,7 +29,7 @@ The network structure is largely composed of a CNN part that receives the curren
 Minecraft does not allow you to see all game information at once. Therefore, it can be predicted that the behavior in the current frame is affected by the information in the previous frame. Therefore, we could use the RNN network additionally to account for these temporal depencies and see better performance in the Treechop task.
 ![RNN+CNN structure image](https://github.com/kimbring2/MineRL/blob/master/image/19-16-46.png)
 
-# Preprosseing
+## Preprosseing
 The agent obtains information on items currently possessed, including screen information on the screen during game play. In addition, actions such as camera rotation, advancement, attack, item creation, item drop, and item equipment can be performed. Moreover, it is necessary to select the action of the agent by the value output from the network. In the first output, an action related to an item is selected, and in the second output, an attack, jump, and camera rotation action are selected. The details of the contents mentioned pevious can be confirmed with the uploaded code.
 
 ## Imitation Learning Result
