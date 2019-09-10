@@ -48,7 +48,7 @@ Performance video after adding RNN : https://youtu.be/5bMTUvPmCuQ
 ## Making item task
 We were able to train the network by extracting only a part of a making specific item in the provided data set. However, because the learning result was not as good as Treechop, we decided to use rule base method here. 
 
-<img src="image/make_wooden_pickaxe.png" width="600">
+<img src="image/make_wooden_pickaxe.png" width="450">
 
 For making a wooden pickaxe, we need three planks, two sticks, and a crafting table. All three materials can basically be made in log, so the need to collect wood well through the tree chop task can proceed to the next task. In other words, only the treechop task is executed until 5 or more logs are collected, and then the action to create the required number of planks, sticks, and crafting_table is set directly using the if statement. The detail code can be found in the uploaded file.
 
@@ -57,7 +57,7 @@ When evaluating learned agents, changes in inventory items are not directly on t
 
 ![Combining agent video](https://github.com/kimbring2/MineRL/blob/master/monitor/navi_tree.gif)
 
-<img src="image/04-08-28.png" width="450">
+<img src="image/04-08-28.png" width="500">
 
 ## Combine various tasks into one 
 In order to solve the MineRLObtainIronPickaxe-v0 environment, solving a simple environment is needed. Especially in the case of the competition, since the starting position is random, the character can be activated first in an area where there are no trees around. In this case, you need to move to the area where the tree is, instead of trying to do the treechop task right away.
