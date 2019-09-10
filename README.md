@@ -52,9 +52,14 @@ We were able to train the network by extracting only a part of a making specific
 
 For making a wooden pickaxe, we need three planks, two sticks, and a crafting table. All three materials can basically be made in log, so the need to collect wood well through the tree chop task can proceed to the next task. In other words, only the treechop task is executed until 5 or more logs are collected, and then the action to create the required number of planks, sticks, and crafting_table is set directly using the if statement. The detail code can be found in the uploaded file.
 
+## Combine various tasks into one 
+In order to solve the MineRLObtainIronPickaxe-v0 environment, solving a simple environment is needed. Especially in the case of the competition, since the starting position is random, the character can be activated first in an area where there are no trees around. In this case, you need to move to the area where the tree is, instead of trying to do the treechop task right away.
+
+![Combining agent video](https://github.com/kimbring2/MineRL/blob/master/monitor/navi_tree.gif)
+
+Once you start the game, it will move for a certain amount of time, as you learned in the MineRLNavigate-v0 environment to walk around a specific place on the map. After that, if there is no increase in the compensation value over a certain time to act as learned in the MineRLTreechop-v0 environment, the two tasks are repeatedly used like Navigate again.
 
 ## Pretrain model file
-In order to solve the MineRLObtainIronPickaxe-v0 environment more surely, solving a simple environment is the first. So in addition to code sharing, share the weight file learned from Imitation Learning together.
-
+In addition to code sharing, Tensorflow weights file that is trained from Imitation Learning is shared.
 MineRLNavigate-v0 : https://drive.google.com/drive/folders/17vVjFu0P1gd6rXRFSwfze5gvgutApemo?usp=sharing
 MineRLTreechop-v0 : https://drive.google.com/drive/folders/1pIBxe5G0x_NU85S3wxYUDDhhHNlSRArQ?usp=sharing
