@@ -41,7 +41,7 @@ Loss graph shows that there is no ploblem in traning process. However, in the mo
 <img src="image/14-47-20.png" width="600">
 
 Because of the nature of the game, I thought that it would not be possible to fit all the information on one screen, so I introduced RNN and added it between CNN and FC for learning.
-<img src="image/13-22-49.png" width="600">
+<img src="image/13-22-49.png" width="450">
 
 Performance video after adding RNN : https://youtu.be/5bMTUvPmCuQ
 
@@ -57,7 +57,7 @@ When evaluating learned agents, changes in inventory items are not directly on t
 
 ![Combining agent video](https://github.com/kimbring2/MineRL/blob/master/monitor/navi_tree.gif)
 
-<img src="image/04-08-28.png" width="600">
+<img src="image/04-08-28.png" width="450">
 
 ## Combine various tasks into one 
 In order to solve the MineRLObtainIronPickaxe-v0 environment, solving a simple environment is needed. Especially in the case of the competition, since the starting position is random, the character can be activated first in an area where there are no trees around. In this case, you need to move to the area where the tree is, instead of trying to do the treechop task right away.
