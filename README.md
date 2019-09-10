@@ -57,7 +57,7 @@ In order to solve the MineRLObtainIronPickaxe-v0 environment, solving a simple e
 
 ![Combining agent video](https://github.com/kimbring2/MineRL/blob/master/monitor/navi_tree.gif)
 
-Once you start the game, it will move for a certain amount of time, as you learned in the MineRLNavigate-v0 environment to walk around a specific place on the map. After that, if there is no increase in the compensation value over a certain time to act as learned in the MineRLTreechop-v0 environment, the two tasks are repeatedly used like Navigate again.
+Once agent start the game, it will move for a certain amount of time, as you learned in the MineRLNavigate-v0 environment to walk around a specific place on the map. After that, act as learned in the MineRLTreechop-v0 environment. If there is no increase in the reward over a certain time, the two tasks are used repeatedly by searching around again.
 
 ## Pretrain model file
 In addition to code sharing, Tensorflow weights file that is trained from Imitation Learning is shared.
