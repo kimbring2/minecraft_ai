@@ -41,7 +41,6 @@ Loss graph shows that there is no ploblem in traning process. However, in the mo
 <img src="image/14-47-20.png" width="600">
 
 Because of the nature of the game, I thought that it would not be possible to fit all the information on one screen, so I introduced RNN and added it between CNN and FC for learning.
-<img src="image/13-22-49.png" width="600">
 
 Performance video after adding RNN : https://youtu.be/5bMTUvPmCuQ
 
@@ -71,3 +70,5 @@ In addition to code sharing, Tensorflow weights file that is trained from Imitat
 
 MineRLNavigate-v0 : https://drive.google.com/drive/folders/17vVjFu0P1gd6rXRFSwfze5gvgutApemo?usp=sharing
 MineRLTreechop-v0 : https://drive.google.com/drive/folders/1pIBxe5G0x_NU85S3wxYUDDhhHNlSRArQ?usp=sharing
+
+<img src="image/13-22-49.png" width="600">
