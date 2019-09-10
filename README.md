@@ -65,7 +65,7 @@ Performance video after combining task : https://www.youtube.com/watch?v=IDKemeU
 
 Once agent start the game, it will move for a certain amount of time, as you learned in the MineRLNavigate-v0 environment to walk around a specific place on the map. After that, act as learned in the MineRLTreechop-v0 environment. If there is no increase in the reward over a certain time, the two tasks are used repeatedly by searching around again.
 
-## Pretrain model file
+## Pretrained model weights file
 In addition to code sharing, Tensorflow weights file that is trained from Imitation Learning is shared.
 
 MineRLNavigate-v0 : https://drive.google.com/drive/folders/17vVjFu0P1gd6rXRFSwfze5gvgutApemo?usp=sharing
