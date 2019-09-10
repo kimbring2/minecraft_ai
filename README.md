@@ -57,7 +57,7 @@ When evaluating learned agents, changes in inventory items are not directly on t
 
 ![Combining agent video](https://github.com/kimbring2/MineRL/blob/master/monitor/navi_tree.gif)
 
-![Print inventory](https://github.com/kimbring2/MineRL/blob/master/image/04-08-28.png)
+<img src="image/04-08-28.png" width="600">
 
 ## Combine various tasks into one 
 In order to solve the MineRLObtainIronPickaxe-v0 environment, solving a simple environment is needed. Especially in the case of the competition, since the starting position is random, the character can be activated first in an area where there are no trees around. In this case, you need to move to the area where the tree is, instead of trying to do the treechop task right away.
