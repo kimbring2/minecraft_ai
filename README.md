@@ -71,4 +71,4 @@ In addition to code sharing, Tensorflow weights file that is trained from Imitat
 MineRLNavigate-v0 : https://drive.google.com/drive/folders/17vVjFu0P1gd6rXRFSwfze5gvgutApemo?usp=sharing
 MineRLTreechop-v0 : https://drive.google.com/drive/folders/1pIBxe5G0x_NU85S3wxYUDDhhHNlSRArQ?usp=sharing
 
-<img src="image/04-19-02.png" width="600">
+<img src="image/04-19-02.png" width="300">
