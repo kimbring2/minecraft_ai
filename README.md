@@ -6,7 +6,11 @@ The code uploaded here is for MineRL Competition 2019. The purpose of the compet
 I started participating at the beginning of this competition, but I wasn't able to participate correctly in the Retro Contest held at OpenAI last year, so I wanted to finish it this time. What is required in the competition is a method for efficiently learning a reinforcement learning model using given data. For these reasons, we approached the most basic network by using supervised learning and learning according to a given data set.
 
 # MineRL environment
-Requesting in the competition is to resolve MineRLObtainDiamond-v0. In order to solve this, advance work such as moving to a specific place or collecting trees is necessary.
+MineRL is a python platform for Artificial Intelligence research based on Minecraft. The platform is based on the Malmö created by Microsoft, which is the basic environment, and various data directly played by large-capacity people are added here. 
+
+I'm interested in the platform because I like to play and watch Minecraft directly. In the process of learning the agent, you can play directly to confirm the process that you do not know well, or watch various other people's play through the location of the update.
+
+Requesting in the competition is to resolve MineRLObtainDiamond-v0. In order to solve this, advance work such as moving to a specific place or collecting wood is necessary.
 
 <img src="image/19-14-57.png" width="600">
 
@@ -46,19 +50,24 @@ Because of the nature of the game, I thought that it would not be possible to fi
 
 Performance video after adding RNN : https://youtu.be/5bMTUvPmCuQ
 
-## Making item task
+## Making item
 We were able to train the network by extracting only a part of a making specific item in the provided data set. However, because the learning result was not as good as Treechop, we decided to use rule base method here. 
 
 <img src="image/make_wooden_pickaxe.png" width="450">
 
 For making a wooden pickaxe, we need three planks, two sticks, and a crafting table. All three materials can basically be made in log, so the need to collect wood well through the tree chop task can proceed to the next task. In other words, only the treechop task is executed until 5 or more logs are collected, and then the action to create the required number of planks, sticks, and crafting_table is set directly using the if statement. The detail code can be found in the uploaded file.
 
-## The correct movement of the agent until making wooden pickaxe
-When evaluating learned agents, changes in inventory items are not directly on the screen, but can be confirmed using Python print function.
+## The correct movement of the agent until making Wooden Pickaxe
+When evaluating trained agents, changes in inventory items are not directly on the screen, but can be confirmed using Python print function.
 
 ![Combining agent video](https://github.com/kimbring2/MineRL/blob/master/monitor/navi_tree.gif)
 
 <img src="image/04-08-28.png" width="500">
+
+## How to equip a Wooden Pickaxe
+There are some minor bugs in the MineRL package, but it was necessary to use a different method than the manual, especially when wearing a wooden pickaxe. Originally the command with action ['equip'] = 3 must be changed to action ['equip'] = 'wooden_pickaxe'.
+
+
 
 ## Combine various tasks into one 
 In order to solve the MineRLObtainIronPickaxe-v0 environment, solving a simple environment is needed. Especially in the case of the competition, since the starting position is random, the character can be activated first in an area where there are no trees around. In this case, you need to move to the area where the tree is, instead of trying to do the treechop task right away.
