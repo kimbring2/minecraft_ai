@@ -32,6 +32,8 @@ Minecraft does not allow you to see all game information at once. Therefore, it 
 ## Preprosseing
 The agent obtains information on items currently possessed, including screen information on the screen during game play. In addition, actions such as camera rotation, advancement, attack, item creation, item drop, and item equipment can be performed. Moreover, it is necessary to select the action of the agent by the value output from the network. In the first output, an action related to an item is selected, and in the second output, an attack, jump, and camera rotation action are selected. The details of the contents mentioned pevious can be confirmed with the uploaded code.
 
+Also, there are very many cases where all actions are 0 in the provided data set. When traning without deleting this data, there are many cases where the agent is continuously stopped at the same place. These data were deleted before learning.
+
 ## Imitation Learning Result
 After completing the learning, the agent can go to the two trees in the environment and attack it to collect the woods. However, it stops. Therefore, the agent cannot collect more wood.
 
