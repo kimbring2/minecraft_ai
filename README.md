@@ -67,8 +67,6 @@ When evaluating trained agents, changes in inventory items are not directly on t
 ## How to equip a Wooden Pickaxe
 There are some minor bugs in the MineRL package, but it was necessary to use a different method than the manual, especially when wearing a wooden pickaxe. Originally the command with action ['equip'] = 3 must be changed to action ['equip'] = 'wooden_pickaxe'.
 
-
-
 ## Combine various tasks into one 
 In order to solve the MineRLObtainIronPickaxe-v0 environment, solving a simple environment is needed. Especially in the case of the competition, since the starting position is random, the character can be activated first in an area where there are no trees around. In this case, you need to move to the area where the tree is, instead of trying to do the treechop task right away.
 
