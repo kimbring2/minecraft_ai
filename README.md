@@ -51,7 +51,12 @@ Because of the nature of the game, I thought that it would not be possible to fi
 Performance video after adding RNN : https://youtu.be/5bMTUvPmCuQ
 
 ## Making item
-We were able to train the network by extracting only a part of a making specific item in the provided data set. However, because the learning result was not as good as Treechop, we decided to use rule base method here. 
+
+<img src="image/plank-crafting-recipe.png" width="450">
+
+<img src="image/crafting-sticks-minecraft-111416.jpg" width="450">
+
+We were able to train the network by extracting only a part of a making specific item in the provided dataset. However, because the learning result was not as good as Treechop, we decided to use rule base method here. 
 
 <img src="image/make_wooden_pickaxe.png" width="450">
 
