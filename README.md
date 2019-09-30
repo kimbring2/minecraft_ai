@@ -51,10 +51,10 @@ Because of the nature of the game, I thought that it would not be possible to fi
 Performance video after adding RNN : https://youtu.be/5bMTUvPmCuQ
 
 ## Making item
+To mine a stone, we need a Wooden Pickaxe, but this item can be produced even if you collect it in the Log. However, Planks and Sticks must be created using the first log, and the item must be used for production.
+<img src="image/plank-crafting-recipe.png" width="300">
 
-<img src="image/plank-crafting-recipe.png" width="450">
-
-<img src="image/crafting-sticks-minecraft-111416.jpg" width="450">
+<img src="image/crafting-sticks-minecraft-111416.jpg" width="300">
 
 We were able to train the network by extracting only a part of a making specific item in the provided dataset. However, because the learning result was not as good as Treechop, we decided to use rule base method here. 
 
