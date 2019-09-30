@@ -38,7 +38,7 @@ The agent obtains information on items currently possessed, including screen inf
 
 Also, there are very many cases where all actions are 0 in the provided data set. When traning without deleting this data, there are many cases where the agent is continuously stopped at the same place. These data were deleted before learning.
 
-## Imitation Learning Result
+## Treechop Imitation Learning Result
 After completing the learning, the agent can go to the two trees in the environment and attack it to collect the woods. However, it stops. Therefore, the agent cannot collect more wood.
 
 ![Treechop-v0 CNN agent video](https://github.com/kimbring2/MineRL/blob/master/monitor/ezgif.com-video-to-gif.gif)
