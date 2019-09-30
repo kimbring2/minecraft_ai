@@ -29,7 +29,6 @@ Fortunately, in addition to providing a data set from the organizer, it also pro
 The network structure is largely composed of a CNN part that receives the current state value of the agent and an FC part that outputs the next action value.
 ![CNN structure image](https://github.com/kimbring2/MineRL/blob/master/image/03-17-22.png)
 
-
 Minecraft does not allow you to see all game information at once. Therefore, it can be predicted that the behavior in the current frame is affected by the information in the previous frame. Therefore, we could use the RNN network additionally to account for these temporal depencies and see better performance in the Treechop task.
 ![RNN+CNN structure image](https://github.com/kimbring2/MineRL/blob/master/image/19-16-46.png)
 
@@ -52,9 +51,7 @@ Performance video after adding RNN : https://youtu.be/5bMTUvPmCuQ
 
 ## Making item
 To mine a stone, we need a Wooden Pickaxe, but this item can be produced even if you collect it in the Log. However, Planks and Sticks must be created using the first log, and the item must be used for production.
-<img src="image/plank-crafting-recipe.png" width="300">
-
-<img src="image/crafting-sticks-minecraft-111416.jpg" width="300">
+<img src="image/plank-crafting-recipe.png" width="450"> <img src="image/crafting-sticks-minecraft-111416.jpg" width="450">
 
 We were able to train the network by extracting only a part of a making specific item in the provided dataset. However, because the learning result was not as good as Treechop, we decided to use rule base method here. 
 
