@@ -52,11 +52,11 @@ Performance video after adding RNN : https://youtu.be/5bMTUvPmCuQ
 ## Making item
 To mine a stone, we need a Wooden Pickaxe which can be maded by three Llanks, two Sticks, and a Crafting Table. 
 
-<img src="image/plank-crafting-recipe.png" width="400"> <img src="image/crafting-sticks-minecraft-111416.jpg" width="400">
+<img src="image/crafting-wood-plank-111416.jpg" width="400"> <img src="image/crafting-sticks-minecraft-111416.jpg" width="400">
 
 We were able to train the network by extracting only a part of a making specific item in the provided dataset. However, because the learning result was not as good as Treechop, we decided to use rule base method here. 
 
-<img src="image/minecraft-crafting-table-icon-12.jpg" width="450"> <img src="image/make_wooden_pickaxe.png" width="450">
+<img src="image/minecraft-crafting-table-icon-12.jpg" width="400"> <img src="image/make_wooden_pickaxe.png" width="400">
 
 All three materials can basically be made in log, so the need to collect wood well through the tree chop task can proceed to the next task. In other words, only the treechop task is executed until 5 or more logs are collected, and then the action to create the required number of planks, sticks, and crafting_table is set directly using the if statement. The detail code can be found in the uploaded file.
 
