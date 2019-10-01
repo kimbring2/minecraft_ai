@@ -74,7 +74,7 @@ When evaluating trained agents, changes in inventory items are not directly on t
 There are some minor bugs in the MineRL package, but it was necessary to use a different method than the manual, especially when wearing a wooden pickaxe. Originally the command with action ['equip'] = 3 must be changed to action ['equip'] = 'wooden_pickaxe'.
 
 ## Combine various tasks into one 
-In order to solve the MineRL ObtainIronPickaxe-v0 environment, solving a simple environment is needed. Especially in the case of the competition, since the starting position is random, the character can be activated first in an area where there are no trees around. In this case, you need to move to the area where the tree is, instead of trying to do the treechop task right away.
+In order to solve the MineRL ObtainIronPickaxe-v0 environment, solving a simple environment is needed at first. Especially in the case of the competition, since the starting position is random, the agent can be activated first in an area where there are no trees around. In this case, we need to move to the area where the tree is, instead of trying to do the treechop task right away.
 
 Performance video after combining task : https://www.youtube.com/watch?v=IDKemeU_laY
 
@@ -87,3 +87,6 @@ MineRLNavigate-v0 : https://drive.google.com/drive/folders/17vVjFu0P1gd6rXRFSwfz
 MineRLTreechop-v0 : https://drive.google.com/drive/folders/1pIBxe5G0x_NU85S3wxYUDDhhHNlSRArQ?usp=sharing
 
 <img src="image/04-19-02.png" width="300">
+
+## Current Result
+As a result of analyzing the behavior of agents trained so far, it is confirmed that the selection time interval between Navigate and Treechop task is an important factor. Also, if agent is sometimes trapped in the ground alone until the end of the episode, or if agent switch a task to a Treechop when run on the water using Navigate, we are able to detect death often. Even when Mob appear at night, there are cases where agent dies. we don't consider all these factors yet, so finding the tree immediately and finding the wooden pickaxe seems to be the best action we can do now.
