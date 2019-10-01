@@ -2,6 +2,9 @@
 
 The code uploaded here is for MineRL Competition 2019. The purpose of the competition is to find an effective reinforcement learning algorithm using human play datasets. 
 
+# How to train and test
+The code required for traning and testing is created according to the competition submission form provided by AiCrowd. First, after downloading the code to git, use the requirement.txt file to install the package. After that, you need to run the train.py file, change the tensorflow weights file storage path and the name of the MineRL environment you are trying to train. They are trained using MineRLNavigate-v0, MineRLTreechop-v0 and MineRLObtainIronPickaxe-v0 datasets, respectively. In the test.py file, using the trained treechop and navigate techniques to produce a wooden pickaxe, this is where the stone is collected.
+
 # Introduction
 I started participating at the beginning of this competition, but I wasn't able to participate correctly in the Retro Contest held at OpenAI last year, so I wanted to finish it this time. What is required in the competition is a method for efficiently learning a reinforcement learning model using given data. For these reasons, we approached the most basic network by using supervised learning and learning according to a given data set.
 
@@ -71,7 +74,7 @@ When evaluating trained agents, changes in inventory items are not directly on t
 There are some minor bugs in the MineRL package, but it was necessary to use a different method than the manual, especially when wearing a wooden pickaxe. Originally the command with action ['equip'] = 3 must be changed to action ['equip'] = 'wooden_pickaxe'.
 
 ## Combine various tasks into one 
-In order to solve the MineRLObtainIronPickaxe-v0 environment, solving a simple environment is needed. Especially in the case of the competition, since the starting position is random, the character can be activated first in an area where there are no trees around. In this case, you need to move to the area where the tree is, instead of trying to do the treechop task right away.
+In order to solve the MineRL ObtainIronPickaxe-v0 environment, solving a simple environment is needed. Especially in the case of the competition, since the starting position is random, the character can be activated first in an area where there are no trees around. In this case, you need to move to the area where the tree is, instead of trying to do the treechop task right away.
 
 Performance video after combining task : https://www.youtube.com/watch?v=IDKemeU_laY
 
