@@ -55,7 +55,7 @@ Performance video after adding RNN : https://youtu.be/5bMTUvPmCuQ
 ## StoneMine Imitation Learning with inventory and frame information Result
 In all environments except Navigate and Treechop environment, in addition to the video image information on the screen, agent can also check the information of the items you currently have. If you can find a network that can take this information and act accordingly, it is more efficient than manually creating all such procedures.
 
-<img src="image/19-13-24.png" width="600">
+<img src="image/19-13-24.png" width="800">
 
 ## Making item
 To mine a stone, we need a Wooden Pickaxe which can be maded by three Planks, two Sticks, and a Crafting Table. 
