@@ -19,9 +19,11 @@ import tensorflow.contrib.slim as slim
 import matplotlib.pyplot as plt
 import math
 
+from env_wrappers import ContinuingTimeLimitMonitor
+
 # All the evaluations will be evaluated on MineRLObtainDiamond-v0 environment
 #MINERL_GYM_ENV = os.getenv('MINERL_GYM_ENV', 'MineRLTreechopDebug-v0')
-MINERL_GYM_ENV = os.getenv('MINERL_GYM_ENV', 'MineRLObtainDiamond-v0')
+MINERL_GYM_ENV = os.getenv('MINERL_GYM_ENV', 'MineRLObtainIronPickaxe-v0')
 MINERL_MAX_EVALUATION_EPISODES = int(os.getenv('MINERL_MAX_EVALUATION_EPISODES', 100))
 
 class cnn_rnn_network():
@@ -66,6 +68,9 @@ def main():
     # Sample code for illustration, add your code below to run in test phase.
     # Load trained model from train/ directory
     env = gym.make(MINERL_GYM_ENV)
+    root_path = '/home/kimbring2/Desktop/competition_submission_starter_template/'
+    env = ContinuingTimeLimitMonitor(env, root_path + 'monitor', mode='evaluation', 
+                                     video_callable=lambda episode_id: True, force=True)
 
     navi_network = cnn_rnn_network(scope='navigate', H=2048, act_num=15)
     tree_network = cnn_rnn_network(scope='treechop', H=2048, act_num=15)
@@ -174,7 +179,7 @@ def main():
             print("navi_flag: " + str(navi_flag))
             print("time_flag: " + str(time_flag))
             print("inventory: " + str(inventory))
-            #print("equip_type: " + str(equip_type))
+            print("equip_type: " + str(equip_type))
             print("")
             if ( ( (log == 0) & (log_flag == 0) & (planks < 4) ) | (equip_type == 'wooden_pickaxe') ):
                 if np.random.rand(1) >= e:
@@ -187,6 +192,7 @@ def main():
                         print("obs['equipped_items']['mainhand']: " + str(obs['equipped_items']['mainhand']))
 
                     #action_index = np.argmax(tree_action_probability)
+                    #action_index = np.argmax(stone_action_probability)
                 else:
                     action_index = random.randint(0,15)
                 
@@ -248,29 +254,28 @@ def main():
 
                 if (action['forward'] == 1):
                     action['jump'] = 1
-            else:
-                if (place_flag == 0):
+            elif ( (wooden_pickaxe == 0) & (equip_type != 'wooden_pickaxe') ):
+                if ( (planks < 4) & (log != 0) ):
                     action = env.action_space.noop()
-                    if ( (planks < 4) & (log != 0) ):
-                        action['place'] = 0; action['craft'] = 3; 
-                        action['nearbyCraft'] = 0; action['nearbySmelt'] = 0
-                        action['attack'] = 0; action['camera'][0] = 0; action['camera'][1] = 0;
-                        action['forward'] = 0; action['jump'] = 0
-                    elif (stick < 1):
-                        action['place'] = 0; action['craft'] = 2; 
-                        action['nearbyCraft'] = 0; action['nearbySmelt'] = 0
-                        action['attack'] = 0; action['camera'][0] = 0; action['camera'][1] = 0;
-                        action['forward'] = 0; action['jump'] = 0
-                    elif (crafting_table == 0):
-                        action['place'] = 0; action['craft'] = 4; 
-                        action['nearbyCraft'] = 0; action['nearbySmelt'] = 0
-                        action['attack'] = 0; action['camera'][0] = 0; action['camera'][1] = 0;
-                        action['forward'] = 0; action['jump'] = 0
-
-
-                if ( (crafting_table >= 1) & (stick >= 2) & (planks >= 3) ):
+                    action['place'] = 0; action['craft'] = 3; 
+                    action['nearbyCraft'] = 0; action['nearbySmelt'] = 0
+                    action['attack'] = 0; action['camera'][0] = 0; action['camera'][1] = 0;
+                    action['forward'] = 0; action['jump'] = 0
+                elif (stick < 1):
                     action = env.action_space.noop()
+                    action['place'] = 0; action['craft'] = 2; 
+                    action['nearbyCraft'] = 0; action['nearbySmelt'] = 0
+                    action['attack'] = 0; action['camera'][0] = 0; action['camera'][1] = 0;
+                    action['forward'] = 0; action['jump'] = 0
+                elif (crafting_table == 0):
+                    action = env.action_space.noop()
+                    action['place'] = 0; action['craft'] = 4; 
+                    action['nearbyCraft'] = 0; action['nearbySmelt'] = 0
+                    action['attack'] = 0; action['camera'][0] = 0; action['camera'][1] = 0;
+                    action['forward'] = 0; action['jump'] = 0
+                elif ( (crafting_table >= 1) & (planks >= 3) & (stick >= 2) ):
                     if (place_flag == 0):
+                        action = env.action_space.noop()
                         action['place'] = 0; action['craft'] = 0; 
                         action['nearbyCraft'] = 0; action['nearbySmelt'] = 0
                         action['attack'] = 0; action['camera'][0] = 30; action['camera'][1] = 0;
@@ -278,31 +283,37 @@ def main():
                         action['equip'] = 0
                         place_flag = place_flag + 1
                     elif (place_flag == 1):
+                        action = env.action_space.noop()
                         action['place'] = 4; action['craft'] = 0; 
                         action['nearbyCraft'] = 0; action['nearbySmelt'] = 0
-                        action['attack'] = 0; action['camera'][0] = 0; action['camera'][1] = 0;
+                        action['attack'] = 0; action['camera'][0] = 0; action['camera'][1] = 30;
                         action['forward'] = 0; action['jump'] = 0;
                         action['equip'] = 0
                         place_flag = place_flag + 1
                     elif (place_flag == 2):
+                        action = env.action_space.noop()
                         action['place'] = 0; action['craft'] = 0; 
                         action['nearbyCraft'] = 2; action['nearbySmelt'] = 0
                         action['attack'] = 0; action['camera'][0] = 0; action['camera'][1] = 0;
                         action['forward'] = 0; action['jump'] = 0;
                         action['equip'] = 0
-                        place_flag = -1
+                        place_flag = 0
                 
                 print("place_flag: " + str(place_flag))
                 print("inventory: " + str(inventory))
                 print("obs['equipped_items']['mainhand']: " + str(obs['equipped_items']['mainhand']))
-                print("action: " + str(action))
-            if (wooden_pickaxe >= 1):
+                print("action: " + str(action))    
+            elif ( (wooden_pickaxe >= 1) & (equip_type != 'wooden_pickaxe') ):
+                place_flag = -1
+                action = env.action_space.noop()
                 action['place'] = 0; action['craft'] = 0; 
                 action['nearbyCraft'] = 0; action['nearbySmelt'] = 0
                 action['attack'] = 0; action['camera'][0] = 0; action['camera'][1] = 0;
                 action['forward'] = 0; action['jump'] = 0;
                 action['equip'] = 'wooden_pickaxe'
                 wooden_flag = wooden_flag + 1
+            else:
+                action = env.action_space.noop()
                     
             #action['left'] = 0
             #action['right'] = 0
@@ -311,8 +322,8 @@ def main():
             if (navi_flag != 0):
                 action['attack'] = 0
             
-            #if (wooden_flag == 1):
-            #    print("obs['equipped_items']['mainhand']: " + str(obs['equipped_items']['mainhand']))
+            if (equip_type == 'wooden_pickaxe'):
+                print("action: " + str(action))
                 
             #print("action: " + str(action))
                   
@@ -326,14 +337,15 @@ def main():
                     time_flag = 0
                     navi_flag = 1
                     tree_flag = 0
-                    action['camera'][1] = -180;
+                    action = env.action_space.noop()
+                    action['camera'][1] = -90;
             else:
                 time_flag = 0
             
             if (navi_flag != 0):
                 navi_flag = navi_flag + 1
 
-            if (navi_flag == 500):
+            if (navi_flag == 1000):
                 navi_flag = 0
                 time_flag = 0
                 tree_flag = 1
