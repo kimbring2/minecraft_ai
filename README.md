@@ -48,7 +48,7 @@ After completing the learning, the agent can go to the two trees in the environm
 ![Treechop-v0 CNN agent video](https://github.com/kimbring2/MineRL/blob/master/monitor/ezgif.com-video-to-gif.gif)
 
 Loss graph shows that there is no ploblem in traning process. However, in the model that used only the test results CNN and FC many times, we finally concluded that there was a limit to learning.
-<img src="image/14-47-20.png" width="600">
+<img src="image/14-47-20.png" width="800">
 
 Because of the nature of the game, I thought that it would not be possible to fit all the information on one screen, so I introduced RNN and added it between CNN and FC for learning.
 
@@ -57,11 +57,11 @@ Performance video after adding RNN : https://youtu.be/5bMTUvPmCuQ
 ## Imitation Learning with inventory and frame information Result
 In all environments except Navigate and Treechop environment, in addition to the video image information on the screen, agent can also check the information of the items you currently have. If you can find a network that can take this information and act accordingly, it is more efficient than manually creating all such procedures.
 
-<img src="image/19-13-24.png">
+<img src="image/19-13-24.png" width="800">
 
 In particular, when installing a Crafting Table, Furnace, or Torch, it is necessary to use the frame information together, so these functions can be considered very convenient. For the MineRLObtainIronPickaxe-v0 dataset, traning is performed by adding Inventory information to the Frame information of the existing network of previous section.
 
-<img src="image/19-25-45.png">
+<img src="image/19-25-45.png" width="800">
 
 As a result of trarning, unlike the result before using only the frame information, the loss graph do not decrease, and it is confirmed that it goes up and down periodically. It doesn't seem to be able to solve the problem that way, as the loss doesn't drop over time.
 
