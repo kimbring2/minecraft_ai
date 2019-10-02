@@ -231,7 +231,6 @@ def main():
         init = tf.global_variables_initializer()
         sess = tf.Session()
         sess.run(init)
-
         navi_model_path = model_path + 'MineRLNavigate-v0'
         navi_summary_path = summary_path + 'MineRLNavigate-v0'
 
@@ -335,8 +334,9 @@ def main():
         sess = tf.Session()
         sess.run(init)
 
-        saver_stone = tf.train.Saver(max_to_keep=5)
-        #stone_model_path = '/home/kimbring2/competition_submission_starter_template/train/' + 'MineRLObtainIronPickaxe-v0'
+        variables = tf.trainable_variables(scope=None)
+        variables_stone_restore = [v for v in variables if v.name.split('/')[0] in ['stone']]
+        saver_stone = tf.train.Saver(variables_stone_restore, max_to_keep=5)
         stone_model_path = model_path + 'MineRLObtainIronPickaxe-v0'
         stone_summary_path = summary_path + 'MineRLObtainIronPickaxe-v0'
 
@@ -352,21 +352,29 @@ def main():
             if (length != 5000):
                 continue
             #print("current_state: " + str(current_state))
+            #print("action['camera']: " + str(action['camera']))
             #print("current_state['equipped_items']['mainhand']['type']: " + str(current_state['equipped_items']['mainhand']['type']))
             #print("current_state['inventory']['stone']: " + str(current_state['inventory']['stone']))
             #print("")
 
             result = np.where(current_state['equipped_items']['mainhand']['type'] == 3)
-            #print('Tuple of arrays returned : ', result[0])
-            #print("current_state['pov'][result]: " + str(current_state['pov'][result]))
+            #print('result[0]: ', result[0])
+            #print("current_state['equipped_items']['mainhand']['type'][result]: " + str(current_state['equipped_items']['mainhand']['type'][result]))
 
             train_length = len(result[0])
             #print("train_length: " + str(train_length))
             if (train_length < 10):
                 continue
 
+            #print("current_state: " + str(current_state))
+
             current_pov = current_state['pov'][result]
             action_camera = action['camera'][result]
+            #print('action_camera: ', action_camera)
+            #print("")
+            #print("")
+            #print("")
+
             action_jump = action['jump'][result]
             action_forward = action['forward'][result]
             action_left = action['left'][result]
