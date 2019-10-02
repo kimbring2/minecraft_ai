@@ -113,4 +113,4 @@ Total reward:  37.0
 ## Future Work
 As you can see, when you dig underground to collect stones, the surroundings become very dark. In such a case, the surrounding area cannot be grasped, so the torch must be used to clarify the surrounding area.
 
-<img src="image/torch_image_1.jpeg" width="300"> <img src="image/Torch.png" width="300">
+<img src="image/torch_image_1.jpeg" width="300"> <img src="image/Torch.png" width="400">
