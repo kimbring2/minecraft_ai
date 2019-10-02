@@ -83,10 +83,14 @@ Once agent start the game, it will move for a certain amount of time, as you lea
 ## Pretrained model weights file
 In addition to code sharing, Tensorflow weights file that is trained from Imitation Learning is shared.
 
-MineRLNavigate-v0 : https://drive.google.com/drive/folders/17vVjFu0P1gd6rXRFSwfze5gvgutApemo?usp=sharing
-MineRLTreechop-v0 : https://drive.google.com/drive/folders/1pIBxe5G0x_NU85S3wxYUDDhhHNlSRArQ?usp=sharing
+Navigate : https://drive.google.com/drive/folders/17vVjFu0P1gd6rXRFSwfze5gvgutApemo?usp=sharing
+TreeChop : https://drive.google.com/drive/folders/1pIBxe5G0x_NU85S3wxYUDDhhHNlSRArQ?usp=sharing
 
 <img src="image/04-19-02.png" width="300">
+
+StoneMine : https://drive.google.com/drive/folders/1fs8AvnS8zNbjMgusE7aQxChkgBoWdQKE?usp=sharing
+<img src="image/12-02-48.png" width="300">
+
 
 ## Current Result
 As a result of analyzing the behavior of agents trained so far, it is confirmed that the selection time interval between Navigate and Treechop task is an important factor. Also, if agent is sometimes trapped in the ground alone until the end of the episode, or if agent switch a task to a Treechop when run on the water using Navigate, we are able to detect death often. Even when Mob appear at night, there are cases where agent dies. we don't consider all these factors yet, so finding the tree immediately and finding the wooden pickaxe seems to be the best action we can do now.
