@@ -48,7 +48,7 @@ After completing the learning, the agent can go to the two trees in the environm
 ![Treechop-v0 CNN agent video](https://github.com/kimbring2/MineRL/blob/master/monitor/ezgif.com-video-to-gif.gif)
 
 Loss graph shows that there is no ploblem in traning process. However, in the model that used only the test results CNN and FC many times, we finally concluded that there was a limit to learning.
-<img src="image/14-47-20.png" width="800">
+<img src="image/19-35-43.png" width="800">
 
 Because of the nature of the game, I thought that it would not be possible to fit all the information on one screen, so I introduced RNN and added it between CNN and FC for learning.
 
