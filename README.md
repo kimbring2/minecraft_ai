@@ -91,4 +91,14 @@ MineRLTreechop-v0 : https://drive.google.com/drive/folders/1pIBxe5G0x_NU85S3wxYU
 ## Current Result
 As a result of analyzing the behavior of agents trained so far, it is confirmed that the selection time interval between Navigate and Treechop task is an important factor. Also, if agent is sometimes trapped in the ground alone until the end of the episode, or if agent switch a task to a Treechop when run on the water using Navigate, we are able to detect death often. Even when Mob appear at night, there are cases where agent dies. we don't consider all these factors yet, so finding the tree immediately and finding the wooden pickaxe seems to be the best action we can do now.
 
-![Current agent video part1](https://github.com/kimbring2/MineRL/blob/master/monitor/ezgif.com-video-to-gif-6.gif) ![Current agent video part2](https://github.com/kimbring2/MineRL/blob/master/monitor/ezgif.com-video-to-gif-7.gif)
+![Current agent video part1](https://github.com/kimbring2/MineRL/blob/master/monitor/ezgif.com-video-to-gif-7.gif) 
+This is the first half of the best-functioning episode of the agent to date, but if there are immediate trees around it, you can see that the collection will start soon. And when you finish collecting trees, you can see that it makes you feel comfortable moving to another tree.
+
+![Current agent video part2](https://github.com/kimbring2/MineRL/blob/master/monitor/ezgif.com-video-to-gif-6.gif)
+The second half of the video is the part of making wooden pickaxe after collecting enough trees, but you can not know immediately with the video, but you can see the plank, stick, crafting table in turn and the table to place on the ground it can.
+
+```
+inventory: {'coal': 0, 'cobblestone': 37, 'crafting_table': 0, 'dirt': 5, 'furnace': 0, 'iron_axe': 0, 'iron_ingot': 0, 'iron_ore': 0, 'iron_pickaxe': 0, 'log': 0, 'planks': 1, 'stick': 6, 'stone': 10, 'stone_axe': 0, 'stone_pickaxe': 0, 'torch': 0, 'wooden_axe': 0, 'wooden_pickaxe': 1}
+equip_type: wooden_pickaxe
+Total reward:  37.0
+```
