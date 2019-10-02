@@ -90,3 +90,5 @@ MineRLTreechop-v0 : https://drive.google.com/drive/folders/1pIBxe5G0x_NU85S3wxYU
 
 ## Current Result
 As a result of analyzing the behavior of agents trained so far, it is confirmed that the selection time interval between Navigate and Treechop task is an important factor. Also, if agent is sometimes trapped in the ground alone until the end of the episode, or if agent switch a task to a Treechop when run on the water using Navigate, we are able to detect death often. Even when Mob appear at night, there are cases where agent dies. we don't consider all these factors yet, so finding the tree immediately and finding the wooden pickaxe seems to be the best action we can do now.
+
+![Current agent video part1](https://github.com/kimbring2/MineRL/blob/master/monitor/ezgif.com-video-to-gif-6.gif) ![Current agent video part2](https://github.com/kimbring2/MineRL/blob/master/monitor/ezgif.com-video-to-gif-7.gif)
