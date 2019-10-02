@@ -109,6 +109,7 @@ inventory: {'coal': 0, 'cobblestone': 37, 'crafting_table': 0, 'dirt': 5, 'furna
 equip_type: wooden_pickaxe
 Total reward:  37.0
 ```
+Eventually, looking at the items acquired by the agent, we can see that Cobblestones and Stones are collected correctly.
 
 ## Future Work
 As you can see, when you dig underground to collect stones, the surroundings become very dark. In such a case, the surrounding area cannot be grasped, so the torch must be used to clarify the surrounding area.
