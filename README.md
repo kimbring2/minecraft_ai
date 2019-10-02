@@ -30,10 +30,12 @@ Fortunately, in addition to providing a data set from the organizer, it also pro
 
 ## Network Structure
 The network structure is largely composed of a CNN part that receives the current state value of the agent and an FC part that outputs the next action value.
-![CNN structure image](https://github.com/kimbring2/MineRL/blob/master/image/03-17-22.png)
+
+<img src="image/03-17-22.png" width="800">
 
 Minecraft does not allow you to see all game information at once. Therefore, it can be predicted that the behavior in the current frame is affected by the information in the previous frame. Therefore, we could use the RNN network additionally to account for these temporal depencies and see better performance in the Treechop task.
-![RNN+CNN structure image](https://github.com/kimbring2/MineRL/blob/master/image/19-16-46.png)
+
+<img src="image/19-16-46.png" width="800">
 
 ## Preprosseing
 The agent obtains information on items currently possessed, including screen information on the screen during game play. In addition, actions such as camera rotation, advancement, attack, item creation, item drop, and item equipment can be performed. Moreover, it is necessary to select the action of the agent by the value output from the network. In the first output, an action related to an item is selected, and in the second output, an attack, jump, and camera rotation action are selected. The details of the contents mentioned pevious can be confirmed with the uploaded code.
@@ -59,7 +61,9 @@ In all environments except Navigate and Treechop environment, in addition to the
 
 In particular, when installing a Crafting Table, Furnace, or Torch, it is necessary to use the frame information together, so these functions can be considered very convenient. For the MineRLObtainIronPickaxe-v0 dataset, traning is performed by adding Inventory information to the Frame information of the existing network of previous section.
 
+<img src="image/19-25-45.png">
 
+As a result of trarning, unlike the result before using only the frame information, the loss graph do not decrease, and it is confirmed that it goes up and down periodically. It doesn't seem to be able to solve the problem that way, as the loss doesn't drop over time.
 
 ## Making item
 To mine a stone, we need a Wooden Pickaxe which can be maded by three Planks, two Sticks, and a Crafting Table. 
