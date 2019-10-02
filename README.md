@@ -90,7 +90,7 @@ TreeChop : https://drive.google.com/drive/folders/1pIBxe5G0x_NU85S3wxYUDDhhHNlSR
 <img src="image/04-19-02.png" width="300">
 
 StoneMine : https://drive.google.com/drive/folders/1fs8AvnS8zNbjMgusE7aQxChkgBoWdQKE?usp=sharing
-<img src="image/12-02-48.png" width="300">
+<img src="image/12-11-31.png" width="300">
 
 
 ## Current Result
