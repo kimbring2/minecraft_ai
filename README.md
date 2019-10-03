@@ -95,8 +95,8 @@ We were able to train the network by extracting only a part of a making specific
 
 All three materials can basically be made in log, so the need to collect wood well through the tree chop task can proceed to the next task. In other words, only the treechop task is executed until 5 or more logs are collected, and then the action to create the required number of planks, sticks, and crafting_table is set directly using the if statement. The detail code can be found in the uploaded file.
 
-## The correct movement of the agent until making Wooden Pickaxe
-When evaluating trained agents, changes in inventory items are not directly on the screen, but can be confirmed using Python print function.
+## Debeg movement of the agent until making Wooden Pickaxe
+When evaluating trained agents, we can not see a item in Inventory at Screen. Thus, we should use a print function.
 
 ![Combining agent video](https://github.com/kimbring2/MineRL/blob/master/monitor/navi_tree.gif)
 
