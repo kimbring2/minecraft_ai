@@ -45,14 +45,14 @@ The agent obtains information on items currently possessed, including screen inf
 Also, there are very many cases where all actions are 0 in the provided data set. When traning without deleting this data, there are many cases where the agent is continuously stopped at the same place. These data were deleted before learning.
 
 ## Treechop Imitation Learning with only frame information
-After completing the learning, the agent can go to the two trees in the environment and attack it to collect the woods. However, it stops. Therefore, the agent cannot collect more wood.
+After completing the traning, the agent can approach to the two trees in the environment and attack it to collect the woods. However, it stops. Therefore, the agent cannot collect more wood.
 
 ![Treechop-v0 CNN agent video](https://github.com/kimbring2/MineRL/blob/master/monitor/ezgif.com-video-to-gif.gif)
 
 Loss graph shows that there is no ploblem in traning process. However, in the model that used only the test results CNN and FC many times, we finally concluded that there was a limit to learning.
 <img src="image/19-35-43.png" width="800">
 
-Because of the nature of the game, I think that it would not be possible to fit all the information on one screen, so I introduce RNN and add it between CNN and FC for learning.
+Because of the nature of the Minecraft, I think that it would not be possible to fit all the information on one screen. Thus, I deploy RNN and insert it between CNN and FC layer.
 
 Performance video after adding RNN : https://youtu.be/5bMTUvPmCuQ
 
@@ -84,8 +84,6 @@ I find a very big mistake while checking the baselines code that Minerllab uploa
 ## How to record video of agent
 Provide a method to save the agent's play figure learned with MineRL as an avi video file. First, download the env_wrappers.py (https://github.com/minerllabs/baselines/blob/master/general/chainerrl/baselines/env_wrappers.py) file together with the test.py file.
 
-
-
 ## Making item
 To mine a stone, we need a Wooden Pickaxe which can be maded by three Planks, two Sticks, and a Crafting Table. 
 
@@ -105,7 +103,7 @@ When evaluating trained agents, we can not see a item in Inventory at Screen. Th
 <img src="image/04-08-28.png" width="500">
 
 ## How to equip a Wooden Pickaxe
-There are some minor bugs in the MineRL package, but it was necessary to use a different method than the manual, especially when wearing a wooden pickaxe. Originally the command with action ['equip'] = 3 must be changed to action ['equip'] = 'wooden_pickaxe'.
+There are some minor bugs in the MineRL package. It is necessary to use a different method insteade of method in manual when equipting a Wooden Pickaxe. An action ['equip'] = 3 command must be changed to action ['equip'] = 'wooden_pickaxe'.
 
 ## Combine various tasks into one 
 In order to solve the MineRL ObtainIronPickaxe-v0 environment, solving a simple environment is needed at first. Especially in the case of the competition, since the starting position is random, the agent can be activated first in an area where there are no trees around. In this case, we need to move to the area where the tree is, instead of trying to do the treechop task right away.
