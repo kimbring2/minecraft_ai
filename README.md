@@ -135,7 +135,7 @@ This is the first half of the best-functioning episode of the agent to date, but
 
 ![Current agent video part2](https://github.com/kimbring2/MineRL/blob/master/monitor/ezgif.com-video-to-gif-6.gif)
 
-The second half of the video is the part of making wooden pickaxe after collecting enough trees, but you can not know immediately with the video, but you can see the plank, stick, crafting table in turn and the table to place on the ground it can.
+The second half of the video is the part of making Wooden Pickaxe after collecting enough log, but you can not see all these kind of process because Inventory information is not visible. However, you can see a agent placing Crafting Table that is made from Stick, Planks.
 
 ```
 inventory: {'coal': 0, 'cobblestone': 37, 'crafting_table': 0, 'dirt': 5, 'furnace': 0, 'iron_axe': 0, 'iron_ingot': 0, 'iron_ore': 0, 'iron_pickaxe': 0, 'log': 0, 'planks': 1, 'stick': 6, 'stone': 10, 'stone_axe': 0, 'stone_pickaxe': 0, 'torch': 0, 'wooden_axe': 0, 'wooden_pickaxe': 1}
