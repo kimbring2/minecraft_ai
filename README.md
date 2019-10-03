@@ -82,6 +82,8 @@ In particular, when installing a Crafting Table, Furnace, or Torch, it is necess
 I find a very big mistake while checking the baselines code that Minerllab uploaded. I do not normalize the Inventory information and combined it with the frame information, but when I correct mistake and re-trained and am able to confirm that the loss graph dropped well.
 
 ## How to record video of agent
+Provide a method to save the agent's play figure learned with MineRL as an avi video file. First, download the env_wrappers.py (https://github.com/minerllabs/baselines/blob/master/general/chainerrl/baselines/env_wrappers.py) file together with the test.py file.
+
 
 
 ## Making item
