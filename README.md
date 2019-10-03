@@ -52,7 +52,7 @@ After completing the learning, the agent can go to the two trees in the environm
 Loss graph shows that there is no ploblem in traning process. However, in the model that used only the test results CNN and FC many times, we finally concluded that there was a limit to learning.
 <img src="image/19-35-43.png" width="800">
 
-Because of the nature of the game, I thought that it would not be possible to fit all the information on one screen, so I introduced RNN and added it between CNN and FC for learning.
+Because of the nature of the game, I think that it would not be possible to fit all the information on one screen, so I introduce RNN and add it between CNN and FC for learning.
 
 Performance video after adding RNN : https://youtu.be/5bMTUvPmCuQ
 
@@ -61,7 +61,7 @@ In all environments except Navigate and Treechop environment, in addition to the
 
 <img src="image/14-43-12.png" width="800">
 
-In particular, when installing a Crafting Table, Furnace, or Torch, it is necessary to use the frame information together, so these functions can be considered very convenient. For the MineRLObtainIronPickaxe-v0 dataset, traning is performed by adding Inventory information to the Frame information of the existing network of previous section.
+In particular, when installing a Crafting Table, Furnace, or Torch, it is necessary to use the Screen information together, so these functions can be considered very convenient. For the MineRLObtainIronPickaxe-v0 dataset, traning is performed by adding Inventory information to the Screen information of the existing network of previous section.
 
 <p>
     <img src="image/19-25-45.png" width="800">
@@ -70,7 +70,7 @@ In particular, when installing a Crafting Table, Furnace, or Torch, it is necess
     <em>Without Inventory infomation normalization</em>
 </p>
 
-~As a result of trarning, unlike the result before using only the frame information, the loss graph do not decrease, and it is confirmed that it goes up and down periodically. It doesn't seem to be able to solve the problem that way, as the loss doesn't drop over time~
+~As a result of trarning, unlike the result before using only the Screen information, the loss graph do not decrease, and it is confirmed that it goes up and down periodically. It doesn't seem to be able to solve the problem that way, as the loss doesn't drop over time~
 
 <p>
     <img src="image/13-45-04.png" width="800">
