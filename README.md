@@ -61,10 +61,11 @@ In all environments except Navigate and Treechop environment, in addition to the
 
 In particular, when installing a Crafting Table, Furnace, or Torch, it is necessary to use the frame information together, so these functions can be considered very convenient. For the MineRLObtainIronPickaxe-v0 dataset, traning is performed by adding Inventory information to the Frame information of the existing network of previous section.
 
-<img src="image/13-45-04.png" width="800">
-
+<img src="image/19-25-45.png" width="800">
 ~As a result of trarning, unlike the result before using only the frame information, the loss graph do not decrease, and it is confirmed that it goes up and down periodically. It doesn't seem to be able to solve the problem that way, as the loss doesn't drop over time~
 
+<img src="image/13-45-04.png" width="800">
+I found a very big mistake in checking the baselines code that Minerllab uploaded. I do not normalize the Inventory information and combined it with the frame information, but when I corrected and re-trained, I am able to confirm that the loss graph dropped well.
 
 ## Making item
 To mine a stone, we need a Wooden Pickaxe which can be maded by three Planks, two Sticks, and a Crafting Table. 
