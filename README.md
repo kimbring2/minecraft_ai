@@ -63,11 +63,13 @@ In all environments except Navigate and Treechop environment, in addition to the
 
 In particular, when installing a Crafting Table, Furnace, or Torch, it is necessary to use the frame information together, so these functions can be considered very convenient. For the MineRLObtainIronPickaxe-v0 dataset, traning is performed by adding Inventory information to the Frame information of the existing network of previous section.
 
-<img src="image/19-25-45.png" width="800"> Without Inventory infomation normalization
+<img src="image/19-25-45.png" width="800">
+*Without Inventory infomation normalization*
 
 ~As a result of trarning, unlike the result before using only the frame information, the loss graph do not decrease, and it is confirmed that it goes up and down periodically. It doesn't seem to be able to solve the problem that way, as the loss doesn't drop over time~
 
-<img src="image/13-45-04.png" width="800"> With Inventory infomation normalization
+<img src="image/13-45-04.png" width="800">
+*With Inventory infomation normalization*
 
 I find a very big mistake while checking the baselines code that Minerllab uploaded. I do not normalize the Inventory information and combined it with the frame information, but when I correct mistake and re-trained and am able to confirm that the loss graph dropped well.
 
