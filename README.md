@@ -81,6 +81,9 @@ In particular, when installing a Crafting Table, Furnace, or Torch, it is necess
 
 I find a very big mistake while checking the baselines code that Minerllab uploaded. I do not normalize the Inventory information and combined it with the frame information, but when I correct mistake and re-trained and am able to confirm that the loss graph dropped well.
 
+## How to record video of agent
+
+
 ## Making item
 To mine a stone, we need a Wooden Pickaxe which can be maded by three Planks, two Sticks, and a Crafting Table. 
 
