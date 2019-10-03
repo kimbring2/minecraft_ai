@@ -44,7 +44,7 @@ The agent obtains information on items currently possessed, including screen inf
 
 Also, there are very many cases where all actions are 0 in the provided data set. When traning without deleting this data, there are many cases where the agent is continuously stopped at the same place. These data were deleted before learning.
 
-## Treechop Imitation Learning with only frame information Result
+## Treechop Imitation Learning with only frame information
 After completing the learning, the agent can go to the two trees in the environment and attack it to collect the woods. However, it stops. Therefore, the agent cannot collect more wood.
 
 ![Treechop-v0 CNN agent video](https://github.com/kimbring2/MineRL/blob/master/monitor/ezgif.com-video-to-gif.gif)
@@ -56,7 +56,7 @@ Because of the nature of the game, I think that it would not be possible to fit 
 
 Performance video after adding RNN : https://youtu.be/5bMTUvPmCuQ
 
-## Imitation Learning with inventory and frame information Result
+## IronPickaxe Imitation Learning with inventory and frame information
 In all environments except Navigate and Treechop environment, in addition to the video image information on the screen, agent can also check the information of the items you currently have. If you can find a network that can take this information and act accordingly, it is more efficient than manually creating all such procedures.
 
 <img src="image/14-43-12.png" width="800">
