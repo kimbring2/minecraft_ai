@@ -62,9 +62,11 @@ In all environments except Navigate and Treechop environment, in addition to the
 In particular, when installing a Crafting Table, Furnace, or Torch, it is necessary to use the frame information together, so these functions can be considered very convenient. For the MineRLObtainIronPickaxe-v0 dataset, traning is performed by adding Inventory information to the Frame information of the existing network of previous section.
 
 <img src="image/19-25-45.png" width="800">
+
 ~As a result of trarning, unlike the result before using only the frame information, the loss graph do not decrease, and it is confirmed that it goes up and down periodically. It doesn't seem to be able to solve the problem that way, as the loss doesn't drop over time~
 
 <img src="image/13-45-04.png" width="800">
+
 I found a very big mistake in checking the baselines code that Minerllab uploaded. I do not normalize the Inventory information and combined it with the frame information, but when I corrected and re-trained, I am able to confirm that the loss graph dropped well.
 
 ## Making item
@@ -106,7 +108,6 @@ TreeChop : https://drive.google.com/drive/folders/1pIBxe5G0x_NU85S3wxYUDDhhHNlSR
 
 StoneMine : https://drive.google.com/drive/folders/1fs8AvnS8zNbjMgusE7aQxChkgBoWdQKE?usp=sharing
 <img src="image/12-11-31.png" width="300">
-
 
 ## Current Result
 As a result of analyzing the behavior of agents trained so far, it is confirmed that the selection time interval between Navigate and Treechop task is an important factor. Also, if agent is sometimes trapped in the ground alone until the end of the episode, or if agent switch a task to a Treechop when run on the water using Navigate, we are able to detect death often. Even when Mob appear at night, there are cases where agent dies. we don't consider all these factors yet, so finding the tree immediately and finding the wooden pickaxe seems to be the best action we can do now.
