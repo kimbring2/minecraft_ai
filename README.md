@@ -59,7 +59,7 @@ Performance video after adding RNN : https://youtu.be/5bMTUvPmCuQ
 ## IronPickaxe Imitation Learning with inventory and frame information
 In all environments except Navigate and Treechop environment, in addition to the video image information on the screen, agent can also check the information of the items you currently have. If you can find a network that can take this information and act accordingly, it is more efficient than manually creating all such procedures.
 
-<img src="image/14-43-12.png" width="800">
+<img src="image/21-16-17.png" width="800">
 
 In particular, when installing a Crafting Table, Furnace, or Torch, it is necessary to use the Screen information together, so these functions can be considered very convenient. For the MineRLObtainIronPickaxe-v0 dataset, traning is performed by adding Inventory information to the Screen information of the existing network of previous section.
 
@@ -82,7 +82,12 @@ In particular, when installing a Crafting Table, Furnace, or Torch, it is necess
 I find a very big mistake while checking the baselines code that Minerllab uploaded. I do not normalize the Inventory information and combined it with the frame information, but when I correct mistake and re-trained and am able to confirm that the loss graph dropped well.
 
 ## How to record video of agent
-Provide a method to save the agent's play figure learned with MineRL as an avi video file. First, download the env_wrappers.py (https://github.com/minerllabs/baselines/blob/master/general/chainerrl/baselines/env_wrappers.py) file together with the test.py file.
+Provide a method to save the agent's play figure learned with MineRL as an avi video file. First, download the env_wrappers.py (https://github.com/minerllabs/baselines/blob/master/general/chainerrl/baselines/env_wrappers.py) file together with the test.py file. After doing this, import ContinuingTimeLimitMonitor function and wrap env with that. Saving path should be declared.
+
+```
+env = ContinuingTimeLimitMonitor(env, root_path + 'monitor', mode='evaluation', 
+                                 video_callable=lambda episode_id: True, force=True)
+```
 
 ## Making item
 To mine a stone, we need a Wooden Pickaxe which can be maded by three Planks, two Sticks, and a Crafting Table. 
