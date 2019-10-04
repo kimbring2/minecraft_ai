@@ -89,7 +89,7 @@ Performance video after training : https://youtu.be/ibJc8X7TXhM
 When learning with this method, compared to other methods, learning was much more difficult, and even if loss was less than 0.1, it was confirmed that the agent did not move. In the same network structure, we decided that it would not be good to proceed in that way and decided to consider using Inventory information only in certain situations.
 
 ## How to record video of agent
-Provide a method to save the agent's play figure learned with MineRL as an avi video file. First, download the env_wrappers.py (https://github.com/minerllabs/baselines/blob/master/general/chainerrl/baselines/env_wrappers.py) file together with the test.py file. After doing this, import ContinuingTimeLimitMonitor function and wrap env with that. Saving path should be declared.
+Provide a method to save the agent's play figure learned with MineRL as an avi video file. First, download the env_wrappers.py(https://github.com/minerllabs/baselines/blob/master/general/chainerrl/baselines/env_wrappers.py) file in same directory with a test.py file. After doing this, import ContinuingTimeLimitMonitor function and wrap env with that at the test.py file. Saving path should be declared.
 
 ```
 env = ContinuingTimeLimitMonitor(env, root_path + 'monitor', mode='evaluation', 
