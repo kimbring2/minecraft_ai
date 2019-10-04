@@ -6,7 +6,7 @@ The code uploaded here is for MineRL Competition 2019. The purpose of the compet
 The code required for traning and testing is created according to the competition submission form provided by AiCrowd. First, after downloading the code to git, use the requirement.txt file to install the package. After that, you need to run the train.py file, change the tensorflow weights file storage path and the name of the MineRL environment you are trying to train. They are trained using MineRLNavigate-v0, MineRLTreechop-v0 and MineRLObtainIronPickaxe-v0 datasets, respectively. In the test.py file, using the trained treechop and navigate techniques to produce a wooden pickaxe, this is where the stone is collected.
 
 # Work environment
-Currently, I am participating in a competition using a PC with Ubuntu Desktop 18.04, NVIDIA Titan V, 15GB RAM.
+Currently, I am participating in a competition using a PC with Ubuntu Desktop 18.04, NVIDIA Titan V, 15GB RAM. The trarning period is short, although the data set is short, and it takes two days for six hours longer. Dataset import is confirmed to be limited to 10,000 sample per once.
 
 # Introduction
 I started participating at the beginning of this competition, but I wasn't able to participate correctly in the Retro Contest held at OpenAI last year, so I wanted to finish it this time. What is required in the competition is a method for efficiently learning a reinforcement learning model using given data. For these reasons, we approached the most basic network by using supervised learning and learning according to a given data set.
