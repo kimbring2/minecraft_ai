@@ -43,9 +43,37 @@ Minecraft does not allow you to see all game information at once. Therefore, it 
 It is necessary to select the action of the agent by the value output from the network. In the first output, an action related to an item is selected, and in the second output, an attack, jump, and camera rotation action are selected. The details of the contents mentioned pevious can be confirmed with the uploaded code.
 
 ## Preprosseing
-The agent obtains information on items currently possessed, including screen information on the screen during game play. In addition, actions such as camera rotation, advancement, attack, item creation, item drop, and item equipment can be performed. In the case of screen information, since it is image information, it is divided into 255 before learning and changed to a value between 0 and 1, and in the case of inventory information, it is divided into 2304, the upper limit of item possession.
+All preprocessing is actually used as it is based on the baseline code provided by MineRL lab (https://github.com/minerllabs/baselines/blob/master/general/chainerrl/baselines/observation_wrappers.py). Thus, There seems to be no problem to use.
 
-Also, there are very many cases where all actions are 0 in the provided data set. When traning without deleting this data, there are many cases where the agent is continuously stopped at the same place. These data were deleted before learning.
+The agent obtains information on items currently possessed, including screen information during game play. In addition, actions such as Camera, Forward, Attack, Crafting item, Placing item, and item equipment can be performed. In the case of screen information, since it is RGB information, it is divided into 255 before training for normalization.
+
+```
+if 'inventory' in observation:
+  assert len(obs.shape[:-1]) == 2
+  region_max_height = obs.shape[0]
+  region_max_width = obs.shape[1]
+  rs = region_size
+  if min(region_max_height, region_max_width) < rs:
+    raise ValueError("'region_size' is too large.")
+  num_element_width = region_max_width // rs
+
+  inventory_channel = np.zeros(shape=list(obs.shape[:-1]) + [1], dtype=pov.dtype)
+  for key_idx, key in enumerate(observation['inventory'].keys()):
+    item_scaled = np.clip(1 - 1 / (observation['inventory'][key][idx] + 1),  # Inversed
+                          0, 1)
+    item_channel = np.ones(shape=[rs, rs, 1], dtype=pov.dtype) * item_scaled
+    width_low = (key_idx % num_element_width) * rs
+    height_low = (key_idx // num_element_width) * rs
+
+    if height_low + rs > region_max_height:
+      raise ValueError("Too many elements on 'inventory'. Please decrease 'region_size' of each component.")
+    inventory_channel[height_low:(height_low + rs), width_low:(width_low + rs), :] = item_channel
+  obs = np.concatenate([obs, inventory_channel], axis=-1)
+```
+
+And in the case of inventory information, it is confirmed that the item information is changed to a 64x64x1 size channel and added to the 64x64x3 screen information through a slightly more complicated process in a different way than originally think.
+
+Furthermore, there are very many cases where all actions are 0 in the provided data set. When traning without deleting this data, there are many cases where the agent is continuously stopped at the same place. These data were deleted before learning.
 
 ## Treechop Imitation Learning with only frame information
 After completing the traning, the agent can approach to the two trees in the environment and attack it to collect the woods. However, it stops. Therefore, the agent cannot collect more wood.
