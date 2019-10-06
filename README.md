@@ -38,7 +38,7 @@ The network structure is largely composed of a CNN part that receives the curren
 
 Minecraft does not allow you to see all game information at once. Therefore, it can be predicted that the behavior in the current frame is affected by the information in the previous frame. Therefore, we could use the RNN network additionally to account for these temporal depencies and see better performance in the Treechop task.
 
-<img src="image/14-28-25.png" width="800">
+<img src="image/18-52-43.png" width="800">
 
 It is necessary to select the action of the agent by the value output from the network. In the first output, an action related to an item is selected, and in the second output, an attack, jump, and camera rotation action are selected. The details of the contents mentioned pevious can be confirmed with the uploaded code.
 
