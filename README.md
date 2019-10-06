@@ -78,7 +78,7 @@ Furthermore, there are very many cases where all actions are 0 in the provided d
 ## Action Selection
 Agent can do a actions such as Camera, Forward, Attack, Crafting item, Placing item, and item equipment. When Imitation Learning, we must label the action of the gameplay data input information. There are so many types of actions that it is almost impossible to label all types when there is only one network output channel. So I divide the action into one that moves greatly and the one for making items, and here I use the method of dividing whether it is the most important behavioral attack.
 
-<img src="image/20-14-29.png" width="800">
+<img src="image/20-30-54.png" width="800">
 
 ## Treechop Imitation Learning with only frame information
 After completing the traning, the agent can approach to the two trees in the environment and attack it to collect the woods. However, it stops. Therefore, the agent cannot collect more wood.
