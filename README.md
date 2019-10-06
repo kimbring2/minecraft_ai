@@ -45,7 +45,7 @@ It is necessary to select the action of the agent by the value output from the n
 ## Preprosseing
 All preprocessing is actually used as it is based on the baseline code provided by MineRL lab (https://github.com/minerllabs/baselines/blob/master/general/chainerrl/baselines/observation_wrappers.py). Thus, There seems to be no problem to use.
 
-The agent obtains information on items currently possessed, including screen information during game play. In addition, actions such as Camera, Forward, Attack, Crafting item, Placing item, and item equipment can be performed. In the case of screen information, since it is RGB information, it is divided into 255 before training for normalization.
+The agent obtains information on items currently possessed, including screen information during game play. In the case of screen information, since it is RGB information, it is divided into 255 before training for normalization.
 
 ```
 if 'inventory' in observation:
@@ -73,7 +73,12 @@ if 'inventory' in observation:
 
 And in the case of inventory information, it is confirmed that the item information is changed to a 64x64x1 size channel and added to the 64x64x3 screen information through a slightly more complicated process in a different way than originally think.
 
-Furthermore, there are very many cases where all actions are 0 in the provided data set. When traning without deleting this data, there are many cases where the agent is continuously stopped at the same place. These data were deleted before learning.
+Furthermore, there are very many cases where all actions are 0 in the provided data set. When traning without deleting this data, there are many cases where the agent is continuously stopped at the same place. These data were deleted before learning. 
+
+## Action Selection
+Agent can do a actions such as Camera, Forward, Attack, Crafting item, Placing item, and item equipment. When Imitation Learning, we must label the action of the gameplay data input information. There are so many types of actions that it is almost impossible to label all types when there is only one network output channel. So I divide the action into one that moves greatly and the one for making items, and here I use the method of dividing whether it is the most important behavioral attack.
+
+<img src="image/20-14-29.png" width="800">
 
 ## Treechop Imitation Learning with only frame information
 After completing the traning, the agent can approach to the two trees in the environment and attack it to collect the woods. However, it stops. Therefore, the agent cannot collect more wood.
@@ -187,5 +192,5 @@ As you can see, when you dig underground to collect stones, the surroundings bec
 
 <img src="image/torch_image_1.jpeg" width="400"> <img src="image/Torch.png" width="400">
 
-Performance video after traning with inventory infomation : https://www.youtube.com/watch?v=IDKemeU_laY
 
+Performance video after traning with inventory infomation : https://youtu.be/sU_f6pHf6Dg
