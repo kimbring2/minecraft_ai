@@ -113,7 +113,7 @@ class cnn_rnn_network():
 class cnn_rnn_inventory_network():
     def __init__(self, H=None, scope=None, act_num=None):
         with tf.variable_scope(scope):
-            self.state = tf.placeholder(shape=[None,64,64,21], dtype=tf.float32, name='state')
+            self.state = tf.placeholder(shape=[None,64,64,4], dtype=tf.float32, name='state')
             self.conv1 = slim.conv2d(inputs=self.state, num_outputs=32, kernel_size=[8,8], stride=[4,4], padding='VALID', 
                                 biases_initializer=None)
             self.conv2 = slim.conv2d(inputs=self.conv1, num_outputs=64, kernel_size=[4,4], stride=[2,2], padding='VALID', 
@@ -145,6 +145,70 @@ class cnn_rnn_inventory_network():
             self.train_step = tf.train.AdamOptimizer(0.0001).minimize(self.loss)
 
 
+def converter(observation):
+    grayscale = False
+    region_size = 8
+
+    ret = []
+    batch_size = len(observation['pov'])
+    #print("batch_size: " + str(batch_size))
+
+    compassAngles = observation['compassAngle'] if 'compassAngle' in observation else [None] * batch_size
+    for idx, (pov, compass_angle) in enumerate(zip(observation['pov'].astype(np.float32), compassAngles)):
+        obs = pov
+        if grayscale:
+            obs = np.expand_dims(
+                cv2.cvtColor(obs, cv2.COLOR_RGB2GRAY), axis=-1)
+        obs = obs / 255
+
+        if compass_angle is not None:
+            compass_angle_scale = 180
+            compass_scaled = compass_angle / compass_angle_scale
+            compass_channel = np.ones(shape=list(obs.shape[:-1]) + [1], dtype=pov.dtype) * compass_scaled
+            obs = np.concatenate([obs, compass_channel], axis=-1)
+
+        if 'inventory' in observation:
+            assert len(obs.shape[:-1]) == 2
+            region_max_height = obs.shape[0]
+            region_max_width = obs.shape[1]
+            rs = region_size
+            print("region_max_height: " + str(region_max_height))
+            print("region_max_width: " + str(region_max_width))
+            print("rs: " + str(rs))
+
+            if min(region_max_height, region_max_width) < rs:
+                raise ValueError("'region_size' is too large.")
+            num_element_width = region_max_width // rs
+            #print("num_element_width: " + str(num_element_width))
+
+            inventory_channel = np.zeros(shape=list(obs.shape[:-1]) + [1], dtype=pov.dtype)
+            for key_idx, key in enumerate(observation['inventory'].keys()):
+                #print("key_idx: " + str(key_idx))
+                #print("key: " + str(key))
+
+                item_scaled = np.clip(1 - 1 / (observation['inventory'][key][idx] + 1),  # Inversed
+                                          0, 1)
+                #print("item_scaled: " + str(item_scaled))
+                item_channel = np.ones(shape=[rs, rs, 1], dtype=pov.dtype) * item_scaled
+                width_low = (key_idx % num_element_width) * rs
+                height_low = (key_idx // num_element_width) * rs
+                #print("width_low: " + str(width_low))
+                #print("height_low: " + str(height_low))
+                #print("")
+                #print("")
+                #print("")
+
+                if height_low + rs > region_max_height:
+                    raise ValueError("Too many elements on 'inventory'. Please decrease 'region_size' of each component.")
+                inventory_channel[height_low:(height_low + rs), width_low:(width_low + rs), :] = item_channel
+            obs = np.concatenate([obs, inventory_channel], axis=-1)
+
+        #obs = np.moveaxis(obs, [0, 1, 2], [1, 2, 0])
+        ret.append(obs)
+
+    return np.array(ret)
+
+
 def main():
     """
     This function will be called for training phase.
@@ -152,7 +216,7 @@ def main():
     # How to sample minerl data is document here:
     # http://minerl.io/docs/tutorials/data_sampling.html
     H = 2048
-    train_env = "iron"
+    train_env = "stone"
 
     root_path = '/home/kimbring2/Desktop/competition_submission_starter_template/'
     model_path = root_path + 'train/'
@@ -392,6 +456,9 @@ def main():
 
         episode_count = 0
         for current_state, action, reward, next_state, done in data_stone.sarsd_iter(num_epochs=5000, max_sequence_len=3000):
+            #print("convert_currents_state.shape: " + str(convert_currents_state.shape))
+            convert_currents_state = converter(current_state)
+
             length = (current_state['pov'].shape)[0]
             #print("length: " + str(length))
             if (length != 3000):
@@ -406,27 +473,8 @@ def main():
             if (train_length < 10):
                 continue
 
-            current_pov = current_state['pov'][result]
-            current_inventory = current_state['inventory']
-
-            current_coal = current_inventory['coal'][result]
-            current_cobblestone = current_inventory['cobblestone'][result]
-            current_crafting_table = current_inventory['crafting_table'][result]
-            current_dirt = current_inventory['dirt'][result]
-            current_furnace = current_inventory['furnace'][result]
-            current_iron_axe = current_inventory['iron_axe'][result]
-            current_iron_ingot = current_inventory['iron_ingot'][result]
-            current_iron_ore = current_inventory['iron_ore'][result]
-            current_iron_pickaxe = current_inventory['iron_pickaxe'][result]
-            current_log = current_inventory['log'][result]
-            current_planks = current_inventory['planks'][result]
-            current_stick = current_inventory['stick'][result]
-            current_stone = current_inventory['stone'][result]
-            current_stone_axe = current_inventory['stone_axe'][result]
-            current_stone_pickaxe = current_inventory['stone_pickaxe'][result]
-            current_torch = current_inventory['torch'][result]
-            current_wooden_axe = current_inventory['wooden_axe'][result]
-            current_wooden_pickaxe = current_inventory['wooden_pickaxe'][result]
+            convert_currents_state = converter(current_state)
+            convert_currents_state = convert_currents_state[result]
 
             action_camera = action['camera'][result]
             action_jump = action['jump'][result]
@@ -442,51 +490,6 @@ def main():
             action_list = []
             states_list = []
             for i in range(0, train_length):
-                pov = current_pov[i].astype(np.float32) / 255.0 - 0.5
-
-                coal = current_coal[i]
-                cobblestone = current_cobblestone[i]
-                crafting_table = current_crafting_table[i]
-                dirt = current_dirt[i]
-                furnace = current_furnace[i]
-                iron_axe = current_iron_axe[i]
-                iron_ingot = current_iron_ingot[i]
-                iron_ore = current_iron_ore[i]
-                iron_pickaxe = current_iron_pickaxe[i]
-                log = current_log[i]
-                planks = current_planks[i]
-                stick = current_stick[i]
-                stone = current_stone[i]
-                stone_axe = current_stone_axe[i]
-                stone_pickaxe = current_stone_pickaxe[i]
-                torch = current_torch[i]
-                wooden_axe = current_wooden_axe[i]
-                wooden_pickaxe = current_wooden_pickaxe[i]
-          
-                coal_channel = np.ones(shape=list(pov.shape[:-1]) + [1], dtype=np.float32) * coal
-                cobblestone_channel = np.ones(shape=list(pov.shape[:-1]) + [1], dtype=np.float32) * cobblestone
-                crafting_table_channel = np.ones(shape=list(pov.shape[:-1]) + [1], dtype=np.float32) * crafting_table
-                dirt_channel = np.ones(shape=list(pov.shape[:-1]) + [1], dtype=np.float32) * dirt
-                furnace_channel = np.ones(shape=list(pov.shape[:-1]) + [1], dtype=np.float32) * furnace
-                iron_axe_channel = np.ones(shape=list(pov.shape[:-1]) + [1], dtype=np.float32) * iron_axe
-                iron_ingot_channel = np.ones(shape=list(pov.shape[:-1]) + [1], dtype=np.float32) * iron_ingot
-                iron_ore_channel = np.ones(shape=list(pov.shape[:-1]) + [1], dtype=np.float32) * iron_ore
-                iron_pickaxe_channel = np.ones(shape=list(pov.shape[:-1]) + [1], dtype=np.float32) * iron_pickaxe
-                log_channel = np.ones(shape=list(pov.shape[:-1]) + [1], dtype=np.float32) * log
-                planks_channel = np.ones(shape=list(pov.shape[:-1]) + [1], dtype=np.float32) * planks
-                stick_channel = np.ones(shape=list(pov.shape[:-1]) + [1], dtype=np.float32) * stick
-                stone_channel = np.ones(shape=list(pov.shape[:-1]) + [1], dtype=np.float32) * stone
-                stone_axe_channel = np.ones(shape=list(pov.shape[:-1]) + [1], dtype=np.float32) * stone_axe
-                stone_pickaxe_channel = np.ones(shape=list(pov.shape[:-1]) + [1], dtype=np.float32) * stone_pickaxe
-                torch_channel = np.ones(shape=list(pov.shape[:-1]) + [1], dtype=np.float32) * torch
-                wooden_axe_channel = np.ones(shape=list(pov.shape[:-1]) + [1], dtype=np.float32) * wooden_axe
-                wooden_pickaxe_channel = np.ones(shape=list(pov.shape[:-1]) + [1], dtype=np.float32) * wooden_pickaxe
-                
-                state_concat = np.concatenate([pov, coal_channel, cobblestone_channel, crafting_table_channel, dirt_channel, furnace_channel, 
-                                               iron_axe_channel, iron_ingot_channel, iron_ore_channel, iron_pickaxe_channel, log_channel, 
-                                               planks_channel, stick_channel, stone_channel, stone_axe_channel, stone_pickaxe_channel,
-                                               torch_channel, wooden_axe_channel, wooden_pickaxe_channel], axis=-1)
-          
                 camera_threshols = (abs(action_camera[i][0]) + abs(action_camera[i][1])) / 2.0
                 if (camera_threshols > 2.5):
                     if ( (action_camera[i][1] < 0) & ( abs(action_camera[i][0]) < abs(action_camera[i][1]) ) ):
@@ -558,16 +561,9 @@ def main():
                     else:
                         action_ =         [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1]
                 
-                #print("len(state_concat): " + str(len(state_concat)))
-                #print("len(action_): " + str(len(action_)))
-
-                states_list.append(state_concat)
+                states_list.append(convert_currents_state[i])
                 action_list.append(action_)
             
-            #print("len(states_list): " + str(len(states_list)))
-            #print("len(action_list): " + str(len(action_list)))
-
-            #print("len(states_list): " + str(len(states_list)))
             if (len(states_list) < 10):
                 continue
 
@@ -612,7 +608,9 @@ def main():
         data_iron = minerl.data.make(MINERL_IRON_GYM_ENV, data_dir=MINERL_IRON_DATA_ROOT)
 
         episode_count = 0
-        for current_state, action, reward, next_state, done in data_iron.sarsd_iter(num_epochs=5000, max_sequence_len=2000):
+        for current_state, action, reward, next_state, done in data_iron.sarsd_iter(num_epochs=5000, max_sequence_len=4):
+            #print("current_state: " + str(current_state))
+
             length = (current_state['pov'].shape)[0]
             #print("length: " + str(length))
             if (length != 2000):
