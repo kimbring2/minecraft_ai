@@ -192,5 +192,6 @@ As you can see, when you dig underground to collect stones, the surroundings bec
 
 <img src="image/torch_image_1.jpeg" width="400"> <img src="image/Torch.png" width="400">
 
+When I train using screen information with the data of the equipping Wooden Pickaxe, I am able to see the agent mining a stone digging directly under the land. However, when training including inventory information, it is observed that Navigate, Treechop, Crafting item behavior is well behaved. However, I can confirm the problem that mining stone is observed very rarely.
 
 Performance video after traning with inventory infomation : https://youtu.be/sU_f6pHf6Dg
