@@ -3,7 +3,7 @@
 The code uploaded here is for MineRL Competition 2019. The purpose of the competition is to find an effective reinforcement learning algorithm using human play datasets. 
 
 # Update plan
-I am currently working on applying Deep Q-learning from Demonstrations to MineRL. Please wait for a while as I plan to update the content within the earlier period. Thank you very much.
+I am currently working on applying Deep Q-learning from Demonstrations to MineRL by using a Tensorflow. Please wait for a while as I plan to update the content within the earlier period. Thank you very much.
 
 # How to train and test
 The code required for traning and testing is created according to the competition submission form provided by AiCrowd. First, after downloading the code to git, use the requirement.txt file to install the package. After that, you need to run the train.py file, change the tensorflow weights file storage path and the name of the MineRL environment you are trying to train. They are trained using MineRLNavigate-v0, MineRLTreechop-v0 and MineRLObtainIronPickaxe-v0 datasets, respectively. In the test.py file, using the trained treechop and navigate techniques to produce a wooden pickaxe, this is where the stone is collected.
