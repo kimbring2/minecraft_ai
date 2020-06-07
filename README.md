@@ -5,5 +5,9 @@ I am reproducing content of paper(https://arxiv.org/pdf/1912.08664v2.pdf) of win
 1. Simple DQN code for navigation task : Open and run MineRL_Navigate_DQN.ipynb file.
 2. Basic DQFQ code for treechop task : Run dqfd_treechop.py file.
 
+# Dependencies
+1. MineRL : pip install minerl
+2. Tensorflow : pip install tensorflow-gpu==1.13.1
+
 # Detailed inforamtion
 More information will be updated soon on edium.
