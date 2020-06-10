@@ -11,7 +11,9 @@ I am reproducing content of paper(https://arxiv.org/pdf/1912.08664v2.pdf) of win
 3. Add RNN and left,right action code for Treechop task : Run drqfd_treechop.py file. 
 
 # How to check training goes well
-1. Loss check : <img src="image/supervised_loss.png">
+1. Loss check : Loss should fall to almost 0 as shown in the graph above when the DQFD network is trained by the Supervised Learning manner.
+<img src="image/supervised_loss.png">
+
 
 # Dependencies
 1. MineRL : pip install minerl
