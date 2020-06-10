@@ -14,14 +14,11 @@ import per_replay as replay
 
 
 def parse_demo(env_name, rep_buffer, data_path, nsteps=10):
-    #env_name = 'MineRLTreechop-v0'
-    #data_path = '/media/kimbring2/6224AA7924AA5039/minerl_data'
     data = minerl.data.make(env_name, data_dir=data_path)
 
     demo_num = 0
     for state, action, reward, next_state, done in data.sarsd_iter(num_epochs=500, max_sequence_len=2000):
         demo_num += 1
-        #print("demo_num : " + str(demo_num))
 
         if demo_num == 50:
             break
@@ -77,13 +74,11 @@ def parse_demo(env_name, rep_buffer, data_path, nsteps=10):
                     continue
                 else:
                     action_index = 12
-            #print("action_index: " + str(action_index))
 
             game_a = action_index
 
             curr_obs = state['pov'][i]
-            #print("curr_obs: " + str(curr_obs))
-            #_obs = next_state['pov'][i]
+
             _obs = next_state['pov'][i]
 
             _rew = reward[i]
@@ -92,9 +87,7 @@ def parse_demo(env_name, rep_buffer, data_path, nsteps=10):
             episode_start_ts += 1
             parse_ts += 1
 
-            #paper limits reward
             _rew = np.sign(_rew) * np.log(1. + np.abs(_rew))
-            #print("_done: " + str(_done))
             
             nstep_state_deque.append(curr_obs)
             nstep_action_deque.append(game_a)
@@ -112,9 +105,6 @@ def parse_demo(env_name, rep_buffer, data_path, nsteps=10):
                 add_transition(rep_buffer, nstep_state_deque, nstep_action_deque, nstep_rew_list, nstep_nexts_deque,
                                nstep_done_deque, _obs, True, nsteps, nstep_gamma)
 
-                # reset the environment, get the current state
-                #curr_obs = env.reset()
-
                 nstep_state_deque.clear()
                 nstep_action_deque.clear()
                 nstep_rew_list.clear()
@@ -124,8 +114,6 @@ def parse_demo(env_name, rep_buffer, data_path, nsteps=10):
                 episode_start_ts = 0
 
                 break
-            #else:
-            #    curr_obs = _obs  # resulting state becomes the current state
 
         # replay is over emptying the deques
         add_transition(rep_buffer, nstep_state_deque, nstep_action_deque, nstep_rew_list, nstep_nexts_deque,
@@ -252,9 +240,7 @@ class Qnetwork():
         self.td_error_dq = tf.reduce_mean(tf.square(self.targetQ_dq - self.Q_dq))
         self.td_error_nstep = tf.reduce_mean(tf.square(self.targetQ_nstep - self.Q_nstep))
 
-        #self.reg_loss = tf.reduce_sum([tf.reduce_mean(reg_l) for reg_l in tf.get_collection(tf.GraphKeys.REGULARIZATION_LOSSES)])
         self.loss = tf.reduce_sum(self.td_error_dq + self.td_error_nstep + self.slmc)
-        #self.loss = tf.reduce_sum(self.td_error_dq + self.slmc)
 
         self.summaries = tf.summary.merge([
             tf.summary.scalar("loss_VALUE", self.loss)
@@ -272,7 +258,7 @@ def main():
 
     # Get Expert Data
     expert_buffer = replay.PrioritizedReplayBuffer(75000, alpha=0.4, beta=0.6, epsilon=0.001)
-    #expert_buffer = parse_demo(env_name, expert_buffer, data_path)
+    expert_buffer = parse_demo(env_name, expert_buffer, data_path)
 
     # Train Expert Model
     model = Qnetwork()
@@ -293,7 +279,7 @@ def main():
     expert_model_path = root_path + 'expert_model'
 
     action_len = 13
-    train_steps = 500000
+    train_steps = 100000
     batch_size = 32
     gamma = 0.99
     nstep_gamma = 0.99 
@@ -301,7 +287,7 @@ def main():
 
     time_int = int(time.time())
     loss = np.zeros((4,))
-    '''
+    
     print('Training expert model')
     for current_step in range(train_steps):
         print("current_step: " + str(current_step))
@@ -321,7 +307,6 @@ def main():
 
         exp_states_batch, exp_action_batch, exp_reward_batch, exp_next_states_batch, \
         exp_done_batch, exp_nstep_rew_batch, exp_nstep_next_batch = map(np.array, zip(*exp_zip_batch))
-        #print("exp_done_batch: " + str(exp_done_batch))
         is_expert_input = np.ones((batch_size, 1))
 
         # Expert action made into a 2d array for when tf.gather_nd is called during training
@@ -329,15 +314,11 @@ def main():
         input_exp_action[:, 0] = np.arange(batch_size)
         input_exp_action[:, 1] = exp_action_batch
 
-        #print("input_exp_action: " + str(input_exp_action))
         exp_margin = np.ones((batch_size, action_len)) * exp_margin_constant
         exp_margin[np.arange(batch_size), exp_action_batch] = 0.  # Expert chosen actions don't have margin
-        #print("exp_margin: " + str(exp_margin))
         next_states_batch = exp_next_states_batch
         nstep_next_batch = exp_nstep_next_batch
         states_batch = exp_states_batch
-        #print("next_states_batch: " + str(next_states_batch))
-        #print("nstep_next_batch: " + str(nstep_next_batch))
         q_values_next, nstep_q_values_next = sess.run([model.dq_output, model.nstep_output],  
                                                        feed_dict={model.input_img_dq: next_states_batch,
                                                                   model.input_img_nstep: nstep_next_batch,
@@ -346,12 +327,8 @@ def main():
                                                                   model.input_is_expert: empty_batch_by_one,
                                                                   model.input_expert_margin: empty_batch_by_action_len}
                                                      )
-        #print("nstep_q_values_next: " + str(nstep_q_values_next))
         action_max = np.argmax(q_values_next, axis=1)
         nstep_action_max = np.argmax(nstep_q_values_next, axis=1)
-        #print("exp_margin: " + str(exp_margin))
-        #print("nstep_action_max: " + str(nstep_action_max))
-
         dq_targets, nstep_targets = sess.run([model.dq_output, model.nstep_output],  
                                               feed_dict={model.input_img_dq: states_batch,
                                                          model.input_img_nstep: states_batch,
@@ -360,23 +337,16 @@ def main():
                                                          model.input_is_expert: empty_batch_by_one,
                                                          model.input_expert_margin: empty_batch_by_action_len}
                                             )
-        #print("nstep_targets: " + str(nstep_q_values_next))
-        #print("q_values_next: " + str(q_values_next))
         reward_batch = exp_reward_batch
         done_batch = exp_done_batch
-        #print("done_batch: " + str(done_batch))
         dq_targets[ti_tuple,exp_action_batch] = reward_batch + \
                                                  (1 - done_batch) * gamma \
                                                  * q_values_next[np.arange(batch_size),action_max]
-        #print("dq_targets: " + str(dq_targets))
         nstep_rew_batch = exp_nstep_rew_batch
-        #print("nstep_rew_batch: " + str(nstep_rew_batch))
         done_batch = exp_done_batch
         nstep_targets[ti_tuple,exp_action_batch] = nstep_rew_batch + \
                                                     (1 - done_batch) * nstep_final_gamma \
-                                                    * nstep_q_values_next[np.arange(batch_size),nstep_action_max]
-        #print("nstep_targets: " + str(nstep_targets))    
-        print("")                                           
+                                                    * nstep_q_values_next[np.arange(batch_size),nstep_action_max]                                        
 
         action_batch = exp_action_batch
         dq_targets = dq_targets[np.arange(batch_size),action_batch]
@@ -404,17 +374,16 @@ def main():
         if (current_step % 1000 == 0):
             saver.save(sess, expert_model_path + '/model-' + str(current_step) + '.cptk')
 
-    '''
-    '''
+    
+    print('Training DQFD model')
     env = gym.make(env_name)
     
     ckpt = tf.train.get_checkpoint_state(expert_model_path)
     saver.restore(sess, ckpt.model_checkpoint_path)
     
-    # Train DQFD Model
-    replay_buffer = replay.PrioritizedReplayBuffer(100000, alpha=0.4, beta=0.6, epsilon=0.001)
+    replay_buffer = replay.PrioritizedReplayBuffer(75000, alpha=0.4, beta=0.6, epsilon=0.001)
 
-    max_timesteps = 50000
+    max_timesteps = 100000
     min_buffer_size = 5000
     epsilon_start = 0.99
     epsilon_min = 0.01
@@ -439,40 +408,37 @@ def main():
 
     episode_start_ts = 0 # when this reaches n_steps, can start populating n_step_maxq_deque
 
-    current_step = -1
     explore_ts = max_timesteps * 0.8
 
     loss = np.zeros((4,))
     epsilon = epsilon_start
     curr_obs = env.reset()
+    curr_obs = curr_obs['pov']
 
     # paper samples expert and self generated samples by weights, I used fixed proportion like Ape-X DQfD
     exp_batch_size = int(batch_size / 4)
     gen_batch_size = batch_size - exp_batch_size
     episode = 1
     total_rew = 0.
-    while current_step < max_timesteps:
-        #print("current_step: " + str(current_step))
+    for current_step in range(max_timesteps):
+        print("current_step: " + str(current_step))
 
-        current_step += 1
         episode_start_ts += 1
 
         # get action
-        # action_command used to actually input the command
         if random.random() <= epsilon:
-            action_index = random.randint(0,7)
-            action_command = action_list[action_index]
+            action_index = random.randint(0,12)
         else:
-            temp_curr_obs = np.array(curr_obs)
-            temp_curr_obs = temp_curr_obs.reshape(1, temp_curr_obs.shape[0], temp_curr_obs.shape[1], temp_curr_obs.shape[2])
+            #temp_curr_obs = np.array(curr_obs)
+            #temp_curr_obs = temp_curr_obs.reshape(1, temp_curr_obs.shape[0], temp_curr_obs.shape[1], temp_curr_obs.shape[2])
 
             #print("temp_curr_obs.shape: " + str(temp_curr_obs.shape))
             #print("temp_curr_obs: " + str(temp_curr_obs))
 
             empty_action_by_one = np.zeros((1))
             q = sess.run(model.dq_output,  
-                         feed_dict={model.input_img_dq: temp_curr_obs,
-                                    model.input_img_nstep: temp_curr_obs,
+                         feed_dict={model.input_img_dq: [curr_obs],
+                                    model.input_img_nstep: [curr_obs],
                                     model.actions: empty_action_by_one,
                                     model.input_expert_action: empty_exp_action_by_one,
                                     model.input_is_expert: empty_by_one,
@@ -481,14 +447,54 @@ def main():
             #print("q: " + str(q))
             #q, _, _ = train_model.predict([temp_curr_obs, temp_curr_obs, empty_by_one, empty_exp_action_by_one, empty_action_len_by_one])
             action_index = np.argmax(q)
-            action_command = action_list[action_index]
 
         # reduce exploration rate epsilon
         if epsilon > epsilon_min:
             epsilon -= (epsilon_start - epsilon_min) / explore_ts
 
+        action = env.action_space.noop()
+        if (action_index == 0):
+            action['camera'] = [0, -5]
+            action['attack'] = 0
+        elif (action_index == 1):
+            action['camera'] = [0, -5]
+            action['attack'] = 1
+        elif (action_index == 2):
+            action['camera'] = [0, 5]
+            action['attack'] = 0
+        elif (action_index == 3):
+            action['camera'] = [0, 5]
+            action['attack'] = 1
+        elif (action_index == 4):
+            action['camera'] = [-5, 0]
+            action['attack'] = 0
+        elif (action_index == 5):
+            action['camera'] = [-5, 0]
+            action['attack'] = 1
+        elif (action_index == 6):
+            action['camera'] = [5, 0]
+            action['attack'] = 0
+        elif (action_index == 7):
+            action['camera'] = [5, 0]
+            action['attack'] = 1
+        elif (action_index == 8):
+            action['forward'] = 1
+            action['attack'] = 0
+        elif (action_index == 9):
+            action['forward'] = 1
+            action['attack'] = 1
+        elif (action_index == 10):
+            action['jump'] = 1
+            action['attack'] = 0
+        elif (action_index == 11):
+            action['jump'] = 1
+            action['attack'] = 1
+        elif (action_index == 12):
+            action['attack'] = 1
+
         # do action
-        obs, rew, done, info = env.step(action_command)
+        obs, rew, done, info = env.step(action)
+        obs = obs['pov']
         #print("_rew: " + str(_rew))
 
         # reward clip value from paper = sign(r) * log(1+|r|)
@@ -504,7 +510,6 @@ def main():
         if episode_start_ts > 10:
             add_transition(replay_buffer, nstep_state_deque, nstep_action_deque, nstep_rew_list, nstep_nexts_deque,
                            nstep_done_deque, obs, False, nsteps, nstep_gamma)
-        #env.render()
 
         if (current_step % 1000 == 0):
             print("total_rew: " + str(total_rew))
@@ -516,17 +521,18 @@ def main():
             #print("nstep_rew_mean: " + str(nstep_rew_mean))
 
         # if episode done we reset
+
+        #print("done: " + str(done))
         if done:
             #summary_writer.add_summary(nstep_rew_mean, current_step)
-
             #print('episode done {}'.format(total_rew))
             # emptying the deques
             add_transition(replay_buffer, nstep_state_deque, nstep_action_deque, nstep_rew_list, nstep_nexts_deque,
                            nstep_done_deque, obs, True, nsteps, nstep_gamma)
-            episode += 1
-
+            
             # reset the environment, get the current state
             curr_obs = env.reset()
+            curr_obs = curr_obs['pov']
 
             nstep_state_deque.clear()
             nstep_action_deque.clear()
@@ -569,6 +575,9 @@ def main():
 
             states_batch, action_batch, reward_batch, next_states_batch, done_batch, \
                 nstep_rew_batch, nstep_next_batch = map(np.array, zip(*zip_batch))
+
+            #print("exp_states_batch.shape: " + str(exp_states_batch.shape))
+            #print("states_batch.shape: " + str(states_batch.shape))
 
             # concatenating expert and generated replays
             concat_states = np.concatenate((exp_states_batch, states_batch), axis=0)
@@ -623,29 +632,28 @@ def main():
 
             dq_targets = dq_targets[np.arange(batch_size),action_batch]
             nstep_targets = nstep_targets[np.arange(batch_size),action_batch]
-            _, loss_summary, td_error_dq, td_error_nstep, slmc_value = sess.run([model.updateModel, model.summaries,
-                                                                                 model.td_error_dq, model.td_error_nstep, model.slmc_output], 
-                                                                                 feed_dict={model.input_img_dq: states_batch,
-                                                                                            model.input_img_nstep: states_batch,
-                                                                                            model.actions: action_batch,
-                                                                                            model.input_expert_action:input_exp_action,
-                                                                                            model.input_is_expert: is_expert_input,
-                                                                                            model.input_expert_margin: expert_margin,
-                                                                                            model.targetQ_dq: dq_targets, 
-                                                                                            model.targetQ_nstep: nstep_targets}
-                                                                               )
-
-            dq_loss = td_error_dq
-            nstep_loss = td_error_nstep
-            sample_losses = np.abs(td_error_dq)
+            _, loss_summary, slmc_value = sess.run([model.updateModel, model.summaries, model.slmc_output], 
+                                                                      feed_dict={model.input_img_dq: states_batch,
+                                                                                 model.input_img_nstep: states_batch,
+                                                                                 model.actions: action_batch,
+                                                                                 model.input_expert_action:input_exp_action,
+                                                                                 model.input_is_expert: is_expert_input,
+                                                                                 model.input_expert_margin: expert_margin,
+                                                                                 model.targetQ_dq: dq_targets, 
+                                                                                 model.targetQ_nstep: nstep_targets}
+                                                                                )
+            
+            summary_writer.add_summary(loss_summary, current_step)
+            #print("slmc_value: " + str(slmc_value))
+            #dq_loss = td_error_dq
+            #nstep_loss = td_error_nstep
+            #sample_losses = np.abs(td_error_dq)
 
             #expert_buffer.update_weights(exp_minibatch, sample_losses[:exp_batch_size])
             #replay_buffer.update_weights(minibatch, sample_losses[-(batch_size - exp_batch_size):])
-    '''
-    env = gym.make(env_name)
-    #########################################################################
-    ###################### Test Trained Expert model ########################
-    #########################################################################
+    
+
+    print('Test DQFD model')
     ckpt = tf.train.get_checkpoint_state(expert_model_path)
     saver.restore(sess, ckpt.model_checkpoint_path)
     
@@ -653,11 +661,9 @@ def main():
     obs = env.reset()
     s = obs['pov']
     total_rew = 0
-    #print("env.buttons: " + str(env.buttons))
     while True:
         if random.random() <= epsilon:
             action_index = random.randint(0, action_len - 1)
-            #print("action_index: " + str(action_index))
         else:
             q = sess.run(model.dq_output, feed_dict={model.input_img_dq: [s]})[0]
             #print("q: " + str(q))
@@ -669,28 +675,28 @@ def main():
 
         action = env.action_space.noop()
         if (action_index == 0):
-            action['camera'] = [0, -2.5]
+            action['camera'] = [0, -5]
             action['attack'] = 0
         elif (action_index == 1):
-            action['camera'] = [0, -2.5]
+            action['camera'] = [0, -5]
             action['attack'] = 1
         elif (action_index == 2):
-            action['camera'] = [0, 2.5]
+            action['camera'] = [0, 5]
             action['attack'] = 0
         elif (action_index == 3):
-            action['camera'] = [0, 2.5]
+            action['camera'] = [0, 5]
             action['attack'] = 1
         elif (action_index == 4):
-            action['camera'] = [-2.5, 0]
+            action['camera'] = [-5, 0]
             action['attack'] = 0
         elif (action_index == 5):
-            action['camera'] = [-2.5, 0]
+            action['camera'] = [-5, 0]
             action['attack'] = 1
         elif (action_index == 6):
-            action['camera'] = [2.5, 0]
+            action['camera'] = [5, 0]
             action['attack'] = 0
         elif (action_index == 7):
-            action['camera'] = [2.5, 0]
+            action['camera'] = [5, 0]
             action['attack'] = 1
         elif (action_index == 8):
             action['forward'] = 1
