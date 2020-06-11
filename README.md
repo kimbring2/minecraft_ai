@@ -20,4 +20,5 @@ I am reproducing content of paper(https://arxiv.org/pdf/1912.08664v2.pdf) of win
 2. Tensorflow : pip install tensorflow-gpu==1.13.1
 
 # Detailed inforamtion
-More information will be updated soon on edium.
+Please check Medium article for more information.
+https://medium.com/@dohyeongkim/deep-q-learning-from-demonstrations-dqfd-for-minecraft-tutorial-1-4b462a18de5a
