@@ -12,7 +12,9 @@ Code for playing the Minecraft using the Deep Learning
 1. 
 
 # How to run 
-1. Actor-Critic based agent for TreeChop task: Open and run MineRL-TreeChop(LSTM).ipynb file
+First, you need to check everything about MineRL package works well in your PC. Please visit https://minerl.readthedocs.io/en/latest/.
+
+If everything is fine, open and run the cell of MineRL-TreeChop(LSTM).ipynb file. It is simple A2C agent for TreeChop task of Minecraft. Firat, agent is trained via Supervised Learning. Next, it begins Reinforcement Learning phase from pretrained model.
 
 # How to check training goes well
 1. Loss check : Loss should fall to almost 0 as shown in the graph above when the policy network is trained by the Supervised Learning manner.
