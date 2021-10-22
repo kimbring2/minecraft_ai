@@ -1,5 +1,5 @@
 # Introduction
-Code for playing the Minecraft using the Deep Learning 
+Code for playing the Minecraft using the Deep Learning. 
 
 # Dependencies
 1. minerl
@@ -8,18 +8,23 @@ Code for playing the Minecraft using the Deep Learning
 # Network architecture
 <img src="image/minecraft_network.png" width="1000">
 
-# Reference
-1. 
+# Supervised Learning method
+I just use common the cross enthropy method for calculating loss between action of replay file and network. Loss should fall to almost 0 as shown in the graph below when the policy network is trained by the Supervised Learning manner.
+
+<img src="image/treechop_sl_loss.png" width="1000">
+
+# Reinforcement Learning method
+Because of long game play time, normal A2C method can not be due to memory problem. Therefore, [IMPALA](https://deepmind.com/research/publications/2019/impala-scalable-distributed-deep-rl-importance-weighted-actor-learner-architectures) is used which store trajectory into buffer and use it for training like a DQN. To verify alrorithm works well in Minecraft, Cartpole and Pong environment is used.
+
+You can run the IMPALA for Cartpole using below code and check IMPALA works well.
+[Cartpole IMPALAM](https://github.com/kimbring2/minecraft_ai/blob/master/CartPole-v0_IMPALA.ipynb)
+
+<img src="image/cartpole_impala.png" width="1000">
 
 # How to run 
 First, you need to check everything about MineRL package works well in your PC. Please visit https://minerl.readthedocs.io/en/latest/.
 
 If everything is fine, open and run the cell of MineRL-TreeChop(LSTM).ipynb file. It is simple A2C agent for TreeChop task of Minecraft. Firat, agent is trained via Supervised Learning. Next, it begins Reinforcement Learning phase from pretrained model.
-
-# How to check training goes well
-1. Loss check : Loss should fall to almost 0 as shown in the graph above when the policy network is trained by the Supervised Learning manner.
-
-<img src="image/treechop_sl_loss.png" width="1000">
 
 # Detailed inforamtion
 Please check Medium article(https://medium.com/@dohyeongkim/deep-q-learning-from-demonstrations-dqfd-for-minecraft-tutorial-1-4b462a18de5a) for more information.
