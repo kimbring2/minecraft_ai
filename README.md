@@ -11,7 +11,7 @@ Code for playing the Minecraft using the Deep Learning.
 # Supervised Learning method
 I just use common the cross enthropy method for calculating loss between action of replay file and network. Loss should fall to almost 0 as shown in the graph below when the policy network is trained by the Supervised Learning manner.
 
-<img src="image/treechop_sl_loss.png" width="1000">
+<img src="image/treechop_sl_loss.png" width="500">
 
 # Reinforcement Learning method
 Because of long game play time, normal A2C method can not be due to memory problem. Therefore, [IMPALA](https://deepmind.com/research/publications/2019/impala-scalable-distributed-deep-rl-importance-weighted-actor-learner-architectures) is used which store trajectory into buffer and use it for training like a DQN. To verify alrorithm works well in Minecraft, Cartpole and Pong environment is used.
@@ -19,7 +19,7 @@ Because of long game play time, normal A2C method can not be due to memory probl
 You can run the IMPALA for Cartpole using below code and check IMPALA works well.
 [Cartpole IMPALAM](https://github.com/kimbring2/minecraft_ai/blob/master/CartPole-v0_IMPALA.ipynb)
 
-<img src="image/cartpole_impala.png" width="1000">
+<img src="image/cartpole_impala.png" width="500">
 
 # How to run 
 First, you need to check everything about MineRL package works well in your PC. Please visit https://minerl.readthedocs.io/en/latest/.
