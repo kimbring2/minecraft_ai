@@ -7,7 +7,7 @@
 1. Seed RL: https://github.com/google-research/seed_rl
 
 # Usage
-$ python3.7 learner.py --env_number 10 --workspace_path /home/[Your User Name]/pong_impala
+$ /run.sh 10 /home/[Your User Name]/pong_impala
 
 # Training Result
 
