@@ -10,6 +10,8 @@
 $ python3.7 learner.py --env_number 10 --workspace_path /home/[Your User Name]/pong_impala
 
 # Training Result
+
+```
 reward_sum: 12.0
 reward_sum: 12.0
 reward_sum: 12.0
@@ -33,6 +35,7 @@ reward_sum: 15.0
 reward_sum: 12.0
 reward_sum: 14.0
 reward_sum: 16.0
+```
 
 <img src="pong_impala_result.gif" width="800>
   
