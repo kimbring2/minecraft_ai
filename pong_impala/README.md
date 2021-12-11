@@ -37,5 +37,5 @@ reward_sum: 14.0
 reward_sum: 16.0
 ```
 
-<img src="pong_impala_result.gif" width="800>
+<img src="image/pong_impala_result.gif" width="500">
   
