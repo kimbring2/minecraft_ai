@@ -2,6 +2,7 @@
 1. Tensorflow 2.4.1
 2. TensorFlow Probability 0.11.0
 3. tmux
+4. gym 0.17.1
 
 # Reference
 1. Seed RL: https://github.com/google-research/seed_rl
