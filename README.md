@@ -19,7 +19,7 @@ Because of long game play time, normal A2C method can not be due to memory probl
 You can run the IMPALA for Cartpole using below code and check IMPALA works well.
 [Cartpole IMPALAM](https://github.com/kimbring2/minecraft_ai/blob/master/CartPole-v0_IMPALA.ipynb)
 
-<img src="image/cartpole_impala.png" width="500">
+<img src="image/pong_impala_result.gif" width="500">
 
 # How to run 
 First, you need to check everything about MineRL package works well in your PC. Please visit https://minerl.readthedocs.io/en/latest/.
