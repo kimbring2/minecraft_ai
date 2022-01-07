@@ -8,7 +8,7 @@
 1. Seed RL: https://github.com/google-research/seed_rl
 
 # Usage
-$ /run.sh 10 /home/[Your User Name]/pong_impala
+$ ./run.sh 10 /home/[Your User Name]/pong_impala
 
 # Training Result
 
