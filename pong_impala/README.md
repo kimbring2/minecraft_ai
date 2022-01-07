@@ -8,6 +8,7 @@
 1. Seed RL: https://github.com/google-research/seed_rl
 
 # Usage
+$ ./run.sh env_number workspace_path
 $ ./run.sh 10 /home/[Your User Name]/pong_impala
 
 # Training Result
