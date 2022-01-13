@@ -16,8 +16,7 @@ I just use common the cross enthropy method for calculating loss between action 
 # Reinforcement Learning method
 Because of long game play time, normal A2C method can not be due to memory problem. Therefore, [IMPALA](https://deepmind.com/research/publications/2019/impala-scalable-distributed-deep-rl-importance-weighted-actor-learner-architectures) is used which store trajectory into buffer and use it for training like a DQN. To verify alrorithm works well in Minecraft, Cartpole and Pong environment is used.
 
-You can run the IMPALA for Cartpole using below code and check IMPALA works well.
-[Pong IMPALA](https://github.com/kimbring2/minecraft_ai/blob/master/Pong_v0(IMPALA).ipynb)
+You can run the [IMPALA for Pong](https://github.com/kimbring2/minecraft_ai/blob/master/Pong_v0(IMPALA).ipynb) and check how it works.
 
 # How to run 
 First, you need to check everything about MineRL package works well in your PC. Please visit https://minerl.readthedocs.io/en/latest/.
