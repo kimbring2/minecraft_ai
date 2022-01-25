@@ -363,3 +363,231 @@ if __name__ == "__main__":
     #agent.run() # use as A2C
     agent.train(n_threads=1) # use as A3C
     #agent.test('Models/Pong-v0_A3C_2.5e-05_Actor.h5', '')
+
+'''
+Training Result
+
+episode: 4114/2000000, thread: 0, score: -9.0, average: -10.94 
+episode: 4115/2000000, thread: 0, score: -8.0, average: -10.94 
+episode: 4116/2000000, thread: 0, score: -12.0, average: -10.98 
+episode: 4117/2000000, thread: 0, score: -13.0, average: -10.90 
+episode: 4118/2000000, thread: 0, score: -9.0, average: -10.84 
+episode: 4119/2000000, thread: 0, score: -14.0, average: -10.98 
+episode: 4120/2000000, thread: 0, score: -11.0, average: -10.90 
+episode: 4121/2000000, thread: 0, score: -11.0, average: -11.02 
+episode: 4122/2000000, thread: 0, score: -10.0, average: -10.98 
+episode: 4123/2000000, thread: 0, score: -8.0, average: -11.00 
+episode: 4124/2000000, thread: 0, score: -9.0, average: -10.94 
+episode: 4125/2000000, thread: 0, score: -6.0, average: -10.86 
+episode: 4126/2000000, thread: 0, score: -15.0, average: -10.90 
+episode: 4127/2000000, thread: 0, score: -10.0, average: -10.94 
+episode: 4128/2000000, thread: 0, score: -11.0, average: -10.92 
+episode: 4129/2000000, thread: 0, score: -20.0, average: -11.04 
+episode: 4130/2000000, thread: 0, score: -8.0, average: -11.06 
+episode: 4131/2000000, thread: 0, score: -12.0, average: -11.24 
+episode: 4132/2000000, thread: 0, score: -6.0, average: -11.02 
+episode: 4133/2000000, thread: 0, score: -12.0, average: -11.02 
+episode: 4134/2000000, thread: 0, score: -16.0, average: -10.94 
+episode: 4135/2000000, thread: 0, score: -18.0, average: -11.02 
+episode: 4136/2000000, thread: 0, score: -13.0, average: -11.22 
+episode: 4137/2000000, thread: 0, score: -12.0, average: -11.20 
+episode: 4138/2000000, thread: 0, score: -8.0, average: -11.20 
+episode: 4139/2000000, thread: 0, score: -13.0, average: -11.24 
+episode: 4140/2000000, thread: 0, score: -12.0, average: -11.30 
+episode: 4141/2000000, thread: 0, score: -8.0, average: -11.10 
+episode: 4142/2000000, thread: 0, score: -8.0, average: -11.06 
+episode: 4143/2000000, thread: 0, score: -10.0, average: -11.12 
+episode: 4144/2000000, thread: 0, score: -14.0, average: -11.12 
+episode: 4145/2000000, thread: 0, score: -12.0, average: -11.16 
+episode: 4146/2000000, thread: 0, score: -4.0, average: -11.02 
+episode: 4147/2000000, thread: 0, score: -6.0, average: -10.96 
+episode: 4148/2000000, thread: 0, score: -2.0, average: -10.76 
+episode: 4149/2000000, thread: 0, score: -9.0, average: -10.72 
+episode: 4150/2000000, thread: 0, score: 2.0, average: -10.52 
+episode: 4151/2000000, thread: 0, score: -11.0, average: -10.48 
+episode: 4152/2000000, thread: 0, score: -9.0, average: -10.38 
+episode: 4153/2000000, thread: 0, score: -5.0, average: -10.24 
+episode: 4154/2000000, thread: 0, score: -7.0, average: -10.10 SAVING
+episode: 4155/2000000, thread: 0, score: -15.0, average: -10.06 SAVING
+episode: 4156/2000000, thread: 0, score: -8.0, average: -10.02 SAVING
+episode: 4157/2000000, thread: 0, score: -12.0, average: -10.00 SAVING
+episode: 4158/2000000, thread: 0, score: -11.0, average: -9.98 SAVING
+episode: 4159/2000000, thread: 0, score: -10.0, average: -9.94 SAVING
+episode: 4160/2000000, thread: 0, score: -11.0, average: -9.94 SAVING
+episode: 4161/2000000, thread: 0, score: -13.0, average: -10.00 
+episode: 4162/2000000, thread: 0, score: -2.0, average: -9.88 SAVING
+episode: 4163/2000000, thread: 0, score: -9.0, average: -10.00 
+episode: 4164/2000000, thread: 0, score: -8.0, average: -9.98 
+episode: 4165/2000000, thread: 0, score: -1.0, average: -9.84 SAVING
+episode: 4166/2000000, thread: 0, score: -12.0, average: -9.84 SAVING
+episode: 4167/2000000, thread: 0, score: -5.0, average: -9.68 SAVING
+episode: 4168/2000000, thread: 0, score: -15.0, average: -9.80 
+episode: 4169/2000000, thread: 0, score: -15.0, average: -9.82 
+episode: 4170/2000000, thread: 0, score: -14.0, average: -9.88 
+episode: 4171/2000000, thread: 0, score: -7.0, average: -9.80 
+episode: 4172/2000000, thread: 0, score: -9.0, average: -9.78 
+episode: 4173/2000000, thread: 0, score: -14.0, average: -9.90 
+episode: 4174/2000000, thread: 0, score: -8.0, average: -9.88 
+episode: 4175/2000000, thread: 0, score: -7.0, average: -9.90 
+episode: 4176/2000000, thread: 0, score: -13.0, average: -9.86 
+episode: 4177/2000000, thread: 0, score: -14.0, average: -9.94 
+episode: 4178/2000000, thread: 0, score: -12.0, average: -9.96 
+episode: 4179/2000000, thread: 0, score: -15.0, average: -9.86 
+episode: 4180/2000000, thread: 0, score: -9.0, average: -9.88 
+episode: 4181/2000000, thread: 0, score: -15.0, average: -9.94 
+episode: 4182/2000000, thread: 0, score: -8.0, average: -9.98 
+episode: 4183/2000000, thread: 0, score: -5.0, average: -9.84 
+episode: 4184/2000000, thread: 0, score: -12.0, average: -9.76 
+episode: 4185/2000000, thread: 0, score: -10.0, average: -9.60 SAVING
+episode: 4186/2000000, thread: 0, score: -10.0, average: -9.54 SAVING
+episode: 4187/2000000, thread: 0, score: -5.0, average: -9.40 SAVING
+episode: 4188/2000000, thread: 0, score: -4.0, average: -9.32 SAVING
+episode: 4189/2000000, thread: 0, score: -6.0, average: -9.18 SAVING
+episode: 4190/2000000, thread: 0, score: -9.0, average: -9.12 SAVING
+episode: 4191/2000000, thread: 0, score: -14.0, average: -9.24 
+episode: 4192/2000000, thread: 0, score: -7.0, average: -9.22 
+episode: 4193/2000000, thread: 0, score: -9.0, average: -9.20 
+episode: 4194/2000000, thread: 0, score: -9.0, average: -9.10 SAVING
+episode: 4195/2000000, thread: 0, score: -6.0, average: -8.98 SAVING
+episode: 4196/2000000, thread: 0, score: -15.0, average: -9.20 
+episode: 4197/2000000, thread: 0, score: -8.0, average: -9.24 
+episode: 4198/2000000, thread: 0, score: -5.0, average: -9.30 
+episode: 4199/2000000, thread: 0, score: -18.0, average: -9.48 
+episode: 4200/2000000, thread: 0, score: -8.0, average: -9.68 
+episode: 4201/2000000, thread: 0, score: -6.0, average: -9.58 
+episode: 4202/2000000, thread: 0, score: -6.0, average: -9.52 
+episode: 4203/2000000, thread: 0, score: -8.0, average: -9.58 
+episode: 4204/2000000, thread: 0, score: -14.0, average: -9.72 
+episode: 4205/2000000, thread: 0, score: -9.0, average: -9.60 
+episode: 4206/2000000, thread: 0, score: -10.0, average: -9.64 
+episode: 4207/2000000, thread: 0, score: -5.0, average: -9.50 
+episode: 4208/2000000, thread: 0, score: -16.0, average: -9.60 
+episode: 4209/2000000, thread: 0, score: -11.0, average: -9.62 
+episode: 4210/2000000, thread: 0, score: -2.0, average: -9.44 
+episode: 4211/2000000, thread: 0, score: -3.0, average: -9.24 
+episode: 4212/2000000, thread: 0, score: -6.0, average: -9.32 
+episode: 4213/2000000, thread: 0, score: -6.0, average: -9.26 
+episode: 4214/2000000, thread: 0, score: -2.0, average: -9.14 
+episode: 4215/2000000, thread: 0, score: -3.0, average: -9.18 
+episode: 4216/2000000, thread: 0, score: -4.0, average: -9.02 
+episode: 4217/2000000, thread: 0, score: 2.0, average: -8.88 SAVING
+episode: 4218/2000000, thread: 0, score: -11.0, average: -8.80 SAVING
+episode: 4219/2000000, thread: 0, score: -5.0, average: -8.60 SAVING
+episode: 4220/2000000, thread: 0, score: -6.0, average: -8.44 SAVING
+episode: 4221/2000000, thread: 0, score: -6.0, average: -8.42 SAVING
+episode: 4222/2000000, thread: 0, score: 2.0, average: -8.20 SAVING
+episode: 4223/2000000, thread: 0, score: -13.0, average: -8.18 SAVING
+episode: 4224/2000000, thread: 0, score: -8.0, average: -8.18 SAVING
+episode: 4225/2000000, thread: 0, score: -5.0, average: -8.14 SAVING
+episode: 4226/2000000, thread: 0, score: -10.0, average: -8.08 SAVING
+episode: 4227/2000000, thread: 0, score: -7.0, average: -7.94 SAVING
+episode: 4228/2000000, thread: 0, score: -8.0, average: -7.86 SAVING
+episode: 4229/2000000, thread: 0, score: -17.0, average: -7.90 
+episode: 4230/2000000, thread: 0, score: -10.0, average: -7.92 
+episode: 4231/2000000, thread: 0, score: -6.0, average: -7.74 SAVING
+episode: 4232/2000000, thread: 0, score: -14.0, average: -7.86 
+episode: 4233/2000000, thread: 0, score: -9.0, average: -7.94 
+episode: 4234/2000000, thread: 0, score: -14.0, average: -7.98 
+episode: 4235/2000000, thread: 0, score: -7.0, average: -7.92 
+episode: 4236/2000000, thread: 0, score: -16.0, average: -8.04 
+episode: 4237/2000000, thread: 0, score: -8.0, average: -8.10 
+episode: 4238/2000000, thread: 0, score: -9.0, average: -8.20 
+episode: 4239/2000000, thread: 0, score: -4.0, average: -8.16 
+episode: 4240/2000000, thread: 0, score: -1.0, average: -8.00 
+episode: 4241/2000000, thread: 0, score: -6.0, average: -7.84 
+episode: 4242/2000000, thread: 0, score: -3.0, average: -7.76 
+episode: 4243/2000000, thread: 0, score: -11.0, average: -7.80 
+episode: 4244/2000000, thread: 0, score: -12.0, average: -7.86 
+episode: 4245/2000000, thread: 0, score: -9.0, average: -7.92 
+episode: 4246/2000000, thread: 0, score: -14.0, average: -7.90 
+episode: 4247/2000000, thread: 0, score: -7.0, average: -7.88 
+episode: 4248/2000000, thread: 0, score: -7.0, average: -7.92 
+episode: 4249/2000000, thread: 0, score: -10.0, average: -7.76 
+episode: 4250/2000000, thread: 0, score: -11.0, average: -7.82 
+episode: 4251/2000000, thread: 0, score: -6.0, average: -7.82 
+episode: 4252/2000000, thread: 0, score: -10.0, average: -7.90 
+episode: 4253/2000000, thread: 0, score: -13.0, average: -8.00 
+episode: 4254/2000000, thread: 0, score: -12.0, average: -7.96 
+episode: 4255/2000000, thread: 0, score: -8.0, average: -7.94 
+episode: 4256/2000000, thread: 0, score: -9.0, average: -7.92 
+episode: 4257/2000000, thread: 0, score: -7.0, average: -7.96 
+episode: 4258/2000000, thread: 0, score: 1.0, average: -7.62 SAVING
+episode: 4259/2000000, thread: 0, score: -10.0, average: -7.60 SAVING
+episode: 4260/2000000, thread: 0, score: -6.0, average: -7.68 
+episode: 4261/2000000, thread: 0, score: -1.0, average: -7.64 
+episode: 4262/2000000, thread: 0, score: -4.0, average: -7.60 SAVING
+episode: 4263/2000000, thread: 0, score: 10.0, average: -7.28 SAVING
+episode: 4264/2000000, thread: 0, score: -5.0, average: -7.34 
+episode: 4265/2000000, thread: 0, score: 1.0, average: -7.26 SAVING
+episode: 4266/2000000, thread: 0, score: -11.0, average: -7.40 
+episode: 4267/2000000, thread: 0, score: -10.0, average: -7.64 
+episode: 4268/2000000, thread: 0, score: -12.0, average: -7.66 
+episode: 4269/2000000, thread: 0, score: -6.0, average: -7.68 
+episode: 4270/2000000, thread: 0, score: 4.0, average: -7.48 
+episode: 4271/2000000, thread: 0, score: 3.0, average: -7.30 
+episode: 4272/2000000, thread: 0, score: -4.0, average: -7.42 
+episode: 4273/2000000, thread: 0, score: -13.0, average: -7.42 
+episode: 4274/2000000, thread: 0, score: -5.0, average: -7.36 
+episode: 4275/2000000, thread: 0, score: -6.0, average: -7.38 
+episode: 4276/2000000, thread: 0, score: -9.0, average: -7.36 
+episode: 4277/2000000, thread: 0, score: -5.0, average: -7.32 
+episode: 4278/2000000, thread: 0, score: -1.0, average: -7.18 SAVING
+episode: 4279/2000000, thread: 0, score: 6.0, average: -6.72 SAVING
+episode: 4280/2000000, thread: 0, score: -9.0, average: -6.70 SAVING
+episode: 4281/2000000, thread: 0, score: -5.0, average: -6.68 SAVING
+episode: 4282/2000000, thread: 0, score: 4.0, average: -6.32 SAVING
+episode: 4283/2000000, thread: 0, score: 5.0, average: -6.04 SAVING
+episode: 4284/2000000, thread: 0, score: 11.0, average: -5.54 SAVING
+episode: 4285/2000000, thread: 0, score: -15.0, average: -5.70 
+episode: 4286/2000000, thread: 0, score: -9.0, average: -5.56 
+episode: 4287/2000000, thread: 0, score: 8.0, average: -5.24 SAVING
+episode: 4288/2000000, thread: 0, score: -6.0, average: -5.18 SAVING
+episode: 4289/2000000, thread: 0, score: -5.0, average: -5.20 
+episode: 4290/2000000, thread: 0, score: -7.0, average: -5.32 
+episode: 4291/2000000, thread: 0, score: -13.0, average: -5.46 
+episode: 4292/2000000, thread: 0, score: -11.0, average: -5.62 
+episode: 4293/2000000, thread: 0, score: -9.0, average: -5.58 
+episode: 4294/2000000, thread: 0, score: -12.0, average: -5.58 
+episode: 4295/2000000, thread: 0, score: -4.0, average: -5.48 
+episode: 4296/2000000, thread: 0, score: -16.0, average: -5.52 
+episode: 4297/2000000, thread: 0, score: -5.0, average: -5.48 
+episode: 4298/2000000, thread: 0, score: -10.0, average: -5.54 
+episode: 4299/2000000, thread: 0, score: 8.0, average: -5.18 SAVING
+episode: 4300/2000000, thread: 0, score: -8.0, average: -5.12 SAVING
+episode: 4301/2000000, thread: 0, score: -5.0, average: -5.10 SAVING
+episode: 4302/2000000, thread: 0, score: 4.0, average: -4.82 SAVING
+episode: 4303/2000000, thread: 0, score: -1.0, average: -4.58 SAVING
+episode: 4304/2000000, thread: 0, score: -11.0, average: -4.56 SAVING
+episode: 4305/2000000, thread: 0, score: -10.0, average: -4.60 
+episode: 4306/2000000, thread: 0, score: 4.0, average: -4.34 SAVING
+episode: 4307/2000000, thread: 0, score: -5.0, average: -4.30 SAVING
+episode: 4308/2000000, thread: 0, score: 16.0, average: -4.00 SAVING
+episode: 4309/2000000, thread: 0, score: -13.0, average: -4.06 
+episode: 4310/2000000, thread: 0, score: 6.0, average: -3.82 SAVING
+episode: 4311/2000000, thread: 0, score: -5.0, average: -3.90 
+episode: 4312/2000000, thread: 0, score: -5.0, average: -3.92 
+episode: 4313/2000000, thread: 0, score: -4.0, average: -4.20 
+episode: 4314/2000000, thread: 0, score: -10.0, average: -4.30 
+episode: 4315/2000000, thread: 0, score: -5.0, average: -4.42 
+episode: 4316/2000000, thread: 0, score: 2.0, average: -4.16 
+episode: 4317/2000000, thread: 0, score: -9.0, average: -4.14 
+episode: 4318/2000000, thread: 0, score: 6.0, average: -3.78 SAVING
+episode: 4319/2000000, thread: 0, score: 1.0, average: -3.64 SAVING
+episode: 4320/2000000, thread: 0, score: -1.0, average: -3.74 
+episode: 4321/2000000, thread: 0, score: -6.0, average: -3.92 
+episode: 4322/2000000, thread: 0, score: -1.0, average: -3.86 
+episode: 4323/2000000, thread: 0, score: -4.0, average: -3.68 
+episode: 4324/2000000, thread: 0, score: -6.0, average: -3.70 
+episode: 4325/2000000, thread: 0, score: -5.0, average: -3.68 
+episode: 4326/2000000, thread: 0, score: 4.0, average: -3.42 SAVING
+episode: 4327/2000000, thread: 0, score: 7.0, average: -3.18 SAVING
+episode: 4328/2000000, thread: 0, score: -7.0, average: -3.30 
+episode: 4329/2000000, thread: 0, score: 12.0, average: -3.18 SAVING
+episode: 4330/2000000, thread: 0, score: 1.0, average: -2.98 SAVING
+episode: 4331/2000000, thread: 0, score: -4.0, average: -2.96 SAVING
+episode: 4332/2000000, thread: 0, score: -16.0, average: -3.36 
+episode: 4333/2000000, thread: 0, score: -4.0, average: -3.54 
+episode: 4334/2000000, thread: 0, score: -5.0, average: -3.86 
+episode: 4335/2000000, thread: 0, score: 9.0, average: -3.38 
+episode: 4336/2000000, thread: 0, score: 1.0, average: -3.18
+'''
