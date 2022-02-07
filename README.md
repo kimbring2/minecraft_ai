@@ -22,7 +22,7 @@ $ ./run_pong_impala.sh 4
 
 After around 30 min training, you can see a reward like a below graph.
 
-<img src="image/pong_reward_graph.png" width="1000">
+<img src="image/pong_reward_graph.png" width="500">
 
 # How to run 
 First, you need to check everything about MineRL package works well in your PC. Please visit https://minerl.readthedocs.io/en/latest/.
