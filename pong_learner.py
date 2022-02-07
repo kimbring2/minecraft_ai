@@ -52,7 +52,7 @@ for i in range(0, arguments.env_num):
 
 unroll_length = 100
 queue = tf.queue.FIFOQueue(1, dtypes=[tf.int32, tf.float32, tf.bool, tf.float32, tf.float32, tf.int32, tf.float32, tf.float32], 
-                           shapes=[[unroll_length+1],[unroll_length+1],[unroll_length+1],[unroll_length+1,80,80,4],[unroll_length+1,6],[unroll_length+1],[unroll_length+1,256],[unroll_length+1,256]])
+                           shapes=[[unroll_length+1],[unroll_length+1],[unroll_length+1],[unroll_length+1,80,80,1],[unroll_length+1,6],[unroll_length+1],[unroll_length+1,256],[unroll_length+1,256]])
 Unroll = collections.namedtuple('Unroll', 'env_id reward done observation policy action memory_state carry_state')
 
 memory_list = []
@@ -89,7 +89,8 @@ class OurModel(tf.keras.Model):
         return action_logit, value, final_memory_state, final_carry_state
 
 
-lr = 0.0001
+#lr = 0.0001
+lr = tf.keras.optimizers.schedules.PolynomialDecay(0.0001, 1e6, 0)
 optimizer = tf.keras.optimizers.Adam(lr)
 
 
@@ -265,7 +266,7 @@ def update(states, actions, agent_policies, rewards, dones, memory_states, carry
     return total_loss
 
 
-state_size = (80,80,4)
+state_size = (80,80,1)
 action_size = 6
 num_hidden_units = 256
 model = OurModel(input_shape=state_size, action_space=action_size)
