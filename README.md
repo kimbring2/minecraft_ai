@@ -10,6 +10,10 @@ Code for playing the Minecraft using the Deep Learning.
 6. OpenCV
 7. Matplotlib
 
+# Action, Observation of Minecraft
+
+<img src="image/minerl_env_space.png" width="1000">
+
 # Network architecture
 <img src="image/minecraft_network.png" width="1000">
 
