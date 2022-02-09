@@ -18,7 +18,7 @@ Cross enthropy is used for calculating loss between action of human expertand ag
 <img src="image/treechop_sl_loss.png" width="500">
 
 # Reinforcement Learning method
-Because of long game play time, normal A2C method can not be used because it should use whole episode once. Therefore, [IMPALA](https://deepmind.com/research/publications/2019/impala-scalable-distributed-deep-rl-importance-weighted-actor-learner-architectures) is needed because it can restore trajectory from buffer like a DQN.
+Because of long game play time, normal A2C method can not be used because it should use whole episode once. Therefore, off-policy A2C such as [IMPALA](https://deepmind.com/research/publications/2019/impala-scalable-distributed-deep-rl-importance-weighted-actor-learner-architectures) is needed. It can restore trajectory data from buffer for training like a DQN.
 
 You can run the IMPALA for MineRL by below command. 
 
