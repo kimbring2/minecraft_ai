@@ -19,9 +19,10 @@ Because of long game play time, normal A2C method can not be due to memory probl
 You can run the [IMPALA for MineRL] by below command. 
 
 $ ./run.sh [number of envs]
+
 $ ./run.sh 1
 
-After around 30 min training, you can see a reward like a below graph.
+In the simplest task like a MineRLNavigateDense-v0, agent can find a direction very easily like a below graph.
 
 <img src="image/rl_reward_graph.png" width="500">
 
