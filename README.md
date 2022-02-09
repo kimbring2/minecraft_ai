@@ -14,15 +14,16 @@ I just use common the cross enthropy method for calculating loss between action 
 <img src="image/treechop_sl_loss.png" width="500">
 
 # Reinforcement Learning method
-Because of long game play time, normal A2C method can not be due to memory problem. Therefore, [IMPALA](https://deepmind.com/research/publications/2019/impala-scalable-distributed-deep-rl-importance-weighted-actor-learner-architectures) is used which store trajectory into buffer and use it for training like a DQN. To verify alrorithm works well in Minecraft, Cartpole and Pong environment is used.
+Because of long game play time, normal A2C method can not be due to memory problem. Therefore, [IMPALA](https://deepmind.com/research/publications/2019/impala-scalable-distributed-deep-rl-importance-weighted-actor-learner-architectures) is used which store trajectory into buffer and use it for training like a DQN.
 
-You can run the [IMPALA for Pong] by below command. 
+You can run the [IMPALA for MineRL] by below command. 
 
-$ ./run_pong_impala.sh 4
+$ ./run.sh [number of envs]
+$ ./run.sh 1
 
 After around 30 min training, you can see a reward like a below graph.
 
-<img src="image/pong_reward_graph.png" width="500">
+<img src="image/rl_reward_graph.png" width="500">
 
 # How to run 
 First, you need to check everything about MineRL package works well in your PC. Please visit https://minerl.readthedocs.io/en/latest/.
