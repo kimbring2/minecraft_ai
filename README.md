@@ -9,7 +9,7 @@ Code for playing the Minecraft using the Deep Learning.
 <img src="image/minecraft_network.png" width="1000">
 
 # Supervised Learning method
-
+For Minecraft games, agent can not learn every behaviour for high level playing only using Reinforcment Learning becaue of complexity of task.
 
 I just use common the cross enthropy method for calculating loss between action of replay file and network. Loss should fall to almost 0 as shown in the graph below when the policy network is trained by the Supervised Learning manner.
 
@@ -24,7 +24,7 @@ $ ./run.sh [number of envs]
 
 $ ./run.sh 1
 
-In the simplest task like a MineRLNavigateDense-v0, agent can find a direction very easily like a below graph.
+In the simplest task like a MineRLNavigateDense-v0, agent can find a direction very easily like a below graph when using only 3 action.
 
 <img src="image/rl_reward_graph.png" width="500">
 
