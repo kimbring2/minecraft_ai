@@ -9,14 +9,16 @@ Code for playing the Minecraft using the Deep Learning.
 <img src="image/minecraft_network.png" width="1000">
 
 # Supervised Learning method
+
+
 I just use common the cross enthropy method for calculating loss between action of replay file and network. Loss should fall to almost 0 as shown in the graph below when the policy network is trained by the Supervised Learning manner.
 
 <img src="image/treechop_sl_loss.png" width="500">
 
 # Reinforcement Learning method
-Because of long game play time, normal A2C method can not be due to memory problem. Therefore, [IMPALA](https://deepmind.com/research/publications/2019/impala-scalable-distributed-deep-rl-importance-weighted-actor-learner-architectures) is used which store trajectory into buffer and use it for training like a DQN.
+Because of long game play time, normal A2C method can not be used because it should use whole episode once. Therefore, [IMPALA](https://deepmind.com/research/publications/2019/impala-scalable-distributed-deep-rl-importance-weighted-actor-learner-architectures) is needed because it can restore trajectory from buffer like a DQN.
 
-You can run the [IMPALA for MineRL] by below command. 
+You can run the IMPALA for MineRL by below command. 
 
 $ ./run.sh [number of envs]
 
