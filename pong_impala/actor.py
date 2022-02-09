@@ -26,6 +26,7 @@ EnvOutput = collections.namedtuple('EnvOutput', 'reward done observation abandon
 
 run_id = np.random.randint(low=0, high=np.iinfo(np.int64).max, size=3, dtype=np.int64)
 
+
 for i in range(0, 2000000):
 	obs = env.reset()
 	obs = obs[35:195:2, ::2,:]
