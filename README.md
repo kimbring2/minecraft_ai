@@ -1,9 +1,14 @@
 # Introduction
 Code for playing the Minecraft using the Deep Learning. 
 
-# Dependencies
-1. minerl
-2. tensorflow 2
+# Python Dependencies
+1. Minerl
+2. Tensorflow 2.4.1
+3. Tensorflow_probability 0.11.0
+4. ZeroMQ
+5. Gym
+6. OpenCV
+7. Matplotlib
 
 # Network architecture
 <img src="image/minecraft_network.png" width="1000">
