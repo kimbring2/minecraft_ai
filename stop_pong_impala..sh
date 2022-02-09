@@ -1,1 +1,0 @@
-tmux kill-session -t impala_pong
