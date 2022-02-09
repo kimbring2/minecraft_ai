@@ -14,6 +14,7 @@ For Minecraft games, agent can not learn every behaviour for high level playing 
 [Supervised Learning for MineRL](https://github.com/kimbring2/minecraft_ai/blob/master/MineRL-TreeChop(LSTM).ipynb)
 
 Cross enthropy is used for calculating loss between action of human expertand agent network. Loss should fall to almost 0 as shown in the graph below.
+
 <img src="image/treechop_sl_loss.png" width="500">
 
 # Reinforcement Learning method
