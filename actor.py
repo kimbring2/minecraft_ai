@@ -21,7 +21,6 @@ parser = argparse.ArgumentParser(description='MineRL IMPALA Actor')
 parser.add_argument('--env_id', type=int, default=0, help='ID of environment')
 arguments = parser.parse_args()
 
-
 context = zmq.Context()
 
 #  Socket to talk to server
@@ -44,15 +43,12 @@ def PlotModel(score, episode):
     scores.append(score)
     episodes.append(episode)
     average.append(sum(scores[-50:]) / len(scores[-50:]))
-    #print("len(episodes): ", len(episodes))
 
     plt.plot(episodes, average)
     plt.xlabel('episodes')
     plt.ylabel('average scores')
-    #plt.show()
 
     try:
-        #pylab.savefig("reward_graph.png")
         plt.savefig("reward_graph.png")
     except OSError:
         pass
@@ -62,28 +58,22 @@ def PlotModel(score, episode):
 
 env = gym.make('MineRLNavigateDense-v0')
 
-#client = grpc.Client("localhost:8686")
 EnvOutput = collections.namedtuple('EnvOutput', 'reward done observation abandoned episode_step')
 
 run_id = np.random.randint(low=0, high=np.iinfo(np.int64).max, size=3, dtype=np.int64)
 
 for episode_step in range(0, 2000000):
 	obs = env.reset()
+	#print("obs['compassAngle'].shape: ", obs.keys())
 
 	pov_array = obs['pov'] / 255.0
-	compassAngle_array = obs['compass']['angle'] / 360.0
+	compassAngle_array = obs['compassAngle'] / 360.0
 	compassAngle_array = np.ones((64,64,1)) * compassAngle_array
 
 	state_array = np.concatenate((pov_array, compassAngle_array), 2)
 	state_array = np.expand_dims(state_array, 0)
 
-	#obs = obs['pov']
-	# obs.keys():  dict_keys(['pov', 'compass', 'inventory'])
-	#print("obs.keys(): ", obs.keys())
-	#obs = obs[35:195:2, ::2,:]
-	#obs = cv2.cvtColor(obs, cv2.COLOR_BGR2GRAY)
-
-	#obs_t = np.stack((obs, obs, obs, obs), axis=2)
+	#state_array_t = np.stack((state_array, state_array, state_array, state_array), axis=2)
 
 	done = False
 	reward = 0.0
@@ -96,52 +86,34 @@ for episode_step in range(0, 2000000):
 
 			state_array_reshaped = np.reshape(state_array, (1,64,64,4)) 
 
-			# EnvOutput = collections.namedtuple('EnvOutput', 'reward done observation abandoned episode_step')
-			#env_output = EnvOutput(np.array([reward], dtype=np.float32), np.array([done]), 
-			#					   obs['pov'], np.array([False]), np.array([episode_step], dtype=np.int32))
-
 			env_output = {"env_id": np.array([arguments.env_id]), 
-                          "reward": reward, 
+                          "reward": reward,
                           "done": done, 
                           "observation": state_array_reshaped}
 			socket.send_pyobj(env_output)
 			action_index = int(socket.recv_pyobj()['action'])
-			#print("action_index: ", action_index)
-
-			# client.inference(env_id, run_id, env_output, raw_reward)
-			#action = client.inference(np.array([arguments.env_id], dtype=np.int32), np.array([run_id[0]], dtype=np.int64), 
-			#													env_output, np.array([reward], dtype=np.float32))
-			#action = env.action_space.noop()
-			#action['camera'] = [0, 0.03*obs["compass"]["angle"]]
-			#action['back'] = 0
-			#action['forward'] = 1
-			#action['jump'] = 1
-			#action['attack'] = 1
 
 			action = env.action_space.noop()
 			if (action_index == 0):
-				action['camera'] = [0, -5]
+				action['camera'] = [0, -2.5]
 			elif (action_index == 1):
-				action['camera'] = [0, 5]
+				action['camera'] = [0, 2.5]
 			elif (action_index == 2):
 				action['forward'] = 1
 				action['jump'] = 1
 
 			obs1, reward, done, info = env.step(action)
+			#print("reward: ", reward)
 
 			next_pov_array = obs1['pov'] / 255.0
-			next_compassAngle_array = obs1['compass']['angle'] / 360.0
+			next_compassAngle_array = obs1['compassAngle'] / 360.0
 			next_compassAngle_array = np.ones((64,64,1)) * next_compassAngle_array
 
 			next_state_array = np.concatenate((next_pov_array, next_compassAngle_array), 2)
 			next_state_array = np.expand_dims(next_state_array, 0)
-			#obs1 = obs1['pov']
-			#reward = reward
-			#obs1 = obs1[35:195:2, ::2,:]
-			#obs1 = cv2.cvtColor(obs1, cv2.COLOR_BGR2GRAY)
-			#obs1 = np.reshape(obs1, (64, 64, 1))
+			#next_state_array = np.reshape(next_state_array, (64, 64, 1))
 
-			#obs_t1 = np.append(obs1, obs_t[:, :, :3], axis=2)
+			#state_array_t1 = np.append(next_state_array, state_array_t[:, :, :3], axis=2)
 
 			state_array = next_state_array
 			obs = obs1
