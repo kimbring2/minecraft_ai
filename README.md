@@ -17,11 +17,11 @@ Code for playing the Minecraft using the Deep Learning.
 <img src="image/minecraft_network.png" width="1000">
 
 # Supervised Learning method
-For Minecraft games, agent can not learn every behaviour for high level playing only using Reinforcment Learning becaue of complexity of task. In such cases, the agent must first learn through human expert data. Let's try this for MineRLTreechop-v0 first using below Notebook.
+For Minecraft games, agent can not learn every behaviour for high level playing only using Reinforcment Learning becaue of complexity of task. In such cases, the agent must first learn through human expert data. Try to train network for MineRLTreechop-v0 first using below command.
 
-[Supervised Learning for MineRL](https://github.com/kimbring2/minecraft_ai/blob/master/MineRL-TreeChop(LSTM).ipynb)
+$ python3.7 run_supervised_learning --workspace_path [your path]/minecraft_ai/ --data_path [your path]/minerl_data/
 
-Cross enthropy is used for calculating loss between action of human expertand agent network. Loss should fall to almost 0 as shown in the graph below.
+The cross enthropy is used for calculating loss between action of human expertand agent network. The loss should fall to almost 0 as shown in the graph below for good performance.
 
 <img src="image/treechop_sl_loss.png" width="500">
 
