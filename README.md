@@ -50,10 +50,5 @@ In the simplest task like a MineRLNavigateDense-v0, agent can find a direction v
 
 <img src="image/rl_reward_graph.png" width="500">
 
-# How to run 
-First, you need to check everything about MineRL package works well in your PC. Please visit https://minerl.readthedocs.io/en/latest/.
-
-If everything is fine, open and run the cell of MineRL-TreeChop(LSTM).ipynb file. It is simple A2C agent for TreeChop task of Minecraft. Firat, agent is trained via Supervised Learning. Next, it begins Reinforcement Learning phase from pretrained model.
-
 # Detailed inforamtion
 Please check Medium article(https://medium.com/@dohyeongkim/deep-q-learning-from-demonstrations-dqfd-for-minecraft-tutorial-1-4b462a18de5a) for more information.
