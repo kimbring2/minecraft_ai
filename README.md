@@ -19,23 +19,32 @@ Code for playing the Minecraft using the Deep Learning.
 # Supervised Learning method
 For Minecraft games, agent can not learn every behaviour for high level playing only using Reinforcment Learning becaue of complexity of task. In such cases, the agent must first learn through human expert data. Try to train network for MineRLTreechop-v0 first using below command.
 
+```
 $ python3.7 run_supervised_learning --workspace_path [your path]/minecraft_ai/ --data_path [your path]/minerl_data/ --gpu_use True
+```
 
 The loss should fall to almost 0 as shown in the graph below for good performance. Model is saved under folder named model of workspace path.
 
 <img src="image/treechop_sl_loss.png" width="500">
 
 After finishing training, you can test trained model using below command.
+
+```
 $ python run_evaluation.py --workspace_path [your path]/minecraft_ai/ --model_name [trained model name] --gpu_use True
+```
 
 # Reinforcement Learning method
 Because of long game play time, normal A2C method can not be used because it should use whole episode once. Therefore, off-policy A2C such as [IMPALA](https://deepmind.com/research/publications/2019/impala-scalable-distributed-deep-rl-importance-weighted-actor-learner-architectures) is needed. It can restore trajectory data from buffer for training like a DQN.
 
 You can run the IMPALA for MineRL by below command. 
 
+```
 $ ./run.sh [number of envs]
+```
 
+```
 $ ./run.sh 4
+```
 
 In the simplest task like a MineRLNavigateDense-v0, agent can find a direction very easily like a below graph when using only 3 action.
 
