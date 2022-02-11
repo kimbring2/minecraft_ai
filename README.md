@@ -29,7 +29,7 @@ $ python3.7 run_supervised_learning --workspace_path [your path]/minecraft_ai/ -
 
 The loss should fall to almost 0 as shown in the graph below for good performance. Model is saved under folder named model of workspace path.
 
-<img src="image/treechop_sl_loss.png" width="500">
+<img src="image/sl_reward_graph.png" width="500">
 
 After finishing training, you can test trained model using below command.
 
