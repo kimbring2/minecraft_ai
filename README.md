@@ -42,10 +42,6 @@ You can run the IMPALA for MineRL by below command.
 $ ./run.sh [number of envs]
 ```
 
-```
-$ ./run.sh 4
-```
-
 In the simplest task like a MineRLNavigateDense-v0, agent can find a direction very easily like a below graph when using only 3 action.
 
 <img src="image/rl_reward_graph.png" width="500">
