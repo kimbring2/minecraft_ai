@@ -21,25 +21,23 @@ from absl import flags
 from absl import logging
 from typing import Any, List, Sequence, Tuple
 from gym.spaces import Dict, Discrete, Box, Tuple
+import network
 from parametric_distribution import get_parametric_distribution_for_action_space
 
 parser = argparse.ArgumentParser(description='MineRL IMPALA Server')
 parser.add_argument('--env_num', type=int, default=2, help='ID of environment')
+parser.add_argument('--gpu_use', type=bool, default=False, help='use gpu')
 arguments = parser.parse_args()
 
 tfd = tfp.distributions
 
+if arguments.gpu_use == True:
+    gpus = tf.config.experimental.list_physical_devices('GPU')
+    tf.config.experimental.set_virtual_device_configuration(gpus[0],
+                [tf.config.experimental.VirtualDeviceConfiguration(memory_limit=4000)])
+else:
+  os.environ['CUDA_VISIBLE_DEVICES'] = '-1'
 
-#gpus = tf.config.experimental.list_physical_devices('GPU')
-#if len(gpus) != 0:
-#  tf.config.experimental.set_virtual_device_configuration(gpus[0],
-#            [tf.config.experimental.VirtualDeviceConfiguration(memory_limit=8000)])
-
-physical_devices = tf.config.list_physical_devices('GPU') 
-for device in physical_devices:
-    tf.config.experimental.set_memory_growth(device, True)
-
-#os.environ['CUDA_VISIBLE_DEVICES'] = '-1'
 
 socket_list = []
 for i in range(0, arguments.env_num):
@@ -52,61 +50,20 @@ for i in range(0, arguments.env_num):
 
 unroll_length = 100
 queue = tf.queue.FIFOQueue(1, dtypes=[tf.int32, tf.float32, tf.bool, tf.float32, tf.float32, tf.int32, tf.float32, tf.float32], 
-                           shapes=[[unroll_length+1],[unroll_length+1],[unroll_length+1],[unroll_length+1,64,64,4],[unroll_length+1,3],[unroll_length+1],[unroll_length+1,256],[unroll_length+1,256]])
+                           shapes=[[unroll_length+1],[unroll_length+1],[unroll_length+1],[unroll_length+1,64,64,4],[unroll_length+1,3],
+                                   [unroll_length+1],[unroll_length+1,128],[unroll_length+1,128]])
 Unroll = collections.namedtuple('Unroll', 'env_id reward done observation policy action memory_state carry_state')
 
-memory_list = []
-for i in range(0, arguments.env_num):
-    memory_dict = {"env_ids": [], "rewards": [], "dones": [], "observations": [], "actions": [], "policies": [], "memory_states": [], "carry_states": []}
-    memory_list.append(memory_dict)
 
+num_actions = 3
+num_hidden_units = 256
 
-class OurModel(tf.keras.Model):
-    def __init__(self, input_shape, action_space):
-        super(OurModel, self).__init__()
-        
-        self.conv_1 = Conv2D(16, 8, 4, padding="valid", activation="relu")
-        self.conv_2 = Conv2D(32, 4, 2, padding="valid", activation="relu")
-        self.conv_3 = Conv2D(32, 3, 1, padding="valid", activation="relu")
-
-        self.flatten = Flatten()
-        #self.lstm = LSTMCell(256)
-        self.dense_0 = Dense(512, activation='relu')
-        self.dense_1 = Dense(action_space)
-        self.dense_2 = Dense(1)
-        
-    def call(self, X_input, memory_state, carry_state):
-        batch_size = X_input.shape[0]
-        #X_input = self.flatten(X_input)
-        #X_input = self.dense_0(X_input)
-
-        conv_1 = self.conv_1(X_input)
-        conv_2 = self.conv_2(conv_1)
-        conv_3 = self.conv_3(conv_2)
-
-        conv_3_flattened = self.flatten(conv_3)
-
-        #initial_state = (memory_state, carry_state)
-        #LSTM_output, lstm_state = self.lstm(conv_3_flattened, initial_state)
-
-        #final_memory_state = lstm_state[0]
-        #final_carry_state =  lstm_state[1]
-
-        #LSTM_output_flattened =  = Flatten()(LSTM_output)
-        LSTM_output_flattened = conv_3_flattened
-
-        action_logit = self.dense_1(LSTM_output_flattened)
-        value = self.dense_2(LSTM_output_flattened)
-        
-        final_memory_state = tf.zeros((batch_size,256))
-        final_carry_state = tf.zeros((batch_size,256))
-
-        return action_logit, value, final_memory_state, final_carry_state
-
+#num_actions = 20
+#num_hidden_units = 512
+model = network.ActorCritic(num_actions, num_hidden_units)
 
 lr = tf.keras.optimizers.schedules.PolynomialDecay(0.0001, 1e6, 0)
 optimizer = tf.keras.optimizers.Adam(lr)
-
 
 def take_vector_elements(vectors, indices):
     """
@@ -138,37 +95,6 @@ def update(states, actions, agent_policies, rewards, dones, memory_states, carry
     with tf.GradientTape() as tape:
         tape.watch(online_variables)
                
-        # states.shape:  (100, 4, 80, 80, 4)
-        # batch_size: 100
-
-        # states.shape:  (8, 100, 80, 80, 4)
-        #states_folded = tf.reshape(states, [states.shape[0]*states.shape[1], states.shape[2], states.shape[3], states.shape[4]])
-        #dones_folded = tf.reshape(dones, [dones.shape[0]*dones.shape[1]])
-
-        #memory_states_folded = tf.reshape(memory_states, [memory_states.shape[0]*memory_states.shape[1], memory_states.shape[2]])
-        #carry_states_folded = tf.reshape(carry_states, [carry_states.shape[0]*carry_states.shape[1], carry_states.shape[2]])
-
-        '''
-        memory_state = tf.expand_dims(memory_states_folded[0], 0)
-        carry_state = tf.expand_dims(carry_states_folded[0], 0)
-        
-        for i in tf.range(0, batch_size):
-            if tf.cast(dones_folded[i], tf.bool):
-                #tf.print("dones_folded[i]: ", dones_folded[i])
-                memory_state = tf.zeros((1,256))
-                carry_state = tf.zeros((1,256))
-
-            prediction = model(tf.expand_dims(states_folded[i], 0), 
-                               memory_state, carry_state, training=True)
-
-            learner_policies = learner_policies.write(i, prediction[0][0])
-            learner_values = learner_values.write(i, prediction[1][0])
-            
-            memory_state = prediction[2]
-            carry_state = prediction[3]
-
-        '''
-
         learner_policies = tf.TensorArray(dtype=tf.float32, size=0, dynamic_size=True)
         learner_values = tf.TensorArray(dtype=tf.float32, size=0, dynamic_size=True)
 
@@ -183,16 +109,8 @@ def update(states, actions, agent_policies, rewards, dones, memory_states, carry
             memory_state = prediction[2]
             carry_state = prediction[3]
 
-            #tf.print("dones[i][0]: ", dones[i][0])
-            #if tf.cast(dones[i][0], tf.bool):
-            #    memory_state = tf.zeros((1,256))
-            #    carry_state = tf.zeros((1,256))
-
         learner_policies = learner_policies.stack()
         learner_values = learner_values.stack()
-
-        #tf.print("learner_policies.shape: ", learner_policies.shape)
-        #tf.print("learner_values.shape: ", learner_values.shape)
 
         learner_policies = tf.reshape(learner_policies, [states.shape[0], states.shape[1], -1])
         learner_values = tf.reshape(learner_values, [states.shape[0], states.shape[1], -1])
@@ -202,10 +120,8 @@ def update(states, actions, agent_policies, rewards, dones, memory_states, carry
         rewards = rewards[1:]
         dones = dones[1:]
         
-        #learner_policies = learner_outputs[0]
         learner_logits = tf.nn.softmax(learner_policies[:-1])
             
-        #learner_values = learner_outputs[1]
         learner_values = tf.squeeze(learner_values, axis=2)
             
         bootstrap_value = learner_values[-1]
@@ -213,7 +129,6 @@ def update(states, actions, agent_policies, rewards, dones, memory_states, carry
             
         discounting = 0.99
         discounts = tf.cast(~dones, tf.float32) * discounting
-        #tf.print("discounts': ", discounts)
 
         actions = tf.convert_to_tensor(actions, dtype=tf.int32)
             
@@ -261,29 +176,18 @@ def update(states, actions, agent_policies, rewards, dones, memory_states, carry
         vs = tf.stop_gradient(vs)
         pg_advantages = tf.stop_gradient(pg_advantages)
             
-        #print("target_action_log_probs.shape: ", target_action_log_probs.shape)
-        #print("pg_advantages.shape: ", pg_advantages.shape)
         actor_loss = -tf.reduce_mean(target_action_log_probs * pg_advantages)
             
         baseline_cost = 0.5
         v_error = values - vs
         critic_loss = baseline_cost * 0.5 * tf.reduce_mean(tf.square(v_error))
             
-        #tf.print("actor_loss: ", actor_loss)
-        #tf.print("critic_loss: ", critic_loss)
         total_loss = actor_loss + critic_loss
 
-    #tf.print("total_loss: ", total_loss)
     grads = tape.gradient(total_loss, model.trainable_variables)
     optimizer.apply_gradients(zip(grads, model.trainable_variables))
 
     return total_loss
-
-
-state_size = (64,64,4)
-action_size = 3
-num_hidden_units = 256
-model = OurModel(input_shape=state_size, action_space=action_size)
 
 
 @tf.function
@@ -309,31 +213,27 @@ def Data_Thread(coord, i):
     env_ids = np.zeros((unroll_length + 1), dtype=np.int32)
     states = np.zeros((unroll_length + 1, *state_size), dtype=np.float32)
     actions = np.zeros((unroll_length + 1), dtype=np.int32)
-    policies = np.zeros((unroll_length + 1, action_size), dtype=np.float32)
+    policies = np.zeros((unroll_length + 1, num_actions), dtype=np.float32)
     rewards = np.zeros((unroll_length + 1), dtype=np.float32)
     dones = np.zeros((unroll_length + 1), dtype=np.bool)
-    memory_states = np.zeros((unroll_length + 1, 256), dtype=np.float32)
-    carry_states = np.zeros((unroll_length + 1, 256), dtype=np.float32)
+    memory_states = np.zeros((unroll_length + 1, 128), dtype=np.float32)
+    carry_states = np.zeros((unroll_length + 1, 128), dtype=np.float32)
 
     memory_index = 0
 
     index = 0
-    memory_state = np.zeros([1,256], dtype=np.float32)
-    carry_state = np.zeros([1,256], dtype=np.float32)
+    memory_state = np.zeros([1,128], dtype=np.float32)
+    carry_state = np.zeros([1,128], dtype=np.float32)
     min_elapsed_time = 5.0
 
     reward_list = []
 
-    #scores.append(score)
-    #average.append(sum(self.scores[-50:]) / len(self.scores[-50:]))
-    while not coord.should_stop(): # should_stop()이 True를 반환할 때까지 반복합니다.
+    while not coord.should_stop(): 
         start = time.time()
 
         message = socket_list[i].recv_pyobj()
 
         if memory_index == unroll_length:
-            #unroll = Unroll(env_ids, rewards, dones, states, policies, actions, memory_states, carry_states)
-            #queue.enqueue(unroll)
             enque_data(env_ids, rewards, dones, states, policies, actions, memory_states, carry_states)
 
             env_ids[0] = env_ids[memory_index]
@@ -347,17 +247,8 @@ def Data_Thread(coord, i):
 
             memory_index = 1
 
-        #print("memory_state: ", memory_state)
-        #print("carry_state: ", carry_state)
         state = tf.constant(np.array([message["observation"]]))
         action, policy, new_memory_state, new_carry_state = prediction(state, memory_state, carry_state)
-
-        #print("message[\"observation\"]: ", message["observation"])
-        #prediction = model(np.array([message["observation"]]), tf.constant(memory_state, tf.float32), 
-        #                   tf.constant(carry_state, tf.float32), training=False)
-        #dist = tfd.Categorical(logits=prediction[0])
-        #action = int(dist.sample()[0])
-        #policy = prediction[0]
 
         env_ids[memory_index] = message["env_id"]
         states[memory_index] = message["observation"]
@@ -370,18 +261,13 @@ def Data_Thread(coord, i):
 
         reward_list.append(message["reward"])
 
-        #memory_state = prediction[2]
-        #carry_state = prediction[3]
         memory_state = new_memory_state
         carry_state = new_carry_state
 
         socket_list[i].send_pyobj({"env_id": message["env_id"], "action": action})
 
-        #print("memory_index: ", memory_index)
-
         memory_index += 1
         index += 1
-
         if index % 200 == 0:
             average_reward = sum(reward_list[-50:]) / len(reward_list[-50:])
             average_reward *= 20.0
@@ -390,17 +276,8 @@ def Data_Thread(coord, i):
             if average_reward > 10.0:
                 os._exit(0)
 
-        #if message["done"] == True:
-        #    memory_state = np.zeros([1,256], dtype=np.float32)
-        #    carry_state = np.zeros([1,256], dtype=np.float32)
-
         end = time.time()
         elapsed_time = end - start
-        #print("elapsed time: ", elapsed_time)
-        #if min_elapsed_time > elapsed_time:
-        #    min_elapsed_time = elapsed_time
-
-        #print("min elapsed time: ", min_elapsed_time)
 
     if index == 100000000: # 어떤 조건에 맞으면
         coord.request_stop() # 모든 쓰레드가 함께 종료되도록 request_stop()을 호출합니다.
@@ -427,8 +304,12 @@ def dataset_fn(ctx):
 
     return dataset.map(_dequeue, num_parallel_calls=1)
 
-#device_name = '/device:CPU:0'
-device_name = '/device:GPU:0'
+
+if arguments.gpu_use == True:
+    device_name = '/device:GPU:0'
+else:
+    device_name = '/device:CPU:0'
+
 dataset = dataset_fn(0)
 it = iter(dataset)
 
@@ -448,6 +329,9 @@ def Train_Thread(coord):
 
         minimize(it)
         #time.sleep(1)
+
+        if index % 1000 == 0:
+            model.save_weights('model/reinforcement_model_' + str(index))
 
         if index == 100000000: # 어떤 조건에 맞으면
             coord.request_stop() # 모든 쓰레드가 함께 종료되도록 request_stop()을 호출합니다.
