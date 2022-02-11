@@ -10,6 +10,10 @@ Code for playing the Minecraft using the Deep Learning.
 6. OpenCV
 7. Matplotlib
 
+# Reference
+1. Hierarchical Deep Q-Network from Imperfect Demonstrations in Minecraft, A Skrynnik, 2019
+2. Sample Efficient Reinforcement Learning through Learning From Demonstrations in Minecraft, C Scheller, 2020
+
 # Action, Observation of Minecraft
 <img src="image/minerl_env_space.png" width="1000">
 
@@ -39,7 +43,7 @@ Because of long game play time, normal A2C method can not be used because it sho
 You can run the IMPALA for MineRL by below command. 
 
 ```
-$ ./run.sh [number of envs]
+$ ./run_reinforcement_learning.sh [number of envs]
 ```
 
 In the simplest task like a MineRLNavigateDense-v0, agent can find a direction very easily like a below graph when using only 3 action.
