@@ -1,9 +1,10 @@
 NUM_ACTORS=$1
+GPU_USE=$1
 
 tmux new-session -d -t impala_minecraft
 
 tmux new-window -d -n learner
-COMMAND_LEARNER='python3.7 learner.py --env_num '"${NUM_ACTORS}"''
+COMMAND_LEARNER='python3.7 learner.py --env_num '"${NUM_ACTORS}"' --gpu_use '"${GPU_USE}"''
 echo $COMMAND_LEARNER
 
 tmux send-keys -t "learner" "$COMMAND_LEARNER" ENTER
