@@ -9,6 +9,462 @@ import os
 import cv2
 import gym
 from minerl.data import DataPipeline
+import sys
+import time
+from collections import deque, defaultdict
+from enum import Enum
+
+#from env_wrappers import ObtainPoVWrapper, FrameSkip, FrameStack, SaveVideoWrapper, TreechopDiscretWrapper
+#from extract_chain import TrajectoryInformation
+#from HieAgent import RfDAgent
+#from item_utils import TrajectoryDataPipeline
+#from ForgER.model import get_network_builder
+#from discretization import get_dtype_dict
+#from data_loaders import TreechopLoader
+
+mapping = dict()
+
+def register(name):
+    def _thunk(func):
+        mapping[name] = func
+        return func
+    return _thunk
+
+
+def get_discretizer(name):
+    if callable(name):
+        return name
+    elif name in mapping:
+        return mapping[name]
+    else:
+        raise ValueError('Registered wrappers:', ', '.join(mapping.keys()))
+
+
+class LoopCraftingAgent:
+    """
+    Agent that acts according to the chain
+    """
+    def __init__(self, crafting_actions):
+        """
+        :param crafting_actions: list of crafting actions list({},...)
+        """
+        self.crafting_actions = crafting_actions
+        self.current_action_index = 0
+
+    def get_crafting_action(self):
+        """
+        :return: action to be taken
+        """
+        if len(self.crafting_actions) == 0:
+            return {}
+
+        result = self.crafting_actions[self.current_action_index]
+
+        # move the pointer to the next action in the list
+        self.current_action_index = (self.current_action_index + 1) % len(self.crafting_actions)
+
+        return result
+
+    def reset_index(self):
+        self.current_action_index = 0
+
+
+class CraftInnerWrapper(gym.Wrapper):
+    """
+    Wrapper for crafting actions
+    """
+    def __init__(self, env, crafts_agent):
+        """
+        :param env: env to wrap
+        :param crafts_agent: instance of LoopCraftingAgent
+        """
+        super().__init__(env)
+        self.crafts_agent = crafts_agent
+
+    def step(self, action):
+        """
+        mix craft action with POV action
+        :param action: POV action
+        :return:
+        """
+        craft_action = self.crafts_agent.get_crafting_action()
+        action = {**action, **craft_action}
+        observation, reward, done, info = self.env.step(action)
+
+        return observation, reward, done, info
+        
+
+class ObtainPoVWrapper(gym.ObservationWrapper):
+    """Obtain 'pov' value (current game display) of the original observation."""
+    def __init__(self, env):
+        super().__init__(env)
+
+        self.observation_space = self.env.observation_space.spaces['pov']
+
+    def observation(self, observation):
+        #return observation['pov']
+        return observation
+
+   
+class DiscreteBase(gym.Wrapper):
+    def __init__(self, env):
+        super(DiscreteBase, self).__init__(env)
+        self.action_dict = {}
+        self.action_space = gym.spaces.Discrete(len(self.action_dict))
+
+    def step(self, action):
+        #print("self.action_dict[action]: " + str(self.action_dict[action]))
+        s, r, done, info = self.env.step(self.action_dict[action])
+        return s, r, done, info
+
+    def sample_action(self):
+        return self.action_space.sample()
+
+
+@register("Treechop")
+class TreechopDiscretWrapper(DiscreteBase):
+    def __init__(self, env, always_attack=1, angle=5):
+        DiscreteBase.__init__(self, env)
+        '''
+        self.action_dict = {
+            0: {'attack': always_attack, 'back': 0, 'camera': [0, 0], 'forward': 1, 'jump': 0, 'left': 0, 'right': 0,
+                'sneak': 0, 'sprint': 0},
+            1: {'attack': always_attack, 'back': 0, 'camera': [0, angle], 'forward': 0, 'jump': 0, 'left': 0,
+                'right': 0, 'sneak': 0, 'sprint': 0},
+            2: {'attack': 1, 'back': 0, 'camera': [0, 0], 'forward': 0, 'jump': 0, 'left': 0, 'right': 0, 'sneak': 0,
+                'sprint': 0},
+            3: {'attack': always_attack, 'back': 0, 'camera': [angle, 0], 'forward': 0, 'jump': 0, 'left': 0,
+                'right': 0, 'sneak': 0, 'sprint': 0},
+            4: {'attack': always_attack, 'back': 0, 'camera': [-angle, 0], 'forward': 0, 'jump': 0, 'left': 0,
+                'right': 0, 'sneak': 0, 'sprint': 0},
+            5: {'attack': always_attack, 'back': 0, 'camera': [0, -angle], 'forward': 0, 'jump': 0, 'left': 0,
+                'right': 0, 'sneak': 0, 'sprint': 0},
+            6: {'attack': always_attack, 'back': 0, 'camera': [0, 0], 'forward': 1, 'jump': 1, 'left': 0, 'right': 0,
+                'sneak': 0, 'sprint': 0},
+            7: {'attack': always_attack, 'back': 0, 'camera': [0, 0], 'forward': 0, 'jump': 0, 'left': 1, 'right': 0,
+                'sneak': 0, 'sprint': 0},
+            8: {'attack': always_attack, 'back': 0, 'camera': [0, 0], 'forward': 0, 'jump': 0, 'left': 0, 'right': 1,
+                'sneak': 0, 'sprint': 0},
+            9: {'attack': always_attack, 'back': 1, 'camera': [0, 0], 'forward': 0, 'jump': 0, 'left': 0, 'right': 0,
+                'sneak': 0, 'sprint': 0}}
+        '''
+        
+        craft_list = ['crafting_table', 'planks', 'stick', 'torch']
+        equip_list = ['air', 'iron_axe', 'iron_pickaxe', 'stone_axe', 'stone_pickaxe', 'wooden_axe', 'wooden_pickaxe']
+        nearbyCraft_list = ['furnace', 'iron_axe', 'iron_pickaxe','stone_axe', 'stone_pickaxe', 'wooden_axe', 'wooden_pickaxe']
+        nearbySmelt_list = ['coal', 'iron_ingot']
+        place_list = ['cobblestone', 'crafting_table', 'dirt', 'furnace', 'stone', 'torch']
+
+        self.action_dict = {}
+        list_num = 8
+
+        self.action_dict[0] = {'attack': 0,'back': 0,'camera': [0, 5],'craft': 'none','equip': 'none',\
+                                 'forward': 0,'jump': 0,'left': 0,'nearbyCraft':'none','nearbySmelt': 'none',\
+                                 'place': 'none','right': 0,'sneak': 0,'sprint': 0}
+        self.action_dict[1] = {'attack': 1,'back': 0,'camera': [0, 5],'craft': 'none','equip': 'none',\
+                                 'forward': 0,'jump': 0,'left': 0,'nearbyCraft':'none','nearbySmelt': 'none',\
+                                 'place': 'none','right': 0,'sneak': 0,'sprint': 0}
+
+        self.action_dict[2] = {'attack': 0,'back': 0,'camera': [5, 0],'craft': 'none','equip': 'none',\
+                                 'forward': 0,'jump': 0,'left': 0,'nearbyCraft':'none','nearbySmelt': 'none',\
+                                 'place': 'none','right': 0,'sneak': 0,'sprint': 0}
+        self.action_dict[3] = {'attack': 1,'back': 0,'camera': [5, 0],'craft': 'none','equip': 'none',\
+                                 'forward': 0,'jump': 0,'left': 0,'nearbyCraft':'none','nearbySmelt': 'none',\
+                                 'place': 'none','right': 0,'sneak': 0,'sprint': 0}
+
+        self.action_dict[4] = {'attack': 0,'back': 0,'camera': [-5, 0],'craft': 'none','equip': 'none',\
+                                 'forward': 0,'jump': 0,'left': 0,'nearbyCraft':'none','nearbySmelt': 'none',\
+                                 'place': 'none','right': 0,'sneak': 0,'sprint': 0}
+        self.action_dict[5] = {'attack': 1,'back': 0,'camera': [-5, 0],'craft': 'none','equip': 'none',\
+                                 'forward': 0,'jump': 0,'left': 0,'nearbyCraft':'none','nearbySmelt': 'none',\
+                                 'place': 'none','right': 0,'sneak': 0,'sprint': 0}
+
+        self.action_dict[6] = {'attack': 0,'back': 0,'camera': [0, -5],'craft': 'none','equip': 'none',\
+                                 'forward': 0,'jump': 0,'left': 0,'nearbyCraft':'none','nearbySmelt': 'none',\
+                                 'place': 'none','right': 0,'sneak': 0,'sprint': 0}
+        self.action_dict[7] = {'attack': 1,'back': 0,'camera': [0, -5],'craft': 'none','equip': 'none',\
+                                 'forward': 0,'jump': 0,'left': 0,'nearbyCraft':'none','nearbySmelt': 'none',\
+                                 'place': 'none','right': 0,'sneak': 0,'sprint': 0}
+
+        self.action_dict[list_num] = {'attack': 1,'back': 0,'camera': [0, 0],'craft': 'none','equip': 'none',\
+                                         'forward': 0,'jump': 0,'left': 0,'nearbyCraft':'none','nearbySmelt': 'none',\
+                                         'place': 'none','right': 0,'sneak': 0,'sprint': 0}
+        list_num += 1
+
+
+        self.action_dict[list_num] = {'attack': 0,'back': 1,'camera': [0, 0],'craft': 'none','equip': 'none',\
+                                         'forward': 0,'jump': 0,'left': 0,'nearbyCraft':'none','nearbySmelt': 'none',\
+                                         'place': 'none','right': 0,'sneak': 0,'sprint': 0}
+        list_num += 1
+        self.action_dict[list_num] = {'attack': 1,'back': 1,'camera': [0, 0],'craft': 'none','equip': 'none',\
+                                         'forward': 0,'jump': 0,'left': 0,'nearbyCraft':'none','nearbySmelt': 'none',\
+                                         'place': 'none','right': 0,'sneak': 0,'sprint': 0}
+        list_num += 1
+
+        self.action_dict[list_num] = {'attack': 0,'back': 0,'camera': [0, 0],'craft': 'none','equip': 'none',\
+                                         'forward': 1,'jump': 0,'left': 0,'nearbyCraft':'none','nearbySmelt': 'none',\
+                                         'place': 'none','right': 0,'sneak': 0,'sprint': 0}
+        list_num += 1
+        self.action_dict[list_num] = {'attack': 1,'back': 0,'camera': [0, 0],'craft': 'none','equip': 'none',\
+                                         'forward': 1,'jump': 0,'left': 0,'nearbyCraft':'none','nearbySmelt': 'none',\
+                                         'place': 'none','right': 0,'sneak': 0,'sprint': 0}
+        list_num += 1
+
+        self.action_dict[list_num] = {'attack': 0,'back': 0,'camera': [0, 0],'craft': 'none','equip': 'none',\
+                                         'forward': 1,'jump': 1,'left': 0,'nearbyCraft':'none','nearbySmelt': 'none',\
+                                         'place': 'none','right': 0,'sneak': 0,'sprint': 0}
+        list_num += 1
+        self.action_dict[list_num] = {'attack': 1,'back': 0,'camera': [0, 0],'craft': 'none','equip': 'none',\
+                                         'forward': 1,'jump': 1,'left': 0,'nearbyCraft':'none','nearbySmelt': 'none',\
+                                         'place': 'none','right': 0,'sneak': 0,'sprint': 0}
+        list_num += 1
+
+        self.action_dict[list_num] = {'attack': 0,'back': 0,'camera': [0, 0],'craft': 'none','equip': 'none',\
+                                         'forward': 0,'jump': 0,'left': 1,'nearbyCraft':'none','nearbySmelt': 'none',\
+                                         'place': 'none','right': 0,'sneak': 0,'sprint': 0}
+        list_num += 1
+        self.action_dict[list_num] = {'attack': 1,'back': 0,'camera': [0, 0],'craft': 'none','equip': 'none',\
+                                         'forward': 0,'jump': 0,'left': 1,'nearbyCraft':'none','nearbySmelt': 'none',\
+                                         'place': 'none','right': 0,'sneak': 0,'sprint': 0}
+        list_num += 1
+
+        self.action_dict[list_num] = {'attack': 0,'back': 0,'camera': [0, 0],'craft': 'none','equip': 'none',\
+                                         'forward': 0,'jump': 0,'left': 0,'nearbyCraft':'none','nearbySmelt': 'none',\
+                                         'place': 'none','right': 1,'sneak': 0,'sprint': 0}
+        list_num += 1
+        self.action_dict[list_num] = {'attack': 1,'back': 0,'camera': [0, 0],'craft': 'none','equip': 'none',\
+                                         'forward': 0,'jump': 0,'left': 0,'nearbyCraft':'none','nearbySmelt': 'none',\
+                                         'place': 'none','right': 1,'sneak': 0,'sprint': 0}
+        list_num += 1
+
+        
+        for craft_value in craft_list:
+            self.action_dict[list_num] = {'attack': 0,'back': 0,'camera': [0, 0],'craft': craft_value,'equip': 'none',\
+                                             'forward': 0,'jump': 0,'left': 0,'nearbyCraft':'none','nearbySmelt': 'none',\
+                                             'place': 'none','right': 0,'sneak': 0,'sprint': 0}
+            list_num += 1
+
+        for equip_value in equip_list:
+            self.action_dict[list_num] = {'attack': 0,'back': 0,'camera': [0, 0],'craft': 'none','equip': equip_value,\
+                                             'forward': 0,'jump': 0,'left': 0,'nearbyCraft':'none','nearbySmelt': 'none',\
+                                             'place': 'none','right': 0,'sneak': 0,'sprint': 0}
+            list_num += 1
+
+        for nearbyCraft_value in nearbyCraft_list:
+            self.action_dict[list_num] = {'attack': 0,'back': 0,'camera': [0, 0],'craft': 'none','equip': 'none',\
+                                             'forward': 0,'jump': 0,'left': 0,'nearbyCraft':nearbyCraft_value,'nearbySmelt': 'none',\
+                                             'place': 'none','right': 0,'sneak': 0,'sprint': 0}
+            list_num += 1
+
+        for nearbySmelt_value in nearbySmelt_list:
+            self.action_dict[list_num] = {'attack': 0,'back': 0,'camera': [0, 0],'craft': 'none','equip': 'none',\
+                                             'forward': 0,'jump': 0,'left': 0,'nearbyCraft':'none','nearbySmelt': nearbySmelt_value,\
+                                             'place': 'none','right': 0,'sneak': 0,'sprint': 0}
+            list_num += 1
+
+        for place_value in place_list:
+            self.action_dict[list_num] = {'attack': 0,'back': 0,'camera': [0, 0],'craft': 'none','equip': 'none',\
+                                             'forward': 0,'jump': 0,'left': 0,'nearbyCraft':'none','nearbySmelt': 'none',\
+                                             'place': place_value,'right': 0,'sneak': 0,'sprint': 0}
+            list_num += 1
+
+        self.action_space = gym.spaces.Discrete(len(self.action_dict))
+    
+
+class ItemAgentNode:
+    """
+    combined info about each agent
+    """
+    def __init__(self, node_name, count_, pov_agent, crafting_agent):
+        self.name = node_name
+        self.count = count_
+        self.pov_agent = pov_agent
+        self.crafting_agent = crafting_agent
+        self.success = deque([0], maxlen=10)
+        self.eps_to_save = 0
+        self.model_dir = 'train/' + self.name
+        self.exploration_force = True
+        self.fixed = False
+
+    def load_agent(self, load_dir=None):
+        if load_dir is None:
+            load_dir = self.model_dir
+
+        self.pov_agent.load_agent(load_dir)
+
+
+# "craft": "Enum(crafting_table,none,planks,stick,torch)",
+# "equip": "Enum(air,iron_axe,iron_pickaxe,none,stone_axe,stone_pickaxe,wooden_axe,wooden_pickaxe)",
+# "nearbyCraft": "Enum(furnace,iron_axe,iron_pickaxe,none,stone_axe,stone_pickaxe,wooden_axe,wooden_pickaxe)",
+# "nearbySmelt": "Enum(coal,iron_ingot,none)",
+# "place": "Enum(cobblestone,crafting_table,dirt,furnace,none,stone,torch)",
+class craft(Enum):
+    crafting_table = 1
+    none = 2
+    planks = 3
+    stick = 4
+    torch =5
+
+
+class equip(Enum):
+    air = 1
+    iron_axe = 2 
+    iron_pickaxe = 3 
+    none = 4
+    stone_axe = 5
+    stone_pickaxe = 6
+    wooden_axe = 7
+    wooden_pickaxe = 8
+
+
+class nearbyCraft(Enum):
+    furnace = 1
+    iron_axe = 2
+    iron_pickaxe = 3
+    none = 4
+    stone_axe = 5
+    stone_pickaxe = 6
+    wooden_axe = 7
+    wooden_pickaxe = 8 
+
+
+class nearbySmelt(Enum):
+    coal = 0
+    iron_ingot = 1
+    none = 2
+
+
+class place(Enum):
+    cobblestone = 1
+    crafting_table = 2
+    dirt = 3
+    furnace = 4
+    none = 5
+    stone = 6
+    torch = 7
+
+
+class ItemAgent:
+    pov_agents = {}
+
+    def __init__(self, chain, nodes_dict=None):
+        """
+        :param chain: item/action chain
+        :param nodes_dict:
+        """
+        self.nodes_dict = nodes_dict
+        self.chain = chain
+
+        self.nodes = self.create_nodes(self.chain)
+
+    @staticmethod
+    def str_to_action_dict(action_):
+        """
+        str -> dict
+        :param action_:
+        :return:
+        """
+        a_, _, value = action_.split(":")
+
+        #print("a_: " + str(a_))
+        if a_ == 'craft':
+            value = craft[value].value
+        elif a_ == 'equip':
+            value = equip[value].value
+        elif a_ == 'nearbyCraft':
+            value = nearbyCraft[value].value
+        elif a_ == 'nearbySmelt':
+            value = nearbySmelt[value].value
+        elif a_ == 'place':
+            value = place[value].value
+
+        return {a_: int(value)}
+
+    @classmethod
+    def get_crafting_actions_from_chain(cls, chain_, node_name_):
+        """
+        getting crafting actions from chain for node_name_ item
+        :param chain_:
+        :param node_name_: item
+        :return:
+        """
+        previous_actions = []
+        for vertex in chain_:
+            if vertex == node_name_:
+                break
+
+            if not cls.is_item(vertex):
+                previous_actions.append(vertex)
+            else:
+                previous_actions = []
+
+        return [cls.str_to_action_dict(action_) for action_ in previous_actions]
+
+    @staticmethod
+    def is_item(name):
+        """
+        method to differ actions and items
+        :param name:
+        :return:
+        """
+        return len(name.split(":")) == 2
+
+    @classmethod
+    def create_nodes(cls, chain):
+        nodes_names = [item for item in chain if cls.is_item(item)]
+        #print("nodes_names: " + str(nodes_names))
+
+        craft_agents = []
+        for node_name in nodes_names:
+            
+            #print("node_name: ", node_name)
+            #print("chain: ", chain)
+            '''
+            node_name:  log:6
+            node_name:  planks:24
+            node_name:  log:1
+            node_name:  planks:28
+            node_name:  crafting_table:1
+            node_name:  stick:8
+            node_name:  wooden_pickaxe:1
+            node_name:  crafting_table:1
+            node_name:  cobblestone:11
+            node_name:  stone_pickaxe:1
+            node_name:  wooden_pickaxe:1
+            node_name:  crafting_table:1
+            node_name:  iron_ore:3
+            node_name:  furnace:1
+            node_name:  iron_ingot:3
+            node_name:  iron_pickaxe:1
+            '''
+
+            craft_agents.append(LoopCraftingAgent(cls.get_crafting_actions_from_chain(chain, node_name)))
+
+        nodes_dict = {}
+        nodes = []
+        for index, (name, count) in enumerate([_.split(":") for _ in nodes_names]):
+            if name not in nodes_dict.keys():
+                nodes_dict[name] = ItemAgentNode(node_name=name,
+                                                 count_=int(count),
+                                                 pov_agent=None,
+                                                 crafting_agent=craft_agents[index])
+
+            nodes.append(nodes_dict[name])
+
+        return nodes
+
+
+class DummyDataLoader:
+     def __init__(self, data, items_to_add):
+         self.data = data
+         self.items_to_add = items_to_add
+            
+     def batch_iter(self, *args, **kwargs):
+         for item in self.items_to_add:
+             #print("item: " + str(item))
+             for slice_ in self.data[item]:
+                 #print("slice_: " + str(slice_))
+                 yield slice_
 
 
 class AbstractItemOrAction(dict):
