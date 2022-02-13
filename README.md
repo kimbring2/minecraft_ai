@@ -2,7 +2,7 @@
 Code for playing the Minecraft using the Deep Learning. 
 
 # Python Dependencies
-1. Minerl==0.3.7
+1. Minerl 0.3.7
 2. Tensorflow 2.4.1
 3. Tensorflow_probability 0.11.0
 4. ZeroMQ
