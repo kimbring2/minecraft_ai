@@ -24,7 +24,7 @@ Code for playing the Minecraft using the Deep Learning.
 For Minecraft games, agent can not learn every behaviour for high level playing only using Reinforcment Learning becaue of complexity of task. In such cases, the agent must first learn through human expert data. Try to train network for MineRLTreechop-v0 first using below command.
 
 ```
-$ python3.7 run_supervised_learning --workspace_path [your path]/minecraft_ai/ --data_path [your path]/minerl_data/ --gpu_use True
+$ python run_supervised_learning --workspace_path [your path]/minecraft_ai/ --data_path [your path]/minerl_data/ --gpu_use True
 ```
 
 The loss should fall to almost 0 as shown in the graph below for good performance. Model is saved under folder named model of workspace path.
