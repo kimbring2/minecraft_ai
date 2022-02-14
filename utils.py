@@ -14,14 +14,6 @@ import time
 from collections import deque, defaultdict
 from enum import Enum
 
-#from env_wrappers import ObtainPoVWrapper, FrameSkip, FrameStack, SaveVideoWrapper, TreechopDiscretWrapper
-#from extract_chain import TrajectoryInformation
-#from HieAgent import RfDAgent
-#from item_utils import TrajectoryDataPipeline
-#from ForgER.model import get_network_builder
-#from discretization import get_dtype_dict
-#from data_loaders import TreechopLoader
-
 mapping = dict()
 
 def register(name):
@@ -344,115 +336,78 @@ class place(Enum):
     torch = 7
 
 
-class ItemAgent:
-    pov_agents = {}
+def is_item(name):
+    """
+    method to differ actions and items
+    :param name:
+    :return:
+    """
+    return len(name.split(":")) == 2    
 
-    def __init__(self, chain, nodes_dict=None):
-        """
-        :param chain: item/action chain
-        :param nodes_dict:
-        """
-        self.nodes_dict = nodes_dict
-        self.chain = chain
 
-        self.nodes = self.create_nodes(self.chain)
+def get_crafting_actions_from_chain(chain_, node_name_):
+    """
+    getting crafting actions from chain for node_name_ item
+    :param chain_:
+    :param node_name_: item
+    :return:
+    """
+    previous_actions = []
+    for vertex in chain_:
+        if vertex == node_name_:
+            break
 
-    @staticmethod
-    def str_to_action_dict(action_):
-        """
-        str -> dict
-        :param action_:
-        :return:
-        """
-        a_, _, value = action_.split(":")
+        if not is_item(vertex):
+            previous_actions.append(vertex)
+        else:
+            previous_actions = []
 
-        #print("a_: " + str(a_))
-        if a_ == 'craft':
-            value = craft[value].value
-        elif a_ == 'equip':
-            value = equip[value].value
-        elif a_ == 'nearbyCraft':
-            value = nearbyCraft[value].value
-        elif a_ == 'nearbySmelt':
-            value = nearbySmelt[value].value
-        elif a_ == 'place':
-            value = place[value].value
+    return [str_to_action_dict(action_) for action_ in previous_actions]
 
-        return {a_: int(value)}
 
-    @classmethod
-    def get_crafting_actions_from_chain(cls, chain_, node_name_):
-        """
-        getting crafting actions from chain for node_name_ item
-        :param chain_:
-        :param node_name_: item
-        :return:
-        """
-        previous_actions = []
-        for vertex in chain_:
-            if vertex == node_name_:
-                break
+def str_to_action_dict(action_):
+    """
+    str -> dict
+    :param action_:
+    :return:
+    """
+    a_, _, value = action_.split(":")
 
-            if not cls.is_item(vertex):
-                previous_actions.append(vertex)
-            else:
-                previous_actions = []
+    if a_ == 'craft':
+        value = craft[value].value
+    elif a_ == 'equip':
+        value = equip[value].value
+    elif a_ == 'nearbyCraft':
+        value = nearbyCraft[value].value
+    elif a_ == 'nearbySmelt':
+        value = nearbySmelt[value].value
+    elif a_ == 'place':
+        value = place[value].value
 
-        return [cls.str_to_action_dict(action_) for action_ in previous_actions]
+    return {a_: int(value)}    
 
-    @staticmethod
-    def is_item(name):
-        """
-        method to differ actions and items
-        :param name:
-        :return:
-        """
-        return len(name.split(":")) == 2
+    
+def create_nodes(chain):
+    nodes_names = [item for item in chain if is_item(item)]
+    #print("nodes_names: " + str(nodes_names))
 
-    @classmethod
-    def create_nodes(cls, chain):
-        nodes_names = [item for item in chain if cls.is_item(item)]
-        #print("nodes_names: " + str(nodes_names))
+    craft_agents = []
+    for node_name in nodes_names:
+        craft_agents.append(LoopCraftingAgent(get_crafting_actions_from_chain(chain, node_name)))
 
-        craft_agents = []
-        for node_name in nodes_names:
-            
-            #print("node_name: ", node_name)
-            #print("chain: ", chain)
-            '''
-            node_name:  log:6
-            node_name:  planks:24
-            node_name:  log:1
-            node_name:  planks:28
-            node_name:  crafting_table:1
-            node_name:  stick:8
-            node_name:  wooden_pickaxe:1
-            node_name:  crafting_table:1
-            node_name:  cobblestone:11
-            node_name:  stone_pickaxe:1
-            node_name:  wooden_pickaxe:1
-            node_name:  crafting_table:1
-            node_name:  iron_ore:3
-            node_name:  furnace:1
-            node_name:  iron_ingot:3
-            node_name:  iron_pickaxe:1
-            '''
+    nodes_dict = {}
+    nodes = []
+    for index, (name, count) in enumerate([_.split(":") for _ in nodes_names]):
+        if name not in nodes_dict.keys():
+            nodes_dict[name] = ItemAgentNode(node_name=name,
+                                             count_=int(count),
+                                             pov_agent=None,
+                                             crafting_agent=craft_agents[index])
 
-            craft_agents.append(LoopCraftingAgent(cls.get_crafting_actions_from_chain(chain, node_name)))
+        nodes.append(nodes_dict[name])
 
-        nodes_dict = {}
-        nodes = []
-        for index, (name, count) in enumerate([_.split(":") for _ in nodes_names]):
-            if name not in nodes_dict.keys():
-                nodes_dict[name] = ItemAgentNode(node_name=name,
-                                                 count_=int(count),
-                                                 pov_agent=None,
-                                                 crafting_agent=craft_agents[index])
-
-            nodes.append(nodes_dict[name])
-
-        return nodes
-
+    return nodes
+    
 
 class DummyDataLoader:
      def __init__(self, data, items_to_add):
