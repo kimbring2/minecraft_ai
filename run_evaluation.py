@@ -14,6 +14,8 @@ import tensorflow_probability as tfp
 import minerl
 from absl import flags
 import argparse
+import os
+
 import network
 
 tfd = tfp.distributions
