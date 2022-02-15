@@ -18,7 +18,9 @@ Code for playing the Minecraft using the Deep Learning.
 <img src="image/minerl_env_space.png" width="1000">
 
 # Network architecture
-<img src="image/minecraft_network.png" width="1000">
+<img src="image/learning_model.png" width="1000">
+
+<img src="image/rule_model.png" width="1000">
 
 # Supervised Learning method
 For Minecraft games, agent can not learn every behaviour for high level playing only using Reinforcment Learning becaue of complexity of task. In such cases, the agent must first learn through human expert data. Try to train network for MineRLTreechop-v0 first using below command.
