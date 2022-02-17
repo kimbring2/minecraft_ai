@@ -60,6 +60,7 @@ num_hidden_units = 256
 
 #num_actions = 20
 #num_hidden_units = 512
+state_size = (64,64,4)
 model = network.ActorCritic(num_actions, num_hidden_units)
 
 lr = tf.keras.optimizers.schedules.PolynomialDecay(0.0001, 1e6, 0)
@@ -205,7 +206,6 @@ def prediction(state, memory_state, carry_state):
 
 @tf.function
 def enque_data(env_ids, rewards, dones, states, policies, actions, memory_states, carry_states):
-    #unroll = Unroll(env_ids, rewards, dones, states, policies, actions, memory_states, carry_states)
     queue.enqueue((env_ids, rewards, dones, states, policies, actions, memory_states, carry_states))
 
 
