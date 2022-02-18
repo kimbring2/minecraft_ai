@@ -11,8 +11,8 @@ Code for playing the Minecraft using the Deep Learning.
 7. Matplotlib
 
 # Reference
-1. Hierarchical Deep Q-Network from Imperfect Demonstrations in Minecraft, A Skrynnik, 2019
-2. Sample Efficient Reinforcement Learning through Learning From Demonstrations in Minecraft, C Scheller, 2020
+1. [Hierarchical Deep Q-Network from Imperfect Demonstrations in Minecraft, A Skrynnik, 2019](https://arxiv.org/abs/1912.08664)
+2. [Sample Efficient Reinforcement Learning through Learning From Demonstrations in Minecraft, C Scheller, 2020](https://arxiv.org/abs/2003.06066)
 
 # Action, Observation of Minecraft
 <img src="image/minerl_env_space.png" width="1000">
