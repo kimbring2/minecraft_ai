@@ -43,11 +43,11 @@ class ActorCritic(tf.keras.Model):
     conv_3_reshaped = layers.Reshape((4*4,32))(conv_3)
     
     initial_state = (memory_state, carry_state)
-    #print("initial_state: ", initial_state)
     lstm_output, final_memory_state, final_carry_state  = self.lstm(conv_3_reshaped, initial_state=initial_state, 
                                                                     training=training)
     
     X_input = layers.Flatten()(lstm_output)
+    #print("X_input.shape: ", X_input.shape)
     x = self.common(X_input)
     
-    return tf.keras.layers.Softmax()(self.actor(x)), self.critic(x), final_memory_state, final_carry_state
+    return self.actor(x), self.critic(x), final_memory_state, final_carry_state

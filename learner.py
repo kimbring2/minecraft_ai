@@ -27,16 +27,18 @@ from parametric_distribution import get_parametric_distribution_for_action_space
 parser = argparse.ArgumentParser(description='MineRL IMPALA Server')
 parser.add_argument('--env_num', type=int, default=2, help='ID of environment')
 parser.add_argument('--gpu_use', type=bool, default=False, help='use gpu')
+parser.add_argument('--pretrained_model', type=str, help='pretrained model name')
 arguments = parser.parse_args()
 
 tfd = tfp.distributions
 
 if arguments.gpu_use == True:
-    gpus = tf.config.experimental.list_physical_devices('GPU')
-    tf.config.experimental.set_virtual_device_configuration(gpus[0],
-                [tf.config.experimental.VirtualDeviceConfiguration(memory_limit=4000)])
+    #gpus = tf.config.experimental.list_physical_devices('GPU')
+    #tf.config.experimental.set_virtual_device_configuration(gpus[0],
+    #            [tf.config.experimental.VirtualDeviceConfiguration(memory_limit=4000)])
+    os.environ['CUDA_VISIBLE_DEVICES'] = '-1'
 else:
-  os.environ['CUDA_VISIBLE_DEVICES'] = '-1'
+    os.environ['CUDA_VISIBLE_DEVICES'] = '-1'
 
 
 socket_list = []
@@ -47,24 +49,30 @@ for i in range(0, arguments.env_num):
 
     socket_list.append(socket)
 
+    
+num_actions = 43
+state_size = (64,64,3)    
 
 unroll_length = 100
 queue = tf.queue.FIFOQueue(1, dtypes=[tf.int32, tf.float32, tf.bool, tf.float32, tf.float32, tf.int32, tf.float32, tf.float32], 
-                           shapes=[[unroll_length+1],[unroll_length+1],[unroll_length+1],[unroll_length+1,64,64,4],[unroll_length+1,3],
-                                   [unroll_length+1],[unroll_length+1,128],[unroll_length+1,128]])
+                           shapes=[[unroll_length+1],[unroll_length+1],[unroll_length+1],[unroll_length+1,*state_size],
+                                   [unroll_length+1,num_actions],[unroll_length+1],[unroll_length+1,128],[unroll_length+1,128]])
 Unroll = collections.namedtuple('Unroll', 'env_id reward done observation policy action memory_state carry_state')
 
-
-num_actions = 3
-num_hidden_units = 256
-
-#num_actions = 20
-#num_hidden_units = 512
-state_size = (64,64,4)
+num_hidden_units = 512
 model = network.ActorCritic(num_actions, num_hidden_units)
+sl_model = network.ActorCritic(num_actions, num_hidden_units)
 
+if arguments.pretrained_model != None:
+    print("Load Pretrained Model")
+    sl_model.load_weights("model_tree/" + arguments.pretrained_model)
+    model.load_weights("model_tree/" + arguments.pretrained_model)
+    
+#model.set_weights(sl_model.get_weights())
+    
 lr = tf.keras.optimizers.schedules.PolynomialDecay(0.0001, 1e6, 0)
 optimizer = tf.keras.optimizers.Adam(lr)
+
 
 def take_vector_elements(vectors, indices):
     """
@@ -79,7 +87,8 @@ def take_vector_elements(vectors, indices):
     return tf.gather_nd(vectors, tf.stack([tf.range(tf.shape(vectors)[0]), indices], axis=1))
 
 
-parametric_action_distribution = get_parametric_distribution_for_action_space(Discrete(6))
+parametric_action_distribution = get_parametric_distribution_for_action_space(Discrete(num_actions))
+kl = tf.keras.losses.KLDivergence()
 
 def update(states, actions, agent_policies, rewards, dones, memory_states, carry_states):
     states = tf.transpose(states, perm=[1, 0, 2, 3, 4])
@@ -98,24 +107,51 @@ def update(states, actions, agent_policies, rewards, dones, memory_states, carry
                
         learner_policies = tf.TensorArray(dtype=tf.float32, size=0, dynamic_size=True)
         learner_values = tf.TensorArray(dtype=tf.float32, size=0, dynamic_size=True)
+        sl_learner_policies = tf.TensorArray(dtype=tf.float32, size=0, dynamic_size=True)
+        sl_learner_values = tf.TensorArray(dtype=tf.float32, size=0, dynamic_size=True)
 
         memory_state = memory_states[0]
         carry_state = carry_states[0]
+        sl_memory_state = memory_states[0]
+        sl_carry_state = carry_states[0]
         for i in tf.range(0, batch_size):
             prediction = model(states[i], memory_state, carry_state, training=True)
+            sl_prediction = sl_model(states[i], sl_memory_state, sl_carry_state, training=True)
 
             learner_policies = learner_policies.write(i, prediction[0])
             learner_values = learner_values.write(i, prediction[1])
-                
+            
+            sl_learner_policies = sl_learner_policies.write(i, sl_prediction[0])
+            sl_learner_values = sl_learner_values.write(i, sl_prediction[1])
+            
             memory_state = prediction[2]
             carry_state = prediction[3]
+            sl_memory_state = sl_prediction[2]
+            sl_carry_state = sl_prediction[3]
 
         learner_policies = learner_policies.stack()
         learner_values = learner_values.stack()
+        sl_learner_policies = sl_learner_policies.stack()
+        sl_learner_values = sl_learner_values.stack()
 
         learner_policies = tf.reshape(learner_policies, [states.shape[0], states.shape[1], -1])
         learner_values = tf.reshape(learner_values, [states.shape[0], states.shape[1], -1])
-            
+        sl_learner_policies = tf.reshape(sl_learner_policies, [states.shape[0], states.shape[1], -1])
+        sl_learner_values = tf.reshape(sl_learner_values, [states.shape[0], states.shape[1], -1])
+        
+        #tf.print("learner_policies.shape: ", learner_policies.shape)
+        #tf.print("sl_learner_policies.shape: ", sl_learner_policies.shape)
+        #tf.print("learner_policies[0][0]: ", learner_policies[0][0])
+        #tf.print("sl_learner_policies[0][0]: ", sl_learner_policies[0][0])
+        #tf.print("tf.reduce_sum(learner_policies[0][0]): ", tf.reduce_sum(learner_policies[0][0]))
+        #tf.print("tf.reduce_sum(sl_learner_policies[0][0]): ", tf.reduce_sum(sl_learner_policies[0][0]))
+        
+        dist = tfd.Categorical(logits=learner_policies)
+        sl_dist = tfd.Categorical(logits=sl_learner_policies)
+        kl_loss = tfd.kl_divergence(dist, sl_dist)
+        kl_loss = 0.25 * tf.reduce_mean(kl_loss)
+        #tf.print("kl_loss: ", kl_loss)
+        
         agent_logits = tf.nn.softmax(agent_policies[:-1])
         actions = actions[:-1]
         rewards = rewards[1:]
@@ -183,7 +219,11 @@ def update(states, actions, agent_policies, rewards, dones, memory_states, carry
         v_error = values - vs
         critic_loss = baseline_cost * 0.5 * tf.reduce_mean(tf.square(v_error))
             
-        total_loss = actor_loss + critic_loss
+        entropy = tf.reduce_mean(parametric_action_distribution.entropy(learner_policies[:-1]))
+        entropy_loss =  0.00025 * -entropy
+        tf.print("entropy_loss: ", entropy_loss)
+            
+        total_loss = actor_loss + critic_loss + entropy_loss + kl_loss
 
     grads = tape.gradient(total_loss, model.trainable_variables)
     optimizer.apply_gradients(zip(grads, model.trainable_variables))
@@ -232,7 +272,6 @@ def Data_Thread(coord, i):
         start = time.time()
 
         message = socket_list[i].recv_pyobj()
-
         if memory_index == unroll_length:
             enque_data(env_ids, rewards, dones, states, policies, actions, memory_states, carry_states)
 
@@ -270,11 +309,10 @@ def Data_Thread(coord, i):
         index += 1
         if index % 200 == 0:
             average_reward = sum(reward_list[-50:]) / len(reward_list[-50:])
-            average_reward *= 20.0
             print("average_reward: ", average_reward)
             #os._exit(0)
-            if average_reward > 10.0:
-                os._exit(0)
+            #if average_reward > 5.0:
+            #    os._exit(0)
 
         end = time.time()
         elapsed_time = end - start
@@ -286,7 +324,7 @@ def Data_Thread(coord, i):
 unroll_queues = []
 unroll_queues.append(queue)
 
-batch_size = 2
+batch_size = 4
 def dequeue(ctx):
     dequeue_outputs = tf.nest.map_structure(
         lambda *args: tf.stack(args), 
@@ -331,7 +369,7 @@ def Train_Thread(coord):
         #time.sleep(1)
 
         if index % 1000 == 0:
-            model.save_weights('model/reinforcement_model_' + str(index))
+            model.save_weights('tree_model/tree_reinforcement_model_' + str(index))
 
         if index == 100000000: # 어떤 조건에 맞으면
             coord.request_stop() # 모든 쓰레드가 함께 종료되도록 request_stop()을 호출합니다.

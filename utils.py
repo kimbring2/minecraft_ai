@@ -113,156 +113,6 @@ class DiscreteBase(gym.Wrapper):
         return self.action_space.sample()
 
 
-@register("Treechop")
-class TreechopDiscretWrapper(DiscreteBase):
-    def __init__(self, env, always_attack=1, angle=5):
-        DiscreteBase.__init__(self, env)
-        '''
-        self.action_dict = {
-            0: {'attack': always_attack, 'back': 0, 'camera': [0, 0], 'forward': 1, 'jump': 0, 'left': 0, 'right': 0,
-                'sneak': 0, 'sprint': 0},
-            1: {'attack': always_attack, 'back': 0, 'camera': [0, angle], 'forward': 0, 'jump': 0, 'left': 0,
-                'right': 0, 'sneak': 0, 'sprint': 0},
-            2: {'attack': 1, 'back': 0, 'camera': [0, 0], 'forward': 0, 'jump': 0, 'left': 0, 'right': 0, 'sneak': 0,
-                'sprint': 0},
-            3: {'attack': always_attack, 'back': 0, 'camera': [angle, 0], 'forward': 0, 'jump': 0, 'left': 0,
-                'right': 0, 'sneak': 0, 'sprint': 0},
-            4: {'attack': always_attack, 'back': 0, 'camera': [-angle, 0], 'forward': 0, 'jump': 0, 'left': 0,
-                'right': 0, 'sneak': 0, 'sprint': 0},
-            5: {'attack': always_attack, 'back': 0, 'camera': [0, -angle], 'forward': 0, 'jump': 0, 'left': 0,
-                'right': 0, 'sneak': 0, 'sprint': 0},
-            6: {'attack': always_attack, 'back': 0, 'camera': [0, 0], 'forward': 1, 'jump': 1, 'left': 0, 'right': 0,
-                'sneak': 0, 'sprint': 0},
-            7: {'attack': always_attack, 'back': 0, 'camera': [0, 0], 'forward': 0, 'jump': 0, 'left': 1, 'right': 0,
-                'sneak': 0, 'sprint': 0},
-            8: {'attack': always_attack, 'back': 0, 'camera': [0, 0], 'forward': 0, 'jump': 0, 'left': 0, 'right': 1,
-                'sneak': 0, 'sprint': 0},
-            9: {'attack': always_attack, 'back': 1, 'camera': [0, 0], 'forward': 0, 'jump': 0, 'left': 0, 'right': 0,
-                'sneak': 0, 'sprint': 0}}
-        '''
-        
-        craft_list = ['crafting_table', 'planks', 'stick', 'torch']
-        equip_list = ['air', 'iron_axe', 'iron_pickaxe', 'stone_axe', 'stone_pickaxe', 'wooden_axe', 'wooden_pickaxe']
-        nearbyCraft_list = ['furnace', 'iron_axe', 'iron_pickaxe','stone_axe', 'stone_pickaxe', 'wooden_axe', 'wooden_pickaxe']
-        nearbySmelt_list = ['coal', 'iron_ingot']
-        place_list = ['cobblestone', 'crafting_table', 'dirt', 'furnace', 'stone', 'torch']
-
-        self.action_dict = {}
-        list_num = 8
-
-        self.action_dict[0] = {'attack': 0,'back': 0,'camera': [0, 5],'craft': 'none','equip': 'none',\
-                                 'forward': 0,'jump': 0,'left': 0,'nearbyCraft':'none','nearbySmelt': 'none',\
-                                 'place': 'none','right': 0,'sneak': 0,'sprint': 0}
-        self.action_dict[1] = {'attack': 1,'back': 0,'camera': [0, 5],'craft': 'none','equip': 'none',\
-                                 'forward': 0,'jump': 0,'left': 0,'nearbyCraft':'none','nearbySmelt': 'none',\
-                                 'place': 'none','right': 0,'sneak': 0,'sprint': 0}
-
-        self.action_dict[2] = {'attack': 0,'back': 0,'camera': [5, 0],'craft': 'none','equip': 'none',\
-                                 'forward': 0,'jump': 0,'left': 0,'nearbyCraft':'none','nearbySmelt': 'none',\
-                                 'place': 'none','right': 0,'sneak': 0,'sprint': 0}
-        self.action_dict[3] = {'attack': 1,'back': 0,'camera': [5, 0],'craft': 'none','equip': 'none',\
-                                 'forward': 0,'jump': 0,'left': 0,'nearbyCraft':'none','nearbySmelt': 'none',\
-                                 'place': 'none','right': 0,'sneak': 0,'sprint': 0}
-
-        self.action_dict[4] = {'attack': 0,'back': 0,'camera': [-5, 0],'craft': 'none','equip': 'none',\
-                                 'forward': 0,'jump': 0,'left': 0,'nearbyCraft':'none','nearbySmelt': 'none',\
-                                 'place': 'none','right': 0,'sneak': 0,'sprint': 0}
-        self.action_dict[5] = {'attack': 1,'back': 0,'camera': [-5, 0],'craft': 'none','equip': 'none',\
-                                 'forward': 0,'jump': 0,'left': 0,'nearbyCraft':'none','nearbySmelt': 'none',\
-                                 'place': 'none','right': 0,'sneak': 0,'sprint': 0}
-
-        self.action_dict[6] = {'attack': 0,'back': 0,'camera': [0, -5],'craft': 'none','equip': 'none',\
-                                 'forward': 0,'jump': 0,'left': 0,'nearbyCraft':'none','nearbySmelt': 'none',\
-                                 'place': 'none','right': 0,'sneak': 0,'sprint': 0}
-        self.action_dict[7] = {'attack': 1,'back': 0,'camera': [0, -5],'craft': 'none','equip': 'none',\
-                                 'forward': 0,'jump': 0,'left': 0,'nearbyCraft':'none','nearbySmelt': 'none',\
-                                 'place': 'none','right': 0,'sneak': 0,'sprint': 0}
-
-        self.action_dict[list_num] = {'attack': 1,'back': 0,'camera': [0, 0],'craft': 'none','equip': 'none',\
-                                         'forward': 0,'jump': 0,'left': 0,'nearbyCraft':'none','nearbySmelt': 'none',\
-                                         'place': 'none','right': 0,'sneak': 0,'sprint': 0}
-        list_num += 1
-
-
-        self.action_dict[list_num] = {'attack': 0,'back': 1,'camera': [0, 0],'craft': 'none','equip': 'none',\
-                                         'forward': 0,'jump': 0,'left': 0,'nearbyCraft':'none','nearbySmelt': 'none',\
-                                         'place': 'none','right': 0,'sneak': 0,'sprint': 0}
-        list_num += 1
-        self.action_dict[list_num] = {'attack': 1,'back': 1,'camera': [0, 0],'craft': 'none','equip': 'none',\
-                                         'forward': 0,'jump': 0,'left': 0,'nearbyCraft':'none','nearbySmelt': 'none',\
-                                         'place': 'none','right': 0,'sneak': 0,'sprint': 0}
-        list_num += 1
-
-        self.action_dict[list_num] = {'attack': 0,'back': 0,'camera': [0, 0],'craft': 'none','equip': 'none',\
-                                         'forward': 1,'jump': 0,'left': 0,'nearbyCraft':'none','nearbySmelt': 'none',\
-                                         'place': 'none','right': 0,'sneak': 0,'sprint': 0}
-        list_num += 1
-        self.action_dict[list_num] = {'attack': 1,'back': 0,'camera': [0, 0],'craft': 'none','equip': 'none',\
-                                         'forward': 1,'jump': 0,'left': 0,'nearbyCraft':'none','nearbySmelt': 'none',\
-                                         'place': 'none','right': 0,'sneak': 0,'sprint': 0}
-        list_num += 1
-
-        self.action_dict[list_num] = {'attack': 0,'back': 0,'camera': [0, 0],'craft': 'none','equip': 'none',\
-                                         'forward': 1,'jump': 1,'left': 0,'nearbyCraft':'none','nearbySmelt': 'none',\
-                                         'place': 'none','right': 0,'sneak': 0,'sprint': 0}
-        list_num += 1
-        self.action_dict[list_num] = {'attack': 1,'back': 0,'camera': [0, 0],'craft': 'none','equip': 'none',\
-                                         'forward': 1,'jump': 1,'left': 0,'nearbyCraft':'none','nearbySmelt': 'none',\
-                                         'place': 'none','right': 0,'sneak': 0,'sprint': 0}
-        list_num += 1
-
-        self.action_dict[list_num] = {'attack': 0,'back': 0,'camera': [0, 0],'craft': 'none','equip': 'none',\
-                                         'forward': 0,'jump': 0,'left': 1,'nearbyCraft':'none','nearbySmelt': 'none',\
-                                         'place': 'none','right': 0,'sneak': 0,'sprint': 0}
-        list_num += 1
-        self.action_dict[list_num] = {'attack': 1,'back': 0,'camera': [0, 0],'craft': 'none','equip': 'none',\
-                                         'forward': 0,'jump': 0,'left': 1,'nearbyCraft':'none','nearbySmelt': 'none',\
-                                         'place': 'none','right': 0,'sneak': 0,'sprint': 0}
-        list_num += 1
-
-        self.action_dict[list_num] = {'attack': 0,'back': 0,'camera': [0, 0],'craft': 'none','equip': 'none',\
-                                         'forward': 0,'jump': 0,'left': 0,'nearbyCraft':'none','nearbySmelt': 'none',\
-                                         'place': 'none','right': 1,'sneak': 0,'sprint': 0}
-        list_num += 1
-        self.action_dict[list_num] = {'attack': 1,'back': 0,'camera': [0, 0],'craft': 'none','equip': 'none',\
-                                         'forward': 0,'jump': 0,'left': 0,'nearbyCraft':'none','nearbySmelt': 'none',\
-                                         'place': 'none','right': 1,'sneak': 0,'sprint': 0}
-        list_num += 1
-
-        
-        for craft_value in craft_list:
-            self.action_dict[list_num] = {'attack': 0,'back': 0,'camera': [0, 0],'craft': craft_value,'equip': 'none',\
-                                             'forward': 0,'jump': 0,'left': 0,'nearbyCraft':'none','nearbySmelt': 'none',\
-                                             'place': 'none','right': 0,'sneak': 0,'sprint': 0}
-            list_num += 1
-
-        for equip_value in equip_list:
-            self.action_dict[list_num] = {'attack': 0,'back': 0,'camera': [0, 0],'craft': 'none','equip': equip_value,\
-                                             'forward': 0,'jump': 0,'left': 0,'nearbyCraft':'none','nearbySmelt': 'none',\
-                                             'place': 'none','right': 0,'sneak': 0,'sprint': 0}
-            list_num += 1
-
-        for nearbyCraft_value in nearbyCraft_list:
-            self.action_dict[list_num] = {'attack': 0,'back': 0,'camera': [0, 0],'craft': 'none','equip': 'none',\
-                                             'forward': 0,'jump': 0,'left': 0,'nearbyCraft':nearbyCraft_value,'nearbySmelt': 'none',\
-                                             'place': 'none','right': 0,'sneak': 0,'sprint': 0}
-            list_num += 1
-
-        for nearbySmelt_value in nearbySmelt_list:
-            self.action_dict[list_num] = {'attack': 0,'back': 0,'camera': [0, 0],'craft': 'none','equip': 'none',\
-                                             'forward': 0,'jump': 0,'left': 0,'nearbyCraft':'none','nearbySmelt': nearbySmelt_value,\
-                                             'place': 'none','right': 0,'sneak': 0,'sprint': 0}
-            list_num += 1
-
-        for place_value in place_list:
-            self.action_dict[list_num] = {'attack': 0,'back': 0,'camera': [0, 0],'craft': 'none','equip': 'none',\
-                                             'forward': 0,'jump': 0,'left': 0,'nearbyCraft':'none','nearbySmelt': 'none',\
-                                             'place': place_value,'right': 0,'sneak': 0,'sprint': 0}
-            list_num += 1
-
-        self.action_space = gym.spaces.Discrete(len(self.action_dict))
-    
-
 class ItemAgentNode:
     """
     combined info about each agent
@@ -291,33 +141,33 @@ class ItemAgentNode:
 # "nearbySmelt": "Enum(coal,iron_ingot,none)",
 # "place": "Enum(cobblestone,crafting_table,dirt,furnace,none,stone,torch)",
 class craft(Enum):
-    crafting_table = 1
-    none = 2
-    planks = 3
-    stick = 4
-    torch =5
+    crafting_table = 0
+    none = 1
+    planks = 2
+    stick = 3
+    torch = 4
 
 
 class equip(Enum):
-    air = 1
-    iron_axe = 2 
-    iron_pickaxe = 3 
-    none = 4
-    stone_axe = 5
-    stone_pickaxe = 6
-    wooden_axe = 7
-    wooden_pickaxe = 8
+    air = 0
+    iron_axe = 1
+    iron_pickaxe = 2 
+    none = 3
+    stone_axe = 4
+    stone_pickaxe = 5
+    wooden_axe = 6
+    wooden_pickaxe = 7
 
 
 class nearbyCraft(Enum):
-    furnace = 1
-    iron_axe = 2
-    iron_pickaxe = 3
-    none = 4
-    stone_axe = 5
-    stone_pickaxe = 6
-    wooden_axe = 7
-    wooden_pickaxe = 8 
+    furnace = 0
+    iron_axe = 1
+    iron_pickaxe = 2
+    none = 3
+    stone_axe = 4 
+    stone_pickaxe = 5
+    wooden_axe = 6
+    wooden_pickaxe = 7
 
 
 class nearbySmelt(Enum):
@@ -327,13 +177,13 @@ class nearbySmelt(Enum):
 
 
 class place(Enum):
-    cobblestone = 1
-    crafting_table = 2
-    dirt = 3
-    furnace = 4
-    none = 5
-    stone = 6
-    torch = 7
+    cobblestone = 0
+    crafting_table = 1
+    dirt = 2
+    furnace = 3
+    none = 4
+    stone = 5
+    torch = 6
 
 
 def is_item(name):
@@ -354,6 +204,9 @@ def get_crafting_actions_from_chain(chain_, node_name_):
     """
     previous_actions = []
     for vertex in chain_:
+        #print("vertex: ", vertex)
+        #print("")
+        
         if vertex == node_name_:
             break
 
@@ -361,7 +214,10 @@ def get_crafting_actions_from_chain(chain_, node_name_):
             previous_actions.append(vertex)
         else:
             previous_actions = []
-
+            
+    #print("len(previous_actions): ", len(previous_actions))
+    #print("")
+            
     return [str_to_action_dict(action_) for action_ in previous_actions]
 
 
@@ -373,7 +229,7 @@ def str_to_action_dict(action_):
     """
     a_, _, value = action_.split(":")
 
-    if a_ == 'craft':
+    if a_ == 'craft':      
         value = craft[value].value
     elif a_ == 'equip':
         value = equip[value].value
@@ -384,6 +240,12 @@ def str_to_action_dict(action_):
     elif a_ == 'place':
         value = place[value].value
 
+    #if a_ == 'craft': 
+    #    if value == 0:
+    #        print("value: ", value)
+            #print("int(craft[value].value): ", int(craft[value].value))
+    #        print("")
+    
     return {a_: int(value)}    
 
     
@@ -785,15 +647,20 @@ class VisTools:
         if len(name.split(":")) == 3:
             name, order, digit = name.split(":")
             name = name + ":" + order
-            translate = {"place": ["none", "dirt", "stone", "cobblestone", "crafting_table", "furnace", "torch"],
-                         "nearbySmelt": ["none", "iron_ingot", "coal"],
-                         "nearbyCraft": ["none", "wooden_axe", "wooden_pickaxe", "stone_axe", "stone_pickaxe",
-                                         "iron_axe",
-                                         "iron_pickaxe", "furnace"],
-                         "equip": ["none", "air", "wooden_axe", "wooden_pickaxe", "stone_axe", "stone_pickaxe",
-                                   "iron_axe",
-                                   "iron_pickaxe"],
-                         "craft": ["none", "torch", "stick", "planks", "crafting_table"],
+            
+            # "craft": "Enum(crafting_table,none,planks,stick,torch)"
+            # "equip": "Enum(air,iron_axe,iron_pickaxe,none,stone_axe,stone_pickaxe,wooden_axe,wooden_pickaxe)"
+            # "nearbyCraft": "Enum(furnace,iron_axe,iron_pickaxe,none,stone_axe,stone_pickaxe,wooden_axe,wooden_pickaxe)"
+            # "nearbySmelt": "Enum(coal,iron_ingot,none)"
+            # "place": "Enum(cobblestone,crafting_table,dirt,furnace,none,stone,torch)"
+            
+            translate = {"place": ["cobblestone", "crafting_table", "dirt", "furnace", "none", "stone", "torch"],
+                         "nearbySmelt": ["coal", "iron_ingot", "none"],
+                         "nearbyCraft": ["furnace", "iron_axe", "iron_pickaxe", "none", "stone_axe",
+                                         "stone_pickaxe", "wooden_axe", "wooden_pickaxe"],
+                         "equip": ["air", "iron_axe", "iron_pickaxe", "none", "stone_axe", "stone_pickaxe",
+                                   "wooden_axe", "wooden_pickaxe"],
+                         "craft": ["crafting_table", "none", "planks", "stick", "torch"],
                          }
             name_without_digits = name
             while name_without_digits not in translate:
@@ -881,6 +748,7 @@ class TrajectoryInformation:
             trajectory = TrajectoryDataPipeline.load_data(self.path_to_trajectory)
 
         state, action, reward, next_state, done = trajectory
+        #print("action: ", action)
         if self.length != len(reward):
             print(self.length, len(reward))
             raise NameError("Please, double check trajectory")
@@ -893,6 +761,8 @@ class TrajectoryInformation:
 
             sliced_state = self.extract_from_dict(state, item.begin, item.end)
             sliced_action = self.extract_from_dict(action, item.begin, item.end)
+            #print("sliced_action.keys(): ", sliced_action.keys()) 
+        
             sliced_reward = reward[item.begin:item.end]
             sliced_next_state = self.extract_from_dict(next_state, item.begin, item.end)
             sliced_done = done[item.begin:item.end]
@@ -982,9 +852,9 @@ class TrajectoryInformation:
                                      
             for item in items:
                 '''
-                items:  odict_keys(['coal', 'cobblestone', 'crafting_table', 'dirt', 'furnace', 'iron_axe', 'iron_ingot',
-                                    'iron_ore', 'iron_pickaxe', 'log', 'planks', 'stick', 'stone', 'stone_axe', 'stone_pickaxe',
-                                    'torch', 'wooden_axe', 'wooden_pickaxe'])
+                items:  odict_keys(['coal', 'cobblestone', 'crafting_table', 'dirt', 'furnace', 'iron_axe', 
+                                    'iron_ingot', 'iron_ore', 'iron_pickaxe', 'log', 'planks', 'stick', 'stone', 
+                                    'stone_axe', 'stone_pickaxe', 'torch', 'wooden_axe', 'wooden_pickaxe'])
                 '''
                 
                 if next_states[item][index] > states[item][index]:
