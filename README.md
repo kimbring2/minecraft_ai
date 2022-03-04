@@ -17,13 +17,18 @@ Code for playing the Minecraft using the Deep Learning.
 # Action, Observation of Minecraft
 <img src="image/minerl_env_space.png" width="1000">
 
-# Learning-Based Model architecture
+# Model Architecture
+
+## Learning-Based Model Architecture
 <img src="image/learning_model.png" width="1000">
 
-# Rule-Based Model architecture
+## Rule-Based Model Architecture
 <img src="image/rule_model.png" width="1000">
 
-# Supervised Learning method
+# Training Method
+<img src="image/minerl_training_method.png" width="800">
+
+# Run Supervised Learning
 For Minecraft games, agent can not learn every behaviour for high level playing only using Reinforcment Learning becaue of complexity of task. In such cases, the agent must first learn through human expert data. Try to train network for MineRLTreechop-v0 first using below command.
 
 ```
@@ -40,7 +45,7 @@ After finishing training, you can test trained model using below command.
 $ python run_evaluation.py --workspace_path [your path]/minecraft_ai/ --model_name [trained model name] --gpu_use True
 ```
 
-# Reinforcement Learning method
+# Run Reinforcement Learning
 Because of long game play time, normal A2C method can not be used because it should use whole episode once. Therefore, off-policy A2C such as [IMPALA](https://deepmind.com/research/publications/2019/impala-scalable-distributed-deep-rl-importance-weighted-actor-learner-architectures) is needed. It can restore trajectory data from buffer for training like a DQN.
 
 You can run the IMPALA for MineRL by below command. 
