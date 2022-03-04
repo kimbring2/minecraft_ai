@@ -60,7 +60,9 @@ In the simplest task like a MineRLNavigateDense-v0, agent can find a direction v
 
 <img src="image/rl_reward_graph.png" width="500">
 
-[![](https://i.ytimg.com/vi/FryWy2GwF2o/hqdefault.jpg)](https://youtu.be/FryWy2GwF2o)
+Below video is evluation result of trained agent
+
+[![Demo MineRL TreeChop](https://i.ytimg.com/vi/FryWy2GwF2o/hqdefault.jpg)](https://youtu.be/FryWy2GwF2o)
 
 # Detailed inforamtion
 Please check Medium article(https://medium.com/@dohyeongkim/deep-q-learning-from-demonstrations-dqfd-for-minecraft-tutorial-1-4b462a18de5a) for more information.
