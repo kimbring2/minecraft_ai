@@ -37,7 +37,7 @@ For Minecraft games, agent can not learn every behaviour for high level playing 
 $ python run_supervised_learning --workspace_path [your path]/minecraft_ai/ --data_path [your path]/minerl_data/ --gpu_use True
 ```
 
-The loss should fall to almost 0 as shown in the graph below for good performance. Model is saved under folder named model of workspace path.
+The loss should fall to near 0 as shown like below graph. Model is saved under folder named model of workspace path.
 
 <img src="image/sl_reward_graph.png" width="500">
 
@@ -50,13 +50,13 @@ $ python run_evaluation.py --workspace_path [your path]/minecraft_ai/ --model_na
 # Run Reinforcement Learning
 Because of long game play time, normal A2C method can not be used because it should use whole episode once. Therefore, off-policy A2C such as [IMPALA](https://deepmind.com/research/publications/2019/impala-scalable-distributed-deep-rl-importance-weighted-actor-learner-architectures) is needed. It can restore trajectory data from buffer for training like a DQN.
 
-You can run the IMPALA for MineRL by below command. 
+You can run the IMPALA with Supervised model for MineRL by below command. 
 
 ```
 $ ./run_reinforcement_learning.sh [number of envs] [gpu use] [pretrained model]
 ```
 
-In the simplest task like a MineRLNavigateDense-v0, agent can find a direction very easily like a below graph when using only 3 action.
+After some trarning, the agent starts to collect tree and earn rewards as shown in the graph below.
 
 <img src="image/rl_reward_graph.png" width="500">
 
@@ -65,4 +65,5 @@ Below video is evluation result of trained agent
 [![Demo MineRL TreeChop](https://i.ytimg.com/vi/FryWy2GwF2o/hqdefault.jpg)](https://youtu.be/FryWy2GwF2o)
 
 # Detailed inforamtion
-Please check Medium article(https://medium.com/@dohyeongkim/deep-q-learning-from-demonstrations-dqfd-for-minecraft-tutorial-1-4b462a18de5a) for more information.
+1. Prepare Model: https://medium.com/@dohyeongkim/deep-q-learning-from-demonstrations-dqfd-for-minecraft-tutorial-1-4b462a18de5a
+2. Training Model: https://dohyeongkim.medium.com/how-to-build-the-deep-learning-agent-for-minecraft-with-code-tutorial-2-e5ddbf80eca1
