@@ -18,12 +18,14 @@ Code for playing the Minecraft using the Deep Learning.
 <img src="image/minerl_env_space.png" width="1000">
 
 # Model Architecture
-
 ## Learning-Based Model Architecture
 <img src="image/learning_model.png" width="1000">
 
 ## Rule-Based Model Architecture
 <img src="image/rule_model.png" width="1000">
+
+# Loss for Training
+<img src="image/minerl_loss.png" width="1000">
 
 # Training Method
 <img src="image/minerl_training_method.png" width="800">
