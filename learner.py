@@ -1,8 +1,3 @@
-#
-#   Hello World server in Python
-#   Binds REP socket to tcp://*:5555
-#   Expects b"Hello" from client, replies with b"World"
-#
 import time
 import zmq
 import os
@@ -66,7 +61,7 @@ sl_model = network.ActorCritic(num_actions, num_hidden_units)
 if arguments.pretrained_model != None:
     print("Load Pretrained Model")
     sl_model.load_weights("model_tree/" + arguments.pretrained_model)
-    model.load_weights("model_tree/" + arguments.pretrained_model)
+    #model.load_weights("model_tree/" + arguments.pretrained_model)
     
 #model.set_weights(sl_model.get_weights())
     
@@ -146,10 +141,10 @@ def update(states, actions, agent_policies, rewards, dones, memory_states, carry
         #tf.print("tf.reduce_sum(learner_policies[0][0]): ", tf.reduce_sum(learner_policies[0][0]))
         #tf.print("tf.reduce_sum(sl_learner_policies[0][0]): ", tf.reduce_sum(sl_learner_policies[0][0]))
         
-        dist = tfd.Categorical(logits=learner_policies)
-        sl_dist = tfd.Categorical(logits=sl_learner_policies)
+        dist = tfd.Categorical(logits=learner_policies[:-1])
+        sl_dist = tfd.Categorical(logits=sl_learner_policies[:-1])
         kl_loss = tfd.kl_divergence(dist, sl_dist)
-        kl_loss = 0.25 * tf.reduce_mean(kl_loss)
+        kl_loss = 0.0001 * tf.reduce_mean(kl_loss)
         #tf.print("kl_loss: ", kl_loss)
         
         agent_logits = tf.nn.softmax(agent_policies[:-1])
@@ -221,7 +216,12 @@ def update(states, actions, agent_policies, rewards, dones, memory_states, carry
             
         entropy = tf.reduce_mean(parametric_action_distribution.entropy(learner_policies[:-1]))
         entropy_loss =  0.00025 * -entropy
+        
+        tf.print("actor_loss: ", actor_loss)
+        tf.print("critic_loss: ", critic_loss)
         tf.print("entropy_loss: ", entropy_loss)
+        tf.print("kl_loss: ", kl_loss)
+        tf.print("")
             
         total_loss = actor_loss + critic_loss + entropy_loss + kl_loss
 

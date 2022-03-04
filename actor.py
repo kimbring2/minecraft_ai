@@ -121,6 +121,7 @@ for episode_step in range(0, 2000000):
                           "observation": state_reshaped}
             socket.send_pyobj(env_output)
             action_index = int(socket.recv_pyobj()['action'])
+            print("action_index:" , action_index)
             
             action = env.action_space.noop()
 
@@ -278,7 +279,7 @@ for episode_step in range(0, 2000000):
 
             observation_1, reward, done, info = env.step(action)
             
-            reward += -0.005
+            #reward += -0.005
             
             inventory_channel_1 = np.zeros((64,64,1))
             if 'inventory' in observation_1:
