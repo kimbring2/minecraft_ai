@@ -62,8 +62,6 @@ After some trarning, the agent starts to collect tree and earn rewards as shown 
 
 Below video is evluation result of trained agent
 
-https://youtu.be/SwqSuTBwT0A
-
 [![Demo MineRL TreeChop](https://i3.ytimg.com/vi/SwqSuTBwT0A/hqdefault.jpg)](https://youtu.be/SwqSuTBwT0A)
 
 # Detailed inforamtion
