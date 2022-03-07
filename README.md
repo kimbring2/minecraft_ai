@@ -62,7 +62,9 @@ After some trarning, the agent starts to collect tree and earn rewards as shown 
 
 Below video is evluation result of trained agent
 
-[![Demo MineRL TreeChop](https://i.ytimg.com/vi/FryWy2GwF2o/hqdefault.jpg)](https://youtu.be/FryWy2GwF2o)
+https://youtu.be/SwqSuTBwT0A
+
+[![Demo MineRL TreeChop](https://i3.ytimg.com/vi/SwqSuTBwT0A/hqdefault.jpg)](https://youtu.be/SwqSuTBwT0A)
 
 # Detailed inforamtion
 1. Prepare Model: https://medium.com/@dohyeongkim/deep-q-learning-from-demonstrations-dqfd-for-minecraft-tutorial-1-4b462a18de5a
