@@ -64,15 +64,17 @@ File "C:/minerl/learner.py", line 392, in
 coord.join(thread_data)
 File "C:\Users\sund0\anaconda3\envs\minerl_env\lib\site-packages\tensorflow\python\training\coordinator.py", line 357, in join
 threads = self._registered_threads.union(set(threads))
-```
 
 where line 391 and 392 is
 for thread_data in thread_data_list:
 coord.join(thread_data)
+```
 
-After some trarning, the agent starts to collect tree and earn rewards as shown in the graph below.
+After some training, the agent starts to collect tree and earn rewards as shown in the graph below.
 
 <img src="image/rl_reward_graph.png" width="500">
+
+You can download the [weight of model of me](https://drive.google.com/drive/folders/130LHhUQMK5r04cOblDDcW9BgkS3-etMr?usp=sharing) from Google Drive. Try to use 'tree_supervised_model_15800' file.
 
 Below video is evluation result of trained agent
 
