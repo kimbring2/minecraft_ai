@@ -28,10 +28,10 @@ arguments = parser.parse_args()
 tfd = tfp.distributions
 
 if arguments.gpu_use == True:
-    #gpus = tf.config.experimental.list_physical_devices('GPU')
-    #tf.config.experimental.set_virtual_device_configuration(gpus[0],
-    #            [tf.config.experimental.VirtualDeviceConfiguration(memory_limit=4000)])
-    os.environ['CUDA_VISIBLE_DEVICES'] = '-1'
+    gpus = tf.config.experimental.list_physical_devices('GPU')
+    tf.config.experimental.set_virtual_device_configuration(gpus[0],
+                [tf.config.experimental.VirtualDeviceConfiguration(memory_limit=4000)])
+    #os.environ['CUDA_VISIBLE_DEVICES'] = '-1'
 else:
     os.environ['CUDA_VISIBLE_DEVICES'] = '-1'
 
