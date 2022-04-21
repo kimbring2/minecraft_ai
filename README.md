@@ -1,6 +1,10 @@
 # Introduction
 Code for playing the Minecraft using the Deep Learning. 
 
+# Normal Dependencies
+1. Ubuntu
+2. Tmux
+
 # Python Dependencies
 1. Minerl 0.3.7
 2. Tensorflow 2.4.1
@@ -41,6 +45,8 @@ The loss should fall to near 0 as shown like below graph. Model is saved under f
 
 <img src="image/sl_reward_graph.png" width="500">
 
+You can download the [weight of trained model](https://drive.google.com/drive/folders/17TbZoLhvLw0VZGoj3w97fTWdKq1TDs0d?usp=sharing) from Google Drive. Try to use 'tree_supervised_model_15800' file.
+
 After finishing training, you can test trained model using below command.
 
 ```
@@ -74,9 +80,9 @@ After some training, the agent starts to collect tree and earn rewards as shown 
 
 <img src="image/rl_reward_graph.png" width="500">
 
-You can download the [weight of trained model](https://drive.google.com/drive/folders/130LHhUQMK5r04cOblDDcW9BgkS3-etMr?usp=sharing) from Google Drive. Try to use 'tree_supervised_model_15800' file.
+You can download the [weight of trained model](https://drive.google.com/drive/folders/130LHhUQMK5r04cOblDDcW9BgkS3-etMr?usp=sharing) from Google Drive. Try to use 'tree_reinforcement_model_158000' file.
 
-Below video is evluation result of trained agent
+Below video is evluation result of trained agent.
 
 [![Demo MineRL TreeChop](https://i3.ytimg.com/vi/SwqSuTBwT0A/hqdefault.jpg)](https://youtu.be/SwqSuTBwT0A)
 
