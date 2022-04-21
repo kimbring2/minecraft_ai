@@ -50,11 +50,25 @@ $ python run_evaluation.py --workspace_path [your path]/minecraft_ai/ --model_na
 # Run Reinforcement Learning
 Because of long game play time, normal A2C method can not be used because it should use whole episode once. Therefore, off-policy A2C such as [IMPALA](https://deepmind.com/research/publications/2019/impala-scalable-distributed-deep-rl-importance-weighted-actor-learner-architectures) is needed. It can restore trajectory data from buffer for training like a DQN.
 
-You can run the IMPALA with Supervised model for MineRL by below command. 
+You can run the IMPALA with Supervised model for MineRL by below command.
 
 ```
 $ ./run_reinforcement_learning.sh [number of envs] [gpu use] [pretrained model]
 ```
+
+You can ignore below error of learner.py part. It does not effect the training process.
+
+```
+Traceback (most recent call last):
+File "C:/minerl/learner.py", line 392, in
+coord.join(thread_data)
+File "C:\Users\sund0\anaconda3\envs\minerl_env\lib\site-packages\tensorflow\python\training\coordinator.py", line 357, in join
+threads = self._registered_threads.union(set(threads))
+```
+
+where line 391 and 392 is
+for thread_data in thread_data_list:
+coord.join(thread_data)
 
 After some trarning, the agent starts to collect tree and earn rewards as shown in the graph below.
 
