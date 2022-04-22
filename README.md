@@ -80,7 +80,7 @@ After some training, the agent starts to collect tree and earn rewards as shown 
 
 <img src="image/rl_reward_graph.png" width="500">
 
-You can download the [weight of trained RL model](https://drive.google.com/drive/folders/130LHhUQMK5r04cOblDDcW9BgkS3-etMr?usp=sharing) from Google Drive. Try to use 'tree_reinforcement_model_158000' file.
+You can download the [weight of trained RL model](https://drive.google.com/drive/folders/1VR5FPcmIeNVw56cBPDjTmMt9YJHLIel6?usp=sharing) from Google Drive. Try to use 'tree_reinforcement_model_128000' file.
 
 Below video is evluation result of trained agent.
 
