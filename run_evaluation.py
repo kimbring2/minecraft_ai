@@ -21,7 +21,7 @@ from utils import TrajectoryInformation, DummyDataLoader, TrajectoryDataPipeline
 
 tfd = tfp.distributions
 
-parser = argparse.ArgumentParser(description='Minecraft Supervised Learning')
+parser = argparse.ArgumentParser(description='Minecraft Evalution')
 
 parser.add_argument('--workspace_path', type=str, help='root directory of project')
 parser.add_argument('--model_name', type=str, help='name of saved model')
