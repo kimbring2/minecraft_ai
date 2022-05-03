@@ -21,7 +21,7 @@ from utils import TrajectoryInformation, DummyDataLoader, TrajectoryDataPipeline
 
 tfd = tfp.distributions
 
-parser = argparse.ArgumentParser(description='Minecraft Evalution')
+parser = argparse.ArgumentParser(description='Minecraft Evaluation')
 
 parser.add_argument('--workspace_path', type=str, help='root directory of project')
 parser.add_argument('--model_name', type=str, help='name of saved model')
